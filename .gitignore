@@ -1,8 +1,9 @@
 .idea
 out
-we-get-these-100s.iml
-latex/main.aux
-latex/main.log
+latex
+latex/main.pdf
+latex/main.tex
 .DS_Store
 main.out
 .env
+london.iml
