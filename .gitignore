@@ -7,3 +7,4 @@ latex/main.tex
 main.out
 .env
 london.iml
+bin/
