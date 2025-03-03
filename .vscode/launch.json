@@ -6,6 +6,14 @@
   "configurations": [
     {
       "type": "java",
+      "name": "MobileSample",
+      "request": "launch",
+      "mainClass": "MobileSample",
+      "projectName": "london-kcl_731f15be",
+      "vmArgs": "--module-path \"${workspaceFolder}/lib/javafx-sdk-21.0.6/lib\" --add-modules=javafx.controls,javafx.web"
+    },
+    {
+      "type": "java",
       "name": "App",
       "request": "launch",
       "mainClass": "App",
