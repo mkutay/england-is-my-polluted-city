@@ -1,5 +1,7 @@
 # WE GET THESE 100S (VOL 2)
 
+[Google Docs](https://docs.google.com/document/d/19Ut53-j0HDo7lLMJCrqWUXvecwEDDJxhTycay316bNM/edit?usp=sharing)
+
 ## On commit messages
 
 - Be as descriptive as possible
