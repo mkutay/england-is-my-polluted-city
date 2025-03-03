@@ -14,12 +14,12 @@ import java.util.*;
  */
 public class DataSet
 {
-    private String pollutant;
-    private String year;
-    private String metric;
-    private String units;
+    private final String pollutant;
+    private final String year;
+    private final String metric;
+    private final String units;
     
-    private List<DataPoint> data;
+    private final List<DataPoint> data;
 
     /**
      * Constructor for objects of class DataSet
@@ -126,6 +126,7 @@ public class DataSet
     /**
      * Return a string representation of this dataset info.
      */
+    @Override
     public String toString()
     {
         return String.format("Dataset: Pollutant: %s, Year: %s, Metric: %s, Units: %s (%d data points)",
