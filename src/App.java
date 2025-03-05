@@ -33,6 +33,7 @@ import com.gluonhq.attach.util.Services;
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.geometry.Pos;
@@ -46,7 +47,9 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -68,7 +71,7 @@ public class App extends Application {
     public void start(Stage stage) {
         MapView view = new MapView();
         view.addLayer(positionLayer());
-        view.setZoom(3);
+        view.setZoom(14);
         Scene scene;
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
@@ -85,7 +88,7 @@ public class App extends Application {
         if (Platform.isDesktop()) {
             headerLabel.setManaged(false);
             headerLabel.setVisible(false);
-            scene = new Scene(bp, 600, 700);
+            scene = new Scene(bp, 900, 600);
             stage.setTitle("Gluon Maps Demo");
        } else {
             headerLabel.setManaged(true);
@@ -93,11 +96,14 @@ public class App extends Application {
             Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
             scene = new Scene(bp, bounds.getWidth(), bounds.getHeight());
         }
+
+
+
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
 
-        view.flyTo(1., mapPoint, 2.);
+        view.flyTo(0., mapPoint, 0.1); //Spawns map instantly
     }
 
     private Label headerLabel() {
@@ -117,6 +123,8 @@ public class App extends Application {
         return new Group(copyright);
     }
 
+
+
     private MapLayer positionLayer() {
         return Services.get(PositionService.class)
             .map(positionService -> {
@@ -125,14 +133,13 @@ public class App extends Application {
                 ReadOnlyObjectProperty<Position> positionProperty = positionService.positionProperty();
                 Position position = positionProperty.get();
                 if (position == null) {
-                    position = new Position(50., 4.);
+                    position = new Position(51.508045, -0.128217);
                 }
                 mapPoint = new MapPoint(position.getLatitude(), position.getLongitude());
                 LOGGER.log(Level.INFO, "Initial Position: " + position.getLatitude() + ", " + position.getLongitude());
 
                 PoiLayer answer = new PoiLayer();
                 answer.addPoint(mapPoint, new Circle(7, Color.RED));
-
                 positionProperty.addListener(e -> {
                     Position pos = positionProperty.get();
                     LOGGER.log(Level.INFO, "New Position: " + pos.getLatitude() + ", " + pos.getLongitude());
@@ -143,10 +150,19 @@ public class App extends Application {
             .orElseGet(() -> {
                 LOGGER.log(Level.WARNING, "Position Service not available");
                 PoiLayer answer = new PoiLayer();
-                mapPoint = new MapPoint(50., 4.);
+                mapPoint = new MapPoint(51.508045, -0.128217); //coordinates for trafalgar square
                 answer.addPoint(mapPoint, new Circle(7, Color.RED));
+
+                //Testing "Heatmap of Pollution POC"
+                Circle circle = new Circle(30, Color.YELLOW); // Large radius to show
+                circle.setOpacity(0.4); // Transparency to blend colors
+                MapPoint pollutionPoint = new MapPoint(51.51275, -0.117278); //coordinates for bush house
+                answer.addPoint(pollutionPoint, circle);
+
                 return answer;
             });
+
+
     }
 
     public static void main(String[] args) {
