@@ -44,9 +44,10 @@ public class PollutionLayer extends MapLayer {
         // Experimenting with how to get an accurate scale value to use, converting pixel size to real world size.
         // TODO: Work on this.
         MapPoint A = mapView.getMapPosition(0, 0);
-        MapPoint B = mapView.getMapPosition(1, 1);
-        double xScale = A.getLatitude() - B.getLatitude();
-        double yScale = A.getLongitude() - B.getLongitude();
-        System.out.println(xScale + " " + yScale);
+        MapPoint B = mapView.getMapPosition(mapView.getWidth(), mapView.getHeight());
+        double currentScale = GeographicUtilities.geodesicDistance(A, B)/mapView.getWidth();
+        System.out.println(currentScale);
+        //This currently displays the distance in meters of which 1 pixel on screen corresponds to.
+
     }
 }

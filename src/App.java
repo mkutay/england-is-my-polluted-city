@@ -25,7 +25,7 @@ public class App extends Application {
 
         StackPane root = new StackPane();
         root.getChildren().add(mapView);
-        Scene scene = new Scene(root, 900, 600);
+        Scene scene = new Scene(root, 900, 900);
 
         stage.setScene(scene);
         stage.show();
