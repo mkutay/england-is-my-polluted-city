@@ -46,7 +46,7 @@ public class PollutionLayer extends MapLayer {
         MapPoint A = mapView.getMapPosition(0, 0);
         MapPoint B = mapView.getMapPosition(mapView.getWidth(), mapView.getHeight());
         double currentScale = GeographicUtilities.geodesicDistance(A, B)/mapView.getWidth();
-        System.out.println(currentScale);
+        //System.out.println(currentScale);
         //This currently displays the distance in meters of which 1 pixel on screen corresponds to.
 
     }
