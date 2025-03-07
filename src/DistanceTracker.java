@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 
 /**
  * Test class
+ * TODO remove
  */
 public class DistanceTracker extends MapLayer {
     private MapPoint A;
