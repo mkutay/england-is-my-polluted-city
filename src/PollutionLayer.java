@@ -6,9 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
 /**
@@ -20,7 +17,7 @@ import javafx.util.Pair;
  */
 public class PollutionLayer extends MapLayer {
     private final MapView mapView;
-    private final ObservableList<Pair<MapPoint, Circle>> points = FXCollections.observableArrayList();
+    private final ObservableList<Pair<MapPoint, PollutionPolygon>> points = FXCollections.observableArrayList();
 
     /**
      * Constructor for PollutionLayer.
@@ -39,24 +36,27 @@ public class PollutionLayer extends MapLayer {
         double maxValue = Double.NEGATIVE_INFINITY;
         for (DataPoint dataPoint : dataSet.getData()) {
             double value = dataPoint.value();
+            if (value == -1) {continue;}
             minValue = Math.min(minValue, value);
             maxValue = Math.max(maxValue, value);
         }
 
 
         for (DataPoint dataPoint : dataSet.getData()){
+            if (dataPoint.value() == -1) {continue;}
             int easting = dataPoint.x();
             int northing = dataPoint.y();
             MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
-            double v = 1 - (dataPoint.value() - minValue)/(maxValue - minValue);
+            double v =  (dataPoint.value() - minValue)/(maxValue - minValue);
             int c = (int) (v * 255);
 
             Color color = Color.rgb(c, c, c);
-            Circle circle = new Circle(3, color);
-            Rectangle rectangle = new Rectangle(1,1,color);
-            //circle.setOpacity(0.5);
-            points.add(new Pair<>(mapPoint, circle));
-            this.getChildren().add(circle);
+            PollutionPolygon polygon = new PollutionPolygon(easting, northing, color, 1000);
+            polygon.setFill(color);
+            polygon.setOpacity(0.5);
+
+            points.add(new Pair<>(mapPoint, polygon));
+            this.getChildren().add(polygon);
         }
 
         this.markDirty();
@@ -93,17 +93,18 @@ public class PollutionLayer extends MapLayer {
     @Override
     protected void layoutLayer() {
         double iconSize = 1000 * getPixelScale();
-        for (Pair<MapPoint, Circle> candidate : points) {
+        for (Pair<MapPoint, PollutionPolygon> candidate : points) {
             MapPoint point = candidate.getKey();
-            Circle icon = candidate.getValue();
+            PollutionPolygon icon = candidate.getValue();
             Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
             if (isPointOnScreen(mapPoint.getX(), mapPoint.getY(), -iconSize)) {
-                icon.setRadius(iconSize/2);
-                //icon.setHeight(iconSize);
-                //icon.setWidth(iconSize);
+                int i = 0;
+                for (MapPoint worldCoordinate : icon.getWorldCoordinates()) {
+                    Point2D screenPoint = getMapPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude());
+                    icon.getPoints().set(i, screenPoint.getX()); i++;
+                    icon.getPoints().set(i, screenPoint.getY()); i++;
+                }
                 icon.setVisible(true);
-                icon.setTranslateX(mapPoint.getX());
-                icon.setTranslateY(mapPoint.getY());
             } else {
                 icon.setVisible(false);
             }
