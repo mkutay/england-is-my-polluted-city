@@ -43,18 +43,33 @@ public class PollutionLayer extends MapLayer {
         }
 
         for (DataPoint dataPoint : dataSet.getData()){
-            int easting = dataPoint.x();
-            int northing = dataPoint.y();
-            MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
+                if(dataPoint.value() !=1 ){ // Prevent rendering of MISSING values
+                    int easting = dataPoint.x();
+                    int northing = dataPoint.y();
+                    MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
 
-            double v = 1 - (dataPoint.value() - minValue)/(maxValue - minValue);
-            int c = (int) (v * 255);
+                    double v = 1 - (dataPoint.value() - minValue)/(maxValue - minValue);
+                    int c = (int) (v * 255);
 
-            Color color = Color.rgb(c, c, c);
-            Circle circle = new Circle(3, color);
-            circle.setOpacity(0.5);
-            points.add(new Pair<>(mapPoint, circle));
-            this.getChildren().add(circle);
+                    double pollutionValue = dataPoint.value();
+                    // POCIf statement to set the color of the circle depending on the pollution value (switch does not accept double)
+                    Color circleColor = Color.GRAY; //initialise the circle color
+
+                    if (pollutionValue >= 0 && pollutionValue < 2.5){ //Safe
+                        circleColor = Color.YELLOW;
+                    }
+                    if (pollutionValue >= 2.5 && pollutionValue < 5.5){
+                        circleColor = Color.ORANGE; //Unhealthy
+                    }
+                    if (pollutionValue >= 5.5){
+                        circleColor = Color.RED; //Hazardous
+                    }
+                    Color color = circleColor;
+                    Circle circle = new Circle(3, color);
+                    circle.setOpacity(0.5);
+                    points.add(new Pair<>(mapPoint, circle));
+                    this.getChildren().add(circle);
+                }
         }
         this.markDirty();
     }
