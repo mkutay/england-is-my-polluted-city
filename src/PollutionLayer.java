@@ -44,13 +44,13 @@ public class PollutionLayer extends MapLayer {
             maxValue = Math.max(maxValue, value);
         }
 
-        for (DataPoint dataPoint : dataSet.getData()){
-            if(dataPoint.value() !=1 ){
+        for (DataPoint dataPoint : dataSet.getData()) {
+            if (dataPoint.value() != 1) {
                 int easting = dataPoint.x();
                 int northing = dataPoint.y();
                 MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
 
-                double v = 1 - (dataPoint.value() - minValue)/(maxValue - minValue);
+                double v = 1 - (dataPoint.value() - minValue) / (maxValue - minValue);
                 int c = (int) (v * 255);
 
                 double pollutionValue = dataPoint.value();
