@@ -5,9 +5,10 @@ import com.gluonhq.maps.MapView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 
 /**
@@ -42,56 +43,69 @@ public class PollutionLayer extends MapLayer {
             maxValue = Math.max(maxValue, value);
         }
 
+
         for (DataPoint dataPoint : dataSet.getData()){
             int easting = dataPoint.x();
             int northing = dataPoint.y();
             MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
-
             double v = 1 - (dataPoint.value() - minValue)/(maxValue - minValue);
             int c = (int) (v * 255);
 
             Color color = Color.rgb(c, c, c);
             Circle circle = new Circle(3, color);
-            circle.setOpacity(0.5);
+            Rectangle rectangle = new Rectangle(1,1,color);
+            //circle.setOpacity(0.5);
             points.add(new Pair<>(mapPoint, circle));
             this.getChildren().add(circle);
         }
+
         this.markDirty();
     }
 
+
+    /**
+     * Gets a scale factor to scale 1 pixel into 1 meter in the real world depending on current zoom level
+     * @return Scale factor for pixel scale
+     */
     private double getPixelScale(){
         MapPoint A = mapView.getMapPosition(0, 0);
-        MapPoint B = mapView.getMapPosition(mapView.getWidth(), mapView.getHeight());
-        return  GeographicUtilities.geodesicDistance(A, B)/mapView.getWidth();
+        MapPoint B = mapView.getMapPosition(mapView.getWidth(), 0);
+        return  mapView.getWidth()/GeographicUtilities.geodesicDistance(A, B);
     }
 
     /**
      * Takes in a pixel x/y coordinate and checks if it is on the screen
      * @param x the x coordinate in pixels
      * @param y the y coordinate in pixels
+     * @param padding the padding inside the screen
      * @return true if the point is on the screen, false otherwise
      */
-    private boolean isPointOnScreen(double x, double y) {
-        return x >= 0 && x <= mapView.getWidth() && y >= 0 && y <= mapView.getHeight();
+    private boolean isPointOnScreen(double x, double y, double padding) {
+        return x >= padding && x <= mapView.getWidth() - padding && y >= padding && y <= mapView.getHeight() - padding;
     }
 
     /**
      * Method to update the layout for pollution.
      * TODO make less slow when many points are visible
+     *
+     * TODO EASTING AND NORTHING COVNERSION FOR EACH COORDINATE TO ACCOUNT FOR CURVATURE
      */
     @Override
     protected void layoutLayer() {
+        double iconSize = 1000 * getPixelScale();
         for (Pair<MapPoint, Circle> candidate : points) {
             MapPoint point = candidate.getKey();
-            Circle circle = candidate.getValue();
+            Circle icon = candidate.getValue();
             Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
-            if (isPointOnScreen(mapPoint.getX(), mapPoint.getY())) {
-                circle.setRadius(800/getPixelScale());
-                circle.setVisible(true);
-                circle.setTranslateX(mapPoint.getX());
-                circle.setTranslateY(mapPoint.getY());
+            if (isPointOnScreen(mapPoint.getX(), mapPoint.getY(), -iconSize)) {
+                icon.setRadius(iconSize/2);
+                //icon.setHeight(iconSize);
+                //icon.setWidth(iconSize);
+                icon.setVisible(true);
+                icon.setTranslateX(mapPoint.getX());
+                icon.setTranslateY(mapPoint.getY());
             } else {
-                circle.setVisible(false);
+                icon.setVisible(false);
             }
         }
 
