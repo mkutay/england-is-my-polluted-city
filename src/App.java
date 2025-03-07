@@ -38,7 +38,8 @@ public class App extends Application {
 //        });
 
         MapPoint startPosition = new MapPoint(51.508045, -0.128217); // These are the coordinates for Trafalgar Square.
-        mapView.flyTo(0., startPosition, 0.1); // Instantly opens on top London.
+        //MapPoint startPosition = new MapPoint(60.854303762303054, -0.8863583375656637);
+        mapView.flyTo(0., startPosition, 0.01); // Instantly opens on top London.
     }
 
     public static void main(String[] args) {

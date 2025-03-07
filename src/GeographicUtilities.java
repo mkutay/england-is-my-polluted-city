@@ -3,16 +3,10 @@ import net.sf.geographiclib.*;
 import uk.gov.dstl.geo.osgb.EastingNorthingConversion;
 import uk.gov.dstl.geo.osgb.Constants;
 
-import java.util.Map;
-
-import static java.lang.Math.*;
-
 /**
  * Utility class for geographic calculations
  */
 public class GeographicUtilities{
-    private static int easting, northing;
-
     /**
      * Distance between two latitude and longitude positions on earth using vincenty formula
      * @param point1 MapPoint of the first world position
