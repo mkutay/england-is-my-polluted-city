@@ -31,7 +31,7 @@ public class PollutionPolygon extends Polygon {
         };
 
         for (int i = 0; i < 8; i++) {
-            getPoints().add(0.);
+            getPoints().add(0.0);
         }
     }
 
