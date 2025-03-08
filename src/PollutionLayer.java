@@ -36,7 +36,7 @@ public class PollutionLayer extends MapLayer {
         this.mapView = mapView;
         polygons = new ArrayList<>();
 
-        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 1);
+        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 4);
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();

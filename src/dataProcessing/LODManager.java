@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class LODManager {
     private final List<LODData> LODDataList;
-    private final static int MAX_VISIBLE_DATAPOINTS = 1200; //If visible data points exceeds this number, attempt to use smaller LOD
+    private final static int MAX_VISIBLE_DATAPOINTS = 5000; //If visible data points exceeds this number, attempt to use smaller LOD
 
     public LODManager(DataSet dataSet, int numLODs) {
         System.out.println("Creating " + numLODs + " LODs");
