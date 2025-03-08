@@ -13,7 +13,7 @@
 ---
 - [Gluon Maps](https://github.com/gluonhq/maps) - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps
 - [OSGB by DST](https://github.com/dstl/osgb]) - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude 
-
+- [GeographicLib](https://github.com/geographiclib/geographiclib-java) - Used for geodesic distance calculation
 ## Authors
 ---
 Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, Chelsea Feliciano
