@@ -34,9 +34,9 @@ public class PollutionLayer extends MapLayer {
      * Generates pollution data points from the CSV files.
      */
     private void generatePollutionDataPoints() {
-        DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
-
+        //DataLoader loader = new DataLoader();
+        //DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
+        DataSet dataSet = DataPicker.getPollutantData(2023, "NO2");
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
         for (DataPoint dataPoint : dataSet.getData()) {
