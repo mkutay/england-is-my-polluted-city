@@ -2,17 +2,14 @@ import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
-import dataProcessing.DataPicker;
-import dataProcessing.DataPoint;
-import dataProcessing.DataSet;
-import dataProcessing.LODSet;
+import dataProcessing.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 /**
- * TODO: remove or refactor
+ * TODO: MAJOR REFACTOR REQUIRED
  * Class for pollution rendering on the map.
  * 
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
@@ -22,6 +19,9 @@ public class PollutionLayer extends MapLayer {
     private final MapView mapView;
     private final ObservableList<PollutionPolygon> polygons;
 
+    private final LODManager lodManager;
+    private int currentLODIndex = -1;
+
     /**
      * Constructor for PollutionLayer. Generates pollution data polygons from the files.
      * @param mapView The map view to render the pollution layer on.
@@ -29,48 +29,54 @@ public class PollutionLayer extends MapLayer {
     public PollutionLayer(MapView mapView) {
         this.mapView = mapView;
         this.polygons = FXCollections.observableArrayList();
-
-        generatePollutionDataPoints();
+        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 15);
+        updatePollutionDataPoints();
     }
 
     /**
      * Generates pollution data polygons from the CSV files.
+     * Called every time a LOD change is detected
      */
-    private void generatePollutionDataPoints() {
-        //dataProcessing.DataLoader loader = new dataProcessing.DataLoader();
-        //dataProcessing.DataSet dataSet = loader.loadDataFile("dataProcessing.UKAirPollutionData/NO2/mapno22023.csv");
-        DataSet dataSet = DataPicker.getPollutantData(2023, "NO2");
+    private void updatePollutionDataPoints() {
+        int LODIndex = lodManager.getLODIndex(getPixelScale(), mapView.getWidth(), mapView.getHeight());
+        if (LODIndex == currentLODIndex) {return;} //No LOD update needed, exit
+        currentLODIndex = LODIndex;
+
+        generatePolygons(lodManager.getLODData(currentLODIndex));
+        this.markDirty();
+    }
+
+    /**
+     * Regenerate polygons
+     * @param LODdata
+     */
+    private void generatePolygons(LODData LODdata) {
+        this.getChildren().clear(); //Reset polygons
+        polygons.clear();
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
-        for (DataPoint dataPoint : dataSet.getData()) {
+        for (DataPoint dataPoint : LODdata.getData()) {
             double value = dataPoint.value();
             if (value == -1) continue; // If the value is missing, skip it.
             minValue = Math.min(minValue, value);
             maxValue = Math.max(maxValue, value);
         }
 
-        System.out.println("Generating LOD data");
-        LODSet set = new LODSet(16, dataSet);
-        System.out.println("Finished generating LOD data. LOD size = " + set.getData().size() + " vs Original size " + dataSet.getData().size());
-
-        for (DataPoint dataPoint : set.getData()) {
+        for (DataPoint dataPoint : LODdata.getData()) {
             if (dataPoint.value() == -1) continue; // Skip missing values.
 
-            double v = (dataPoint.value() - minValue) / (maxValue - minValue);
+            double v = (dataPoint.value() - minValue) / (maxValue - minValue); //TODO sophisticated colour scheme
             int c = (int) ((v) * 255);
 
             Color color = Color.rgb(c, c, c);
-            PollutionPolygon polygon = new PollutionPolygon(dataPoint.x(), dataPoint.y(), color, 1000 * set.getLevelOfDetail());
+            int sideLength = 1000 * LODdata.getLevelOfDetail();
+            PollutionPolygon polygon = new PollutionPolygon(dataPoint.x(), dataPoint.y(), color, sideLength);
 
-            polygon.setFill(color);
             polygon.setOpacity(0.8);
 
             polygons.add(polygon);
             this.getChildren().add(polygon);
         }
-
-
-        this.markDirty();
     }
 
     /**
@@ -96,11 +102,16 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Method to update the layout for pollution.
-     * TODO: Make less slow when many polygons are visible
+     * TODO idea for simple spacial hashing:
+     * - find topleft corner of screen, and width of screen in easting/northing
+     * - iterate over each "tile" in visible range and search the LODData if there exists a tile there,
+     *   instead of searching all data
+     * - May require LOD data including polygon data -> but very big performance upgrade
      */
     @Override
     protected void layoutLayer() {
-        double iconSize = 1000 * getPixelScale(); //TODO set to lodLevel * 1000 * pixelScale for correct sizing
+        updatePollutionDataPoints();
+        double iconSize = 1000 * lodManager.getLODData(currentLODIndex).getLevelOfDetail() * getPixelScale();
         for (PollutionPolygon polygon : polygons) { // Iterate over all polygons - TODO spacial hashing (?)
             MapPoint point = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
             Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude()); // Convert to screen coordinates

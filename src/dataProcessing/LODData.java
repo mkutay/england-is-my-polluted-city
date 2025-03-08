@@ -6,7 +6,10 @@ import java.util.List;
 /**
  * Store Level Of Detail data, generated from a DataSet's data.
  */
-public class LODSet {
+public class LODData {
+    // The levelOfDetail reduces the amount of data stored
+    // The approximate amount of data points in an LOD is totalDataPoints/(levelOfDetail^2)
+    // Pollution grid size length becomes levelOfDetail km long
     private final int levelOfDetail;
     private final List<DataPoint> LODdata;
 
@@ -15,7 +18,7 @@ public class LODSet {
      * @param levelOfDetail the level of detail to produce. The larger this number is, the lower resolution the LOD (1 = same res as original)
      * @param dataSet the DataSet to create the LOD from
      */
-    public LODSet(int levelOfDetail, DataSet dataSet) {
+    public LODData(int levelOfDetail, DataSet dataSet) {
         this.levelOfDetail = levelOfDetail;
         this.LODdata = generateLODData(dataSet);
     }
