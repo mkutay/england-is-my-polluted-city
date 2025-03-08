@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gluonhq.maps.MapPoint;
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -14,12 +16,16 @@ import javafx.scene.shape.Polygon;
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  * @version 1.0
  */
-public class PollutionPolygon extends Polygon {
+public class PollutionPolygon{
     private final int topLeftEasting; // The easting value of the top left corner.
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
+    private Color color;
 
     private List<MapPoint> worldCoordinates; // The world coordinates of the polygon, stored in lat/lon.
+
+    private double[] xPoints;
+    private double[] yPoints;
 
     /**
      * Constructor for PollutionPolygon.
@@ -29,13 +35,21 @@ public class PollutionPolygon extends Polygon {
      * @param sideLength The side length of the square in meters.
      */
     public PollutionPolygon(int topLeftEasting, int topLeftNorthing, Color color, int sideLength) {
-        this.setFill(color);
-
         this.topLeftEasting = topLeftEasting;
         this.topLeftNorthing = topLeftNorthing;
         this.sideLength = sideLength;
+        this.color = color;
 
         generatePoints();
+    }
+
+    public void setOpacity(double opacity) {
+        opacity = Math.min(Math.abs(opacity), 1.0); //Sanitise to be in range 0-1
+        this.color = Color.rgb(
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255),
+                opacity);
     }
 
     /**
@@ -48,8 +62,17 @@ public class PollutionPolygon extends Polygon {
         worldCoordinates.add(GeographicUtilities.convertEastingNorthingToLatLon(topLeftEasting + sideLength, topLeftNorthing + sideLength));
         worldCoordinates.add(GeographicUtilities.convertEastingNorthingToLatLon(topLeftEasting, topLeftNorthing + sideLength));
 
-        for (int i = 0; i < 8; i++) { //Initialise the polygon with coordinates
-            getPoints().add(0.0);
+        xPoints = new double[4];
+        yPoints = new double[4];
+    }
+
+    public void updatePoints(PollutionLayer pollutionLayer) {
+        int pointIndex = 0;
+        for (MapPoint worldCoordinate : worldCoordinates) {
+            Point2D screenPoint = pollutionLayer.getScreenPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude()) ;
+            xPoints[pointIndex] = screenPoint.getX();
+            yPoints[pointIndex] = screenPoint.getY();
+            pointIndex ++;
         }
     }
 
@@ -60,7 +83,12 @@ public class PollutionPolygon extends Polygon {
         return worldCoordinates;
     }
 
-    public String getTopLeftEastingNorthing() {
-        return topLeftEasting + "," + topLeftNorthing;
+    /**
+     * Draw the polygon to the canvas
+     * @param gc the graphics context to draw the polygon with
+     */
+    public void draw(GraphicsContext gc) {
+        gc.setFill(color);
+        gc.fillPolygon(xPoints, yPoints, 4);
     }
 }

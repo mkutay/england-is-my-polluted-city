@@ -4,7 +4,12 @@ import com.gluonhq.maps.MapView;
 
 import dataProcessing.*;
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO: MAJOR REFACTOR REQUIRED
@@ -15,7 +20,10 @@ import javafx.scene.paint.Color;
  */
 public class PollutionLayer extends MapLayer {
     private final MapView mapView;
-    private final PollutionPolygonCollection polygons;
+    private final List<PollutionPolygon> polygons;
+
+    private final Canvas canvas;
+    private final GraphicsContext gc;
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
@@ -26,8 +34,14 @@ public class PollutionLayer extends MapLayer {
      */
     public PollutionLayer(MapView mapView) {
         this.mapView = mapView;
-        this.polygons = new PollutionPolygonCollection();
-        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 15);
+        polygons = new ArrayList<>();
+
+        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 1);
+
+        canvas = new Canvas();
+        gc = canvas.getGraphicsContext2D();
+        this.getChildren().add(canvas);
+
         updatePollutionDataPoints();
     }
 
@@ -49,7 +63,7 @@ public class PollutionLayer extends MapLayer {
      * @param LODdata the LOD data to use to generate the polygons
      */
     private void generatePolygons(LODData LODdata) {
-        this.getChildren().clear(); //Reset polygons
+        //this.getChildren().clear(); //Reset polygons
         polygons.clear();
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
@@ -73,13 +87,10 @@ public class PollutionLayer extends MapLayer {
             int topLeftEasting = dataPoint.x() - 500; //Offset by 500m in both directions
             int topLeftNorthing = dataPoint.y() - 500;
 
-
             PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength);
 
             polygon.setOpacity(0.8);
-
             polygons.add(polygon);
-            this.getChildren().add(polygon);
         }
     }
 
@@ -106,30 +117,37 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Method to update the layout for pollution.
+     * Re-draws all polygons every time the mapView is moved around
      */
     @Override
     protected void layoutLayer() {
         updatePollutionDataPoints();
         double iconSize = 1000 * lodManager.getLODData(currentLODIndex).getLevelOfDetail() * getPixelScale();
 
-        for (PollutionPolygon polygon : polygons.values()) { // Iterate over all polygons
+        canvas.setWidth(mapView.getWidth());
+        canvas.setHeight(mapView.getHeight());
+
+        gc.clearRect(0, 0, mapView.getWidth(), mapView.getHeight()); //Clear canvas
+        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons
             MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
             Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude()); // Convert to screen coordinates
 
             if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), -iconSize)) { //Cull polygons out of visible range
-                polygon.setVisible(false);
                 continue;
             }
 
-            int pointIndex = 0;
-            for (MapPoint worldCoordinate : polygon.getWorldCoordinates()) {
-                Point2D screenPoint = getMapPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude());
-                polygon.getPoints().set(pointIndex, screenPoint.getX());
-                polygon.getPoints().set(pointIndex + 1, screenPoint.getY());
-                pointIndex += 2;
-            }
-            polygon.setVisible(true);
+            polygon.updatePoints(this);
+            polygon.draw(gc);
         }
+    }
+
+    /**
+     * Wrapper for getMapPoint to use for PollutionPolygon
+     * @param latitude latitude of position
+     * @param longitude longitude
+     * @return the screen position of this longitude/latitude point
+     */
+    public Point2D getScreenPoint(double latitude, double longitude) {
+        return getMapPoint(latitude, longitude);
     }
 }

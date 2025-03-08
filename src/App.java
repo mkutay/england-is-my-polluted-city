@@ -3,8 +3,11 @@ import com.gluonhq.maps.MapView;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -19,9 +22,13 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         MapView mapView = new MapView();
+        PollutionLayer pollutionLayer = new PollutionLayer(mapView);
+
         //DistanceTracker distanceTracker = new DistanceTracker();
-        mapView.addLayer(new PollutionLayer(mapView));
+
+        mapView.addLayer(pollutionLayer);
         //mapView.addLayer(distanceTracker);
+
         mapView.setZoom(14);
 
         stage.setTitle("England is my Polluted City");
