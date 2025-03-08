@@ -2,11 +2,14 @@ import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import dataProcessing.DataPicker;
+import dataProcessing.DataPoint;
+import dataProcessing.DataSet;
+import dataProcessing.LODSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.util.Pair;
 
 /**
  * TODO: remove or refactor
@@ -17,25 +20,25 @@ import javafx.util.Pair;
  */
 public class PollutionLayer extends MapLayer {
     private final MapView mapView;
-    private final ObservableList<Pair<MapPoint, PollutionPolygon>> points;
+    private final ObservableList<PollutionPolygon> polygons;
 
     /**
-     * Constructor for PollutionLayer. Generates pollution data points from the files.
+     * Constructor for PollutionLayer. Generates pollution data polygons from the files.
      * @param mapView The map view to render the pollution layer on.
      */
     public PollutionLayer(MapView mapView) {
         this.mapView = mapView;
-        this.points = FXCollections.observableArrayList();
+        this.polygons = FXCollections.observableArrayList();
 
         generatePollutionDataPoints();
     }
 
     /**
-     * Generates pollution data points from the CSV files.
+     * Generates pollution data polygons from the CSV files.
      */
     private void generatePollutionDataPoints() {
-        //DataLoader loader = new DataLoader();
-        //DataSet dataSet = loader.loadDataFile("UKAirPollutionData/NO2/mapno22023.csv");
+        //dataProcessing.DataLoader loader = new dataProcessing.DataLoader();
+        //dataProcessing.DataSet dataSet = loader.loadDataFile("dataProcessing.UKAirPollutionData/NO2/mapno22023.csv");
         DataSet dataSet = DataPicker.getPollutantData(2023, "NO2");
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
@@ -46,23 +49,26 @@ public class PollutionLayer extends MapLayer {
             maxValue = Math.max(maxValue, value);
         }
 
+        System.out.println("Generating LOD data");
+        LODSet set = new LODSet(16, dataSet);
+        System.out.println("Finished generating LOD data. LOD size = " + set.getData().size() + " vs Original size " + dataSet.getData().size());
 
-        for (DataPoint dataPoint : dataSet.getData()) {
+        for (DataPoint dataPoint : set.getData()) {
             if (dataPoint.value() == -1) continue; // Skip missing values.
-            int easting = dataPoint.x();
-            int northing = dataPoint.y();
-            MapPoint mapPoint = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
+
             double v = (dataPoint.value() - minValue) / (maxValue - minValue);
-            int c = (int) ((1 - v) * 255);
+            int c = (int) ((v) * 255);
 
             Color color = Color.rgb(c, c, c);
-            PollutionPolygon polygon = new PollutionPolygon(easting, northing, color, 1000);
-            polygon.setFill(color);
-            polygon.setOpacity(0.5);
+            PollutionPolygon polygon = new PollutionPolygon(dataPoint.x(), dataPoint.y(), color, 1000 * set.getLevelOfDetail());
 
-            points.add(new Pair<>(mapPoint, polygon));
+            polygon.setFill(color);
+            polygon.setOpacity(0.8);
+
+            polygons.add(polygon);
             this.getChildren().add(polygon);
         }
+
 
         this.markDirty();
     }
@@ -90,28 +96,28 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Method to update the layout for pollution.
-     * TODO: Make less slow when many points are visible
+     * TODO: Make less slow when many polygons are visible
      */
     @Override
     protected void layoutLayer() {
-        double iconSize = 1000 * getPixelScale();
-        for (Pair<MapPoint, PollutionPolygon> candidate : points) {
-            MapPoint point = candidate.getKey();
-            PollutionPolygon icon = candidate.getValue();
-            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
-            if (!isPointOnScreen(mapPoint.getX(), mapPoint.getY(), -iconSize)) {
-                icon.setVisible(false);
+        double iconSize = 1000 * getPixelScale(); //TODO set to lodLevel * 1000 * pixelScale for correct sizing
+        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons - TODO spacial hashing (?)
+            MapPoint point = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
+            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude()); // Convert to screen coordinates
+            
+            if (!isPointOnScreen(mapPoint.getX(), mapPoint.getY(), -iconSize)) { //Cull polygons out of visible range
+                polygon.setVisible(false);
                 continue;
             }
-            int i = 0;
-            for (MapPoint worldCoordinate : icon.getWorldCoordinates()) {
+            
+            int pointIndex = 0;
+            for (MapPoint worldCoordinate : polygon.getWorldCoordinates()) {
                 Point2D screenPoint = getMapPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude());
-                icon.getPoints().set(i, screenPoint.getX());
-                i++;
-                icon.getPoints().set(i, screenPoint.getY());
-                i++;
+                polygon.getPoints().set(pointIndex, screenPoint.getX());
+                polygon.getPoints().set(pointIndex + 1, screenPoint.getY());
+                pointIndex += 2;
             }
-            icon.setVisible(true);
+            polygon.setVisible(true);
         }
 
     }
