@@ -3,9 +3,9 @@ import com.gluonhq.maps.MapView;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
 
 /**
  * Main App class for the "England is my Polluted City" project. This class
@@ -19,9 +19,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         MapView mapView = new MapView();
-        //DistanceTracker distanceTracker = new DistanceTracker();
+        // DistanceTracker distanceTracker = new DistanceTracker();
         mapView.addLayer(new PollutionLayer(mapView));
-        //mapView.addLayer(distanceTracker);
+        // mapView.addLayer(distanceTracker);
         mapView.setZoom(14);
 
         stage.setTitle("England is my Polluted City");
@@ -33,13 +33,13 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-//        scene.setOnMouseClicked((MouseEvent event) -> {
-//            distanceTracker.addNode(mapView.getMapPosition(event.getX(), event.getY()));
-//        });
+        // scene.setOnMouseClicked((MouseEvent event) -> {
+        //     distanceTracker.addNode(mapView.getMapPosition(event.getX(), event.getY()));
+        // });
 
         MapPoint startPosition = new MapPoint(51.508045, -0.128217); // These are the coordinates for Trafalgar Square.
-        //MapPoint startPosition = new MapPoint(60.854303762303054, -0.8863583375656637);
-        mapView.flyTo(0., startPosition, 0.01); // Instantly opens on top London.
+        // MapPoint startPosition = new MapPoint(60.854303762303054, -0.8863583375656637);
+        mapView.flyTo(0., startPosition, 0.01); // Instantly opens on top of London.
     }
 
     public static void main(String[] args) {

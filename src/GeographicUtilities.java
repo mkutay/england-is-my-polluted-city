@@ -4,7 +4,7 @@ import uk.gov.dstl.geo.osgb.EastingNorthingConversion;
 import uk.gov.dstl.geo.osgb.Constants;
 
 /**
- * Utility class for geographic calculations
+ * Utility class for geographic calculations.
  */
 public class GeographicUtilities{
     /**
@@ -31,14 +31,14 @@ public class GeographicUtilities{
      */
     public static MapPoint convertEastingNorthingToLatLon(int easting, int northing) {
         double[] latitudeLongitude = EastingNorthingConversion.toLatLon(
-                new double[] {easting, northing},
-                Constants.ELLIPSOID_AIRY1830_MAJORAXIS,
-                Constants.ELLIPSOID_AIRY1830_MINORAXIS,
-                Constants.NATIONALGRID_N0,
-                Constants.NATIONALGRID_E0,
-                Constants.NATIONALGRID_F0,
-                Constants.NATIONALGRID_LAT0,
-                Constants.NATIONALGRID_LON0);
+            new double[] {easting, northing},
+            Constants.ELLIPSOID_AIRY1830_MAJORAXIS,
+            Constants.ELLIPSOID_AIRY1830_MINORAXIS,
+            Constants.NATIONALGRID_N0,
+            Constants.NATIONALGRID_E0,
+            Constants.NATIONALGRID_F0,
+            Constants.NATIONALGRID_LAT0,
+            Constants.NATIONALGRID_LON0);
 
         return new MapPoint(latitudeLongitude[0], latitudeLongitude[1]);
     }
