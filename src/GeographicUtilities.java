@@ -1,7 +1,12 @@
 import com.gluonhq.maps.MapPoint;
-import net.sf.geographiclib.*;
+
+import net.sf.geographiclib.Geodesic;
+import net.sf.geographiclib.GeodesicData;
 import uk.gov.dstl.geo.osgb.EastingNorthingConversion;
 import uk.gov.dstl.geo.osgb.Constants;
+
+import java.util.Arrays;
+import java.util.Map;
 
 /**
  * Utility class for geographic calculations.
@@ -24,7 +29,7 @@ public class GeographicUtilities{
     }
 
     /**
-     * Converts a UK easting/northing value to latitude/longitude
+     * Converts a UK easting/northing value to latitude/longitude (WGS84)
      * @param easting easting value of point
      * @param northing northing value of point
      * @return a new MapPoint with the corresponding latitude and longitude
@@ -41,6 +46,29 @@ public class GeographicUtilities{
             Constants.NATIONALGRID_LON0);
 
         return new MapPoint(latitudeLongitude[0], latitudeLongitude[1]);
+    }
+
+    /**
+     * Converts a latitude/longitude (WGS84) position to a UK easting/northing value
+     * @param mapPoint mapPoint with longitude and latitude
+     * @return the easting and northing value as an int array
+     */
+    public static int[] convertLatLonToEastingNorthing(MapPoint mapPoint) {
+        double[] converted =  EastingNorthingConversion.fromLatLon(
+                new double[] {mapPoint.getLatitude(), mapPoint.getLongitude()},
+                Constants.ELLIPSOID_AIRY1830_MAJORAXIS,
+                Constants.ELLIPSOID_AIRY1830_MINORAXIS,
+                Constants.NATIONALGRID_N0,
+                Constants.NATIONALGRID_E0,
+                Constants.NATIONALGRID_F0,
+                Constants.NATIONALGRID_LAT0,
+                Constants.NATIONALGRID_LON0);
+
+        return new int[] {(int) Math.round(converted[0]), (int) Math.round(converted[1])};
+    }
+
+    public static int[] convertEastingNorthingToNearestGridCoordinates(int[] coords) {
+        return new int[] {(coords[0]/1000) * 1000, (coords[1]/1000) * 1000};
     }
 }
 

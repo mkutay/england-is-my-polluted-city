@@ -3,8 +3,6 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
 import dataProcessing.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
@@ -17,7 +15,7 @@ import javafx.scene.paint.Color;
  */
 public class PollutionLayer extends MapLayer {
     private final MapView mapView;
-    private final ObservableList<PollutionPolygon> polygons;
+    private final PollutionPolygonCollection polygons;
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
@@ -28,7 +26,7 @@ public class PollutionLayer extends MapLayer {
      */
     public PollutionLayer(MapView mapView) {
         this.mapView = mapView;
-        this.polygons = FXCollections.observableArrayList();
+        this.polygons = new PollutionPolygonCollection();
         lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 15);
         updatePollutionDataPoints();
     }
@@ -48,7 +46,7 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Regenerate polygons
-     * @param LODdata
+     * @param LODdata the LOD data to use to generate the polygons
      */
     private void generatePolygons(LODData LODdata) {
         this.getChildren().clear(); //Reset polygons
@@ -70,7 +68,13 @@ public class PollutionLayer extends MapLayer {
 
             Color color = Color.rgb(c, c, c);
             int sideLength = 1000 * LODdata.getLevelOfDetail();
-            PollutionPolygon polygon = new PollutionPolygon(dataPoint.x(), dataPoint.y(), color, sideLength);
+
+            //The easting and northing values given are the centroids of the grid, meaning we need to offset them
+            int topLeftEasting = dataPoint.x() - 500; //Offset by 500m in both directions
+            int topLeftNorthing = dataPoint.y() - 500;
+
+
+            PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength);
 
             polygon.setOpacity(0.8);
 
@@ -81,6 +85,7 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Gets a scale factor to scale 1 pixel into 1 meter in the real world depending on current zoom level.
+     * ie pixel size * sf = real world size
      * @return Scale factor for pixel scale.
      */
     private double getPixelScale() {
@@ -102,25 +107,21 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Method to update the layout for pollution.
-     * TODO idea for simple spacial hashing:
-     * - find topleft corner of screen, and width of screen in easting/northing
-     * - iterate over each "tile" in visible range and search the LODData if there exists a tile there,
-     *   instead of searching all data
-     * - May require LOD data including polygon data -> but very big performance upgrade
      */
     @Override
     protected void layoutLayer() {
         updatePollutionDataPoints();
         double iconSize = 1000 * lodManager.getLODData(currentLODIndex).getLevelOfDetail() * getPixelScale();
-        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons - TODO spacial hashing (?)
-            MapPoint point = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
-            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude()); // Convert to screen coordinates
-            
-            if (!isPointOnScreen(mapPoint.getX(), mapPoint.getY(), -iconSize)) { //Cull polygons out of visible range
+
+        for (PollutionPolygon polygon : polygons.values()) { // Iterate over all polygons
+            MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
+            Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude()); // Convert to screen coordinates
+
+            if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), -iconSize)) { //Cull polygons out of visible range
                 polygon.setVisible(false);
                 continue;
             }
-            
+
             int pointIndex = 0;
             for (MapPoint worldCoordinate : polygon.getWorldCoordinates()) {
                 Point2D screenPoint = getMapPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude());
@@ -130,6 +131,5 @@ public class PollutionLayer extends MapLayer {
             }
             polygon.setVisible(true);
         }
-
     }
 }

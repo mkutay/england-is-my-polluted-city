@@ -59,4 +59,8 @@ public class PollutionPolygon extends Polygon {
     public List<MapPoint> getWorldCoordinates() {
         return worldCoordinates;
     }
+
+    public String getTopLeftEastingNorthing() {
+        return topLeftEasting + "," + topLeftNorthing;
+    }
 }
