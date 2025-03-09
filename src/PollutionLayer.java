@@ -2,6 +2,8 @@ import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import colors.ColorScheme;
+import colors.DefaultColorScheme;
 import dataProcessing.*;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -12,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO: MAJOR REFACTOR REQUIRED
  * Class for pollution rendering on the map.
+ * Handles rendering pollution data as polygons on the map layer.
  * 
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
- * @version 1.0
+ * @version 2.0
  */
 public class PollutionLayer extends MapLayer {
     private final MapView mapView;
@@ -27,15 +29,21 @@ public class PollutionLayer extends MapLayer {
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
+    
+    // Color configuration
+    private ColorScheme colorScheme;
+    private double polygonOpacity = 0.7;
 
     /**
      * Constructor for PollutionLayer. Generates pollution data polygons from the files.
      * @param mapView The map view to render the pollution layer on.
+     * @param lodManager The level of detail manager.
      */
     public PollutionLayer(MapView mapView, LODManager lodManager) {
         this.mapView = mapView;
         this.lodManager = lodManager;
-        polygons = new ArrayList<>();
+        this.polygons = new ArrayList<>();
+        this.colorScheme = new DefaultColorScheme();
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
@@ -49,9 +57,9 @@ public class PollutionLayer extends MapLayer {
      * Called every time a LOD change is detected
      */
     private void updatePollutionDataPoints() {
-        int LODIndex = lodManager.getLODIndex(getPixelScale(), mapView.getWidth(), mapView.getHeight());
-        if (LODIndex == currentLODIndex) return; // No LOD update needed, exit.
-        currentLODIndex = LODIndex;
+        int lodIndex = lodManager.getLODIndex(getPixelScale(), mapView.getWidth(), mapView.getHeight());
+        if (lodIndex == currentLODIndex) return; // No LOD update needed, exit.
+        currentLODIndex = lodIndex;
 
         generatePolygons(lodManager.getLODData(currentLODIndex));
         this.markDirty();
@@ -59,27 +67,29 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Regenerate polygons.
-     * @param LODdata the LOD data to use to generate the polygons.
+     * @param lodData the LOD data to use to generate the polygons.
      */
-    private void generatePolygons(LODData LODdata) {
+    private void generatePolygons(LODData lodData) {
         polygons.clear(); // Reset polygons
+        
+        // Find min/max values for color mapping
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
-        for (DataPoint dataPoint : LODdata.getData()) {
+        for (DataPoint dataPoint : lodData.getData()) {
             double value = dataPoint.value();
             if (value == -1) continue; // If the value is missing, skip it.
             minValue = Math.min(minValue, value);
             maxValue = Math.max(maxValue, value);
         }
 
-        for (DataPoint dataPoint : LODdata.getData()) {
+        for (DataPoint dataPoint : lodData.getData()) {
             if (dataPoint.value() == -1) continue; // Skip missing values.
 
-            double v = (dataPoint.value() - minValue) / (maxValue - minValue); // TODO: Sophisticated colour scheme.
-            int c = (int) ((1 - v) * 255);
-
-            Color color = Color.rgb(c, c, c);
-            int sideLength = 1000 * LODdata.getLevelOfDetail();
+            // Map data value to a color using the color scheme
+            double normalizedValue = (dataPoint.value() - minValue) / (maxValue - minValue);
+            Color color = colorScheme.getColor(normalizedValue);
+            
+            int sideLength = 1000 * lodData.getLevelOfDetail();
 
             // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
             // We offset by 500m in both directions.
@@ -87,8 +97,7 @@ public class PollutionLayer extends MapLayer {
             int topLeftNorthing = dataPoint.y() - 500;
 
             PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength);
-
-            polygon.setOpacity(0.8);
+            polygon.setOpacity(polygonOpacity);
             polygons.add(polygon);
         }
     }
@@ -101,7 +110,7 @@ public class PollutionLayer extends MapLayer {
     private double getPixelScale() {
         MapPoint A = mapView.getMapPosition(0, 0);
         MapPoint B = mapView.getMapPosition(mapView.getWidth(), 0);
-        return  mapView.getWidth() / GeographicUtilities.geodesicDistance(A, B);
+        return mapView.getWidth() / GeographicUtilities.geodesicDistance(A, B);
     }
 
     /**
@@ -112,7 +121,8 @@ public class PollutionLayer extends MapLayer {
      * @return True if the point is on the screen, false otherwise.
      */
     private boolean isPointOnScreen(double x, double y, double padding) {
-        return x >= padding && x <= mapView.getWidth() - padding && y >= padding && y <= mapView.getHeight() - padding;
+        return x >= -padding && x <= mapView.getWidth() + padding && 
+            y >= -padding && y <= mapView.getHeight() + padding;
     }
 
     /**
@@ -127,11 +137,12 @@ public class PollutionLayer extends MapLayer {
         canvas.setHeight(mapView.getHeight());
 
         gc.clearRect(0, 0, mapView.getWidth(), mapView.getHeight()); // Clear canvas.
-        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons. TODO: Spacial partitioning.
-            MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon.
-            Point2D polygonTopLeftScreen = getScreenPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude()); // Convert to screen coordinates.
+        
+        for (PollutionPolygon polygon : polygons) {
+            MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst();
+            Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude());
 
-            if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), -iconSize)) { // Cull polygons out of visible range.
+            if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), iconSize)) {
                 continue;
             }
 
