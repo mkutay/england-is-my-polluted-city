@@ -8,20 +8,19 @@ import java.util.Properties;
  * Class to dynamically load pollution data from both pollutant and year using a Java properties file.
  *
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
- *
+ * @version 1.0
  */
 public class DataPicker {
     private static final Properties pollutantPatterns = new Properties();
 
     /**
-     * Method that takes in the year and pollutant requested and returns the corresponding dataset
-     * @param year The year requested as an integer (e.g 2023)
-     * @param pollutant The pollutant as a string(e.g "NO2", "PM2.5", "PM10") //This could be an enum instead of a string?
-     * @return The loaded DataSet object containing all pollution data for the specified pollutant and year
+     * Method that takes in the year and pollutant requested and returns the corresponding dataset.
+     * @param year The year requested as an integer (e.g 2023).
+     * @param pollutant The pollutant as a string(e.g "NO2", "PM2.5", "PM10") TODO: This could be an enum instead of a string?
+     * @return The loaded DataSet object containing all pollution data for the specified pollutant and year.
      */
-    public static DataSet getPollutantData(int year, String pollutant){
-
-        // Load csv patterns from properties file
+    public static DataSet getPollutantData(int year, String pollutant) {
+        // Load CSV patterns from properties file.
         try (FileInputStream input = new FileInputStream("src/csvpatterns.properties")) {
             pollutantPatterns.load(input);
         } catch (IOException e) {
@@ -40,7 +39,4 @@ public class DataPicker {
 
         return dataSet;
     }
-
-
-
 }

@@ -15,7 +15,6 @@ public class DistanceTracker extends MapLayer {
     private final Circle circleA;
     private final Circle circleB;
 
-
     public boolean lastSetA = false;
 
     public DistanceTracker() {

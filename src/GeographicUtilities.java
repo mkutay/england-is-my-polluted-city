@@ -5,18 +5,15 @@ import net.sf.geographiclib.GeodesicData;
 import uk.gov.dstl.geo.osgb.EastingNorthingConversion;
 import uk.gov.dstl.geo.osgb.Constants;
 
-import java.util.Arrays;
-import java.util.Map;
-
 /**
  * Utility class for geographic calculations.
  */
 public class GeographicUtilities{
     /**
-     * Distance between two latitude and longitude positions on earth using vincenty formula
-     * @param point1 MapPoint of the first world position
-     * @param point2 MapPoint of the second world position
-     * @return Returns the distance between point1 and point2 in meters
+     * Distance between two latitude and longitude positions on earth using vincenty formula.
+     * @param point1 MapPoint of the first world position.
+     * @param point2 MapPoint of the second world position.
+     * @return Returns the distance between point1 and point2 in meters.
      */
     public static double geodesicDistance(MapPoint point1, MapPoint point2) {
         double lat1 = point1.getLatitude();
@@ -29,10 +26,10 @@ public class GeographicUtilities{
     }
 
     /**
-     * Converts a UK easting/northing value to latitude/longitude (WGS84)
-     * @param easting easting value of point
-     * @param northing northing value of point
-     * @return a new MapPoint with the corresponding latitude and longitude
+     * Converts a UK easting/northing value to latitude/longitude (WGS84).
+     * @param easting Easting value of point.
+     * @param northing Northing value of point.
+     * @return A new MapPoint with the corresponding latitude and longitude.
      */
     public static MapPoint convertEastingNorthingToLatLon(int easting, int northing) {
         double[] latitudeLongitude = EastingNorthingConversion.toLatLon(
@@ -49,9 +46,9 @@ public class GeographicUtilities{
     }
 
     /**
-     * Converts a latitude/longitude (WGS84) position to a UK easting/northing value
-     * @param mapPoint mapPoint with longitude and latitude
-     * @return the easting and northing value as an int array
+     * Converts a latitude/longitude (WGS84) position to a UK easting/northing value.
+     * @param mapPoint Map point with longitude and latitude.
+     * @return The easting and northing value as an int array.
      */
     public static int[] convertLatLonToEastingNorthing(MapPoint mapPoint) {
         double[] converted =  EastingNorthingConversion.fromLatLon(
@@ -64,11 +61,16 @@ public class GeographicUtilities{
                 Constants.NATIONALGRID_LAT0,
                 Constants.NATIONALGRID_LON0);
 
-        return new int[] {(int) Math.round(converted[0]), (int) Math.round(converted[1])};
+        return new int[] { (int) Math.round(converted[0]), (int) Math.round(converted[1]) };
     }
 
+    /**
+     * Converts a UK easting/northing value to the nearest grid coordinates.
+     * @param coords Easting and northing value as an array.
+     * @return The nearest grid coordinates as an int array.
+     */
     public static int[] convertEastingNorthingToNearestGridCoordinates(int[] coords) {
-        return new int[] {(coords[0]/1000) * 1000, (coords[1]/1000) * 1000};
+        return new int[] { (coords[0] / 1000) * 1000, (coords[1] / 1000) * 1000 };
     }
 }
 

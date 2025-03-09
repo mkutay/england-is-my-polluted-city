@@ -51,7 +51,7 @@ public class PollutionLayer extends MapLayer {
      */
     private void updatePollutionDataPoints() {
         int LODIndex = lodManager.getLODIndex(getPixelScale(), mapView.getWidth(), mapView.getHeight());
-        if (LODIndex == currentLODIndex) {return;} //No LOD update needed, exit
+        if (LODIndex == currentLODIndex) return; // No LOD update needed, exit.
         currentLODIndex = LODIndex;
 
         generatePolygons(lodManager.getLODData(currentLODIndex));
@@ -59,12 +59,11 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Regenerate polygons
-     * @param LODdata the LOD data to use to generate the polygons
+     * Regenerate polygons.
+     * @param LODdata the LOD data to use to generate the polygons.
      */
     private void generatePolygons(LODData LODdata) {
-        //this.getChildren().clear(); //Reset polygons
-        polygons.clear();
+        polygons.clear(); // Reset polygons
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
         for (DataPoint dataPoint : LODdata.getData()) {
@@ -77,14 +76,15 @@ public class PollutionLayer extends MapLayer {
         for (DataPoint dataPoint : LODdata.getData()) {
             if (dataPoint.value() == -1) continue; // Skip missing values.
 
-            double v = (dataPoint.value() - minValue) / (maxValue - minValue); //TODO sophisticated colour scheme
+            double v = (dataPoint.value() - minValue) / (maxValue - minValue); // TODO: Sophisticated colour scheme.
             int c = (int) ((1 - v) * 255);
 
             Color color = Color.rgb(c, c, c);
             int sideLength = 1000 * LODdata.getLevelOfDetail();
 
-            //The easting and northing values given are the centroids of the grid, meaning we need to offset them
-            int topLeftEasting = dataPoint.x() - 500; //Offset by 500m in both directions
+            // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
+            // We offset by 500m in both directions.
+            int topLeftEasting = dataPoint.x() - 500;
             int topLeftNorthing = dataPoint.y() - 500;
 
             PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength);
@@ -117,7 +117,7 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Re-draws all polygons every time the mapView is moved around
+     * Re-draws all polygons every time the mapView is moved around.
      */
     @Override
     protected void layoutLayer() {
@@ -127,12 +127,12 @@ public class PollutionLayer extends MapLayer {
         canvas.setWidth(mapView.getWidth());
         canvas.setHeight(mapView.getHeight());
 
-        gc.clearRect(0, 0, mapView.getWidth(), mapView.getHeight()); //Clear canvas
-        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons
-            MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon
-            Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude()); // Convert to screen coordinates
+        gc.clearRect(0, 0, mapView.getWidth(), mapView.getHeight()); // Clear canvas.
+        for (PollutionPolygon polygon : polygons) { // Iterate over all polygons. TODO: Spacial partitioning.
+            MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst(); // Get top left coordinate of the polygon.
+            Point2D polygonTopLeftScreen = getScreenPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude()); // Convert to screen coordinates.
 
-            if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), -iconSize)) { //Cull polygons out of visible range
+            if (!isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), -iconSize)) { // Cull polygons out of visible range.
                 continue;
             }
 
@@ -142,10 +142,10 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Wrapper for getMapPoint to use for PollutionPolygon
-     * @param latitude latitude of position
-     * @param longitude longitude
-     * @return the screen position of this longitude/latitude point
+     * Wrapper for getMapPoint to use for PollutionPolygon.
+     * @param latitude Latitude of position.
+     * @param longitude Longitude of the position.
+     * @return The screen position of this longitude/latitude point.
      */
     public Point2D getScreenPoint(double latitude, double longitude) {
         return getMapPoint(latitude, longitude);

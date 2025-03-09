@@ -5,18 +5,21 @@ import java.util.List;
 
 /**
  * Store Level Of Detail data, generated from a DataSet's data.
+ * 
+ * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @version 1.0
  */
 public class LODData {
-    // The levelOfDetail reduces the amount of data stored
-    // The approximate amount of data points in an LOD is totalDataPoints/(levelOfDetail^2)
-    // Pollution grid size length becomes levelOfDetail km long
+    // The levelOfDetail reduces the amount of data stored.
+    // The approximate amount of data points in an LOD is totalDataPoints / (levelOfDetail ^ 2)
+    // Pollution grid size length becomes levelOfDetail km long.
     private final int levelOfDetail;
     private final List<DataPoint> LODdata;
 
     /**
-     * Create an LOD from a dataSet
-     * @param levelOfDetail the level of detail to produce. The larger this number is, the lower resolution the LOD (1 = same res as original)
-     * @param dataSet the DataSet to create the LOD from
+     * Create an LOD from a dataSet.
+     * @param levelOfDetail The level of detail to produce. The larger this number is, the lower resolution the LOD (1 = same as original).
+     * @param dataSet The DataSet to create the LOD from.
      */
     public LODData(int levelOfDetail, DataSet dataSet) {
         this.levelOfDetail = levelOfDetail;
@@ -24,9 +27,9 @@ public class LODData {
     }
 
     /**
-     * Generates the LOD data from a dataset
-     * @param dataSet the DataSet to create the LOD from
-     * @return the LOD data as a list of p
+     * Generates the LOD data from a dataset.
+     * @param dataSet The DataSet to create the LOD from.
+     * @return The LOD data as a list of data points.
      */
     private List<DataPoint> generateLODData(DataSet dataSet) {
         List<DataPoint> data = new ArrayList<>();
@@ -41,8 +44,8 @@ public class LODData {
         for (int x = minEasting; x < maxEasting; x += gridSize) {
             for (int y = minNorthing; y < maxNorthing; y += gridSize) {
                 DataPoint point = dataSet.getDataPoint(x, y);
-                if (point == null){continue;}
-                //TODO get average of values in LOD range and make new data point using this average
+                if (point == null) continue;
+                // TODO: Get average of values in LOD range and make new data point using this average.
                 data.add(point);
             }
         }
@@ -50,11 +53,7 @@ public class LODData {
         return data;
     }
 
-    public int getLevelOfDetail() {
-        return levelOfDetail;
-    }
-
-    public List<DataPoint> getData() {
-        return LODdata;
-    }
+    // Getters:
+    public int getLevelOfDetail() { return levelOfDetail; }
+    public List<DataPoint> getData() { return LODdata; }
 }

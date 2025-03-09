@@ -24,10 +24,10 @@ public class App extends Application {
         MapView mapView = new MapView();
         PollutionLayer pollutionLayer = new PollutionLayer(mapView);
 
-        //DistanceTracker distanceTracker = new DistanceTracker();
+        // DistanceTracker distanceTracker = new DistanceTracker();
 
         mapView.addLayer(pollutionLayer);
-        //mapView.addLayer(distanceTracker);
+        // mapView.addLayer(distanceTracker);
 
         mapView.setZoom(14);
 
@@ -40,9 +40,9 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-//         scene.setOnMouseClicked((MouseEvent event) -> {
-//             distanceTracker.addNode(mapView.getMapPosition(event.getX(), event.getY()));
-//         });
+        // scene.setOnMouseClicked((MouseEvent event) -> {
+        //     distanceTracker.addNode(mapView.getMapPosition(event.getX(), event.getY()));
+        // });
 
         MapPoint startPosition = new MapPoint(51.508045, -0.128217); // These are the coordinates for Trafalgar Square.
         // MapPoint startPosition = new MapPoint(60.854303762303054, -0.8863583375656637);

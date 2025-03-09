@@ -4,18 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates and manages multiple LODs, and holds the original data
- * Identifies when to switch to larger/smaller LODs
+ * Creates and manages multiple LODs, and holds the original data.
+ * Identifies when to switch to larger/smaller LODs.
+ * 
+ * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @version 1.0
  */
 public class LODManager {
     private final List<LODData> LODDataList;
-    private final static int MAX_VISIBLE_DATAPOINTS = 5000; //If visible data points exceeds this number, attempt to use smaller LOD
+    private final static int MAX_VISIBLE_DATAPOINTS = 5000; // If visible data points exceeds this number, attempt to use smaller LOD.
 
     public LODManager(DataSet dataSet, int numLODs) {
         System.out.println("Creating " + numLODs + " LODs");
         LODDataList = new ArrayList<>(numLODs);
         for (int i = 0; i < numLODs; i++) {
-            LODData LOD = new LODData(i+1, dataSet);
+            LODData LOD = new LODData(i + 1, dataSet);
             LODDataList.add(LOD);
         }
         System.out.println("Finished generating LODs");
@@ -30,14 +33,14 @@ public class LODManager {
      * @return the LOD index of the LOD for the current zoom level
      */
     public int getLODIndex(double currentPixelScale, double mapWidth, double mapHeight) {
-        double physicalMapArea = mapWidth * mapHeight / currentPixelScale / currentPixelScale;
-        double idealGridLengthKM = Math.sqrt(physicalMapArea/(MAX_VISIBLE_DATAPOINTS))/1000;
-        return Math.min((int) idealGridLengthKM , LODDataList.size()-1);
+        double physicalMapArea = (mapWidth * mapHeight) / (currentPixelScale * currentPixelScale);
+        double idealGridLengthKM = Math.sqrt(physicalMapArea / (MAX_VISIBLE_DATAPOINTS)) / 1000;
+        return Math.min((int) idealGridLengthKM, LODDataList.size() - 1);
     }
 
     /**
-     * Returns the LOD stored at the given index
-     * @param LODIndex the index of the desired LOD (use LODManager.getLODIndex())
+     * Returns the LOD stored at the given index.
+     * @param LODIndex The index of the desired LOD (use LODManager.getLODIndex()).
      */
     public LODData getLODData(int LODIndex) {
         return LODDataList.get(LODIndex);

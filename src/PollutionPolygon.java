@@ -5,7 +5,6 @@ import com.gluonhq.maps.MapPoint;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 
 /**
  * Class used for rendering a single pollution "value" on the map. These values are represented
@@ -16,7 +15,7 @@ import javafx.scene.shape.Polygon;
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  * @version 1.0
  */
-public class PollutionPolygon{
+public class PollutionPolygon {
     private final int topLeftEasting; // The easting value of the top left corner.
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
@@ -43,17 +42,22 @@ public class PollutionPolygon{
         generatePoints();
     }
 
+    /**
+     * Set the opacity of the polygon.
+     * @param opacity The opacity of the polygon.
+     */
     public void setOpacity(double opacity) {
-        opacity = Math.min(Math.abs(opacity), 1.0); //Sanitise to be in range 0-1
+        opacity = Math.min(Math.abs(opacity), 1.0); // Sanitise to be in range 0 - 1.
         this.color = Color.rgb(
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255),
-                opacity);
+            (int) (color.getRed() * 255),
+            (int) (color.getGreen() * 255),
+            (int) (color.getBlue() * 255),
+            opacity
+        );
     }
 
     /**
-     * Generates the world coordinates of the polygon, converting the easting and northings into longitude and latitude
+     * Generates the world coordinates of the polygon, converting the easting and northings into longitude and latitude.
      */
     private void generatePoints() {
         worldCoordinates = new ArrayList<>();
@@ -72,7 +76,7 @@ public class PollutionPolygon{
             Point2D screenPoint = pollutionLayer.getScreenPoint(worldCoordinate.getLatitude(), worldCoordinate.getLongitude()) ;
             xPoints[pointIndex] = screenPoint.getX();
             yPoints[pointIndex] = screenPoint.getY();
-            pointIndex ++;
+            pointIndex++;
         }
     }
 
@@ -84,8 +88,8 @@ public class PollutionPolygon{
     }
 
     /**
-     * Draw the polygon to the canvas
-     * @param gc the graphics context to draw the polygon with
+     * Draw the polygon to the canvas.
+     * @param gc The graphics context to draw the polygon onto.
      */
     public void draw(GraphicsContext gc) {
         gc.setFill(color);

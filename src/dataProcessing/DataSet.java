@@ -14,20 +14,18 @@ import java.util.*;
  * @author Michael Kölling
  * @version 1.0
  */
-public class DataSet
-{
+public class DataSet {
     private final String pollutant;
     private final String year;
     private final String metric;
     private final String units;
     
-    private final HashMap<String, DataPoint> data; // String is key of form "easting,northing" used for efficient lookup
+    private final HashMap<String, DataPoint> data; // String is key of form "easting,northing" used for efficient lookup.
 
     /**
      * Constructor for objects of class DataSet
      */
-    public DataSet(String pollutant, String year, String metric, String units)
-    {
+    public DataSet(String pollutant, String year, String metric, String units) {
         this.pollutant = pollutant;
         this.year = year;
         this.metric = metric;
@@ -39,40 +37,35 @@ public class DataSet
     /**
      * Return the pollutant information for this dataset.
      */
-    public String getPollutant()
-    {
+    public String getPollutant() {
         return pollutant;
     }
     
     /**
      * Return the year information for this dataset.
      */
-    public String getYear()
-    {
+    public String getYear() {
         return year;
     }
     
     /**
      * Return the metric information for this dataset.
      */
-    public String getMetric()
-    {
+    public String getMetric() {
         return metric;
     }
     
     /**
      * Return the units information for this dataset.
      */
-    public String getUnits()
-    {
+    public String getUnits() {
         return units;
     }
     
     /**
      * Return the data points of this dataset.
      */
-    public List<DataPoint> getData()
-    {
+    public List<DataPoint> getData() {
         return new ArrayList<>(data.values());
     }
 
@@ -93,12 +86,13 @@ public class DataSet
      *
      * @param  values  An array with the four data values (as Strings)
      */
-    public void addData(String[] values)
-    {
-        DataPoint dp = (new DataPoint(toInt(values[0]),
-                            toInt(values[1]),
-                            toInt(values[2]),
-                            toDouble(values[3])));
+    public void addData(String[] values) {
+        DataPoint dp = new DataPoint(
+            toInt(values[0]),
+            toInt(values[1]),
+            toInt(values[2]),
+            toDouble(values[3])
+        );
 
         data.put(dp.x() + "," + dp.y(), dp);
     }
@@ -108,12 +102,10 @@ public class DataSet
      * @param intString  The String holding the int value
      * @return  The int value, or -1 if the string is not a readable number
      */
-    private int toInt(String intString)
-    {
+    private int toInt(String intString) {
         try {
             return Integer.parseInt(intString);
-        }
-        catch (NumberFormatException exc) {
+        } catch (NumberFormatException exc) {
             return -1;
         }
     }
@@ -123,12 +115,10 @@ public class DataSet
      * @param doubleString  The String holding the double value
      * @return  The double value, or -1.0 if the string is not a readable number
      */
-    private double toDouble(String doubleString)
-    {
+    private double toDouble(String doubleString) {
         try {
             return Double.parseDouble(doubleString);
-        }
-        catch (NumberFormatException exc) {
+        } catch (NumberFormatException exc) {
             return -1.0;
         }
     }
@@ -140,6 +130,6 @@ public class DataSet
     public String toString()
     {
         return String.format("Dataset: Pollutant: %s, Year: %s, Metric: %s, Units: %s (%d data points)",
-                             pollutant, year, metric, units, data.size());
+            pollutant, year, metric, units, data.size());
     }
 }

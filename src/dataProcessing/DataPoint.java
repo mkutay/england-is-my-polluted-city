@@ -15,6 +15,4 @@ package dataProcessing;
  * @author Michael Kölling
  * @version 1.0
  */
-public record DataPoint(int gridCode, int x, int y, double value)
-{
-}
+public record DataPoint(int gridCode, int x, int y, double value) { }
