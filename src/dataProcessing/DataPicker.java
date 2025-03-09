@@ -16,10 +16,10 @@ public class DataPicker {
     /**
      * Method that takes in the year and pollutant requested and returns the corresponding dataset.
      * @param year The year requested as an integer (e.g 2023).
-     * @param pollutant The pollutant as a string(e.g "NO2", "PM2.5", "PM10") TODO: This could be an enum instead of a string?
+     * @param pollutant The pollutant as an enum of Pollutant.
      * @return The loaded DataSet object containing all pollution data for the specified pollutant and year.
      */
-    public static DataSet getPollutantData(int year, String pollutant) {
+    public static DataSet getPollutantData(int year, Pollutant pollutant) {
         // Load CSV patterns from properties file.
         try (FileInputStream input = new FileInputStream("src/csvpatterns.properties")) {
             pollutantPatterns.load(input);
@@ -27,7 +27,7 @@ public class DataPicker {
             throw new RuntimeException("Failed to load properties file: ", e);
         }
 
-        String pollutantPattern = pollutantPatterns.getProperty(pollutant);
+        String pollutantPattern = pollutantPatterns.getProperty(pollutant.toString());
         System.out.println(pollutant);
         System.out.println(pollutantPattern);
         if (pollutantPattern == null) {

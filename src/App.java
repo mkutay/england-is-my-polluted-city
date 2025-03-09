@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapView;
 import dataProcessing.DataPicker;
 import dataProcessing.DataSet;
 import dataProcessing.LODManager;
+import dataProcessing.Pollutant;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -22,7 +23,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-        DataSet dataSet = DataPicker.getPollutantData(2023, "NO2");
+        DataSet dataSet = DataPicker.getPollutantData(2023, Pollutant.PM10);
         lodManager = new LODManager(dataSet, 4);
 
         MapView mapView = new MapView();
