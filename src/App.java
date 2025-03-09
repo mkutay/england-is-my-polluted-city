@@ -1,11 +1,13 @@
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
-import api.Api;
 import dataProcessing.DataPicker;
 import dataProcessing.DataSet;
 import dataProcessing.LODManager;
 import dataProcessing.Pollutant;
+import infoPopup.InfoPopup;
+import infoPopup.MapClickHandler;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -21,14 +23,25 @@ import javafx.stage.Stage;
  */
 public class App extends Application {
     private LODManager lodManager; // The LOD manager for the pollution data.
+    private InfoPopup infoPopup;
+    private Stage primaryStage; // Store reference to the primary stage
 
     @Override
     public void start(Stage stage) {
+        this.primaryStage = stage; // Store the stage reference
+        
         DataSet dataSet = DataPicker.getPollutantData(2023, Pollutant.PM10);
         lodManager = new LODManager(dataSet, 4);
 
+        // Create the info popup
+        infoPopup = new InfoPopup();
+        
+        // Create map click handler and set it as the click listener
+        MapClickHandler clickHandler = new MapClickHandler(infoPopup, primaryStage);
+
         MapView mapView = new MapView();
-        PollutionLayer pollutionLayer = new PollutionLayer(mapView, lodManager);
+        PollutionLayer pollutionLayer = new PollutionLayer(mapView, lodManager, clickHandler);
+    
 
         mapView.addLayer(pollutionLayer);
         mapView.setZoom(14);
@@ -47,11 +60,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        try {
-            System.out.println(Api.fetchPostcodesByLatitudeLongitude(51.508045, -0.128217).getResult().get(0).getParliamentary_constituency());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         launch(args);
     }
 }

@@ -5,11 +5,14 @@ import com.gluonhq.maps.MapView;
 import colors.ColorScheme;
 import colors.DefaultColorScheme;
 import dataProcessing.*;
+import infoPopup.MapClickHandler;
+
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,23 +36,66 @@ public class PollutionLayer extends MapLayer {
     // Color configuration
     private ColorScheme colorScheme;
     private double polygonOpacity = 0.7;
+    
+    // Callback interface for click events
+    private final MapClickHandler clickHandler;
 
     /**
      * Constructor for PollutionLayer. Generates pollution data polygons from the files.
      * @param mapView The map view to render the pollution layer on.
      * @param lodManager The level of detail manager.
      */
-    public PollutionLayer(MapView mapView, LODManager lodManager) {
+    public PollutionLayer(MapView mapView, LODManager lodManager, MapClickHandler clickHandler) {
         this.mapView = mapView;
         this.lodManager = lodManager;
         this.polygons = new ArrayList<>();
+        this.clickHandler = clickHandler;
         this.colorScheme = new DefaultColorScheme();
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
         this.getChildren().add(canvas);
 
+        // Add click event handler to the canvas
+        canvas.setOnMouseClicked(this::handleMouseClick);
+
         updatePollutionDataPoints();
+    }
+    
+    /**
+     * Handles mouse click events on the canvas.
+     * @param event The mouse event.
+     */
+    private void handleMouseClick(MouseEvent event) {
+        if (event.getButton() != MouseButton.SECONDARY) return; // Only handle right clicks.
+
+        double x = event.getX();
+        double y = event.getY();
+        
+        // Convert screen coordinates to map coordinates:
+        MapPoint mapPoint = mapView.getMapPosition(x, y);
+        
+        // Find the clicked polygon if any:
+        PollutionPolygon clickedPolygon = findPolygonAt(x, y);
+        Double pollutionValue = clickedPolygon == null ? null : clickedPolygon.getValue();
+        
+        // Notify the listener:
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), x, y, pollutionValue);
+    }
+    
+    /**
+     * Finds a polygon at the given screen coordinates.
+     * @param x The x coordinate in screen space.
+     * @param y The y coordinate in screen space.
+     * @return A pollution polygon if found, null otherwise.
+     */
+    public PollutionPolygon findPolygonAt(double x, double y) {
+        for (PollutionPolygon polygon : polygons) {
+            if (polygon.containsScreenPoint(x, y)) {
+                return polygon;
+            }
+        }
+        return null;
     }
 
     /**
@@ -96,7 +142,7 @@ public class PollutionLayer extends MapLayer {
             int topLeftEasting = dataPoint.x() - 500;
             int topLeftNorthing = dataPoint.y() - 500;
 
-            PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength);
+            PollutionPolygon polygon = new PollutionPolygon(topLeftEasting, topLeftNorthing, color, sideLength, dataPoint.value());
             polygon.setOpacity(polygonOpacity);
             polygons.add(polygon);
         }
