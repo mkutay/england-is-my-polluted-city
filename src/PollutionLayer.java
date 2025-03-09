@@ -32,11 +32,10 @@ public class PollutionLayer extends MapLayer {
      * Constructor for PollutionLayer. Generates pollution data polygons from the files.
      * @param mapView The map view to render the pollution layer on.
      */
-    public PollutionLayer(MapView mapView) {
+    public PollutionLayer(MapView mapView, LODManager lodManager) {
         this.mapView = mapView;
+        this.lodManager = lodManager;
         polygons = new ArrayList<>();
-
-        lodManager = new LODManager(DataPicker.getPollutantData(2023, "NO2"), 4);
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();

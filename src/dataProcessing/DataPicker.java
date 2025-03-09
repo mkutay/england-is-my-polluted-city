@@ -24,7 +24,7 @@ public class DataPicker {
         try (FileInputStream input = new FileInputStream("src/csvpatterns.properties")) {
             pollutantPatterns.load(input);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load properties file", e);
+            throw new RuntimeException("Failed to load properties file: ", e);
         }
 
         String pollutantPattern = pollutantPatterns.getProperty(pollutant);
@@ -35,7 +35,7 @@ public class DataPicker {
         }
         String pollutantCSVFilename = String.format(pollutantPattern, year);
         DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/"+pollutant+"/"+pollutantCSVFilename);
+        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/" + pollutant + "/" + pollutantCSVFilename);
 
         return dataSet;
     }

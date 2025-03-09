@@ -1,13 +1,12 @@
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import dataProcessing.DataPicker;
+import dataProcessing.DataSet;
+import dataProcessing.LODManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -19,11 +18,15 @@ import javafx.stage.Stage;
  * @version 1.0
  */
 public class App extends Application {
+    private LODManager lodManager; // The LOD manager for the pollution data.
+
     @Override
     public void start(Stage stage) {
-        MapView mapView = new MapView();
-        PollutionLayer pollutionLayer = new PollutionLayer(mapView);
+        DataSet dataSet = DataPicker.getPollutantData(2023, "NO2");
+        lodManager = new LODManager(dataSet, 4);
 
+        MapView mapView = new MapView();
+        PollutionLayer pollutionLayer = new PollutionLayer(mapView, lodManager);
 
         mapView.addLayer(pollutionLayer);
         mapView.setZoom(14);
@@ -42,6 +45,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(args);
+        launch(args);
     }
 }
