@@ -12,6 +12,7 @@ import java.util.Properties;
  */
 public class DataPicker {
     private static final Properties pollutantPatterns = new Properties();
+    private static final String DATA_FOLDER = "UKAirPollutionData/";
 
     /**
      * Method that takes in the year and pollutant requested and returns the corresponding dataset.
@@ -28,14 +29,15 @@ public class DataPicker {
         }
 
         String pollutantPattern = pollutantPatterns.getProperty(pollutant.toString());
-        System.out.println(pollutant);
-        System.out.println(pollutantPattern);
         if (pollutantPattern == null) {
-            throw new IllegalArgumentException("Pollutant Pattern Does Not Exist: " + pollutant);
+            throw new IllegalArgumentException("Pollutant pattern does not exist for pollutant: " + pollutant);
         }
+        System.out.println("Pollutant that is being loaded: " + pollutant);
+        System.out.println("Pollutant pattern: " + pollutantPattern);
+
         String pollutantCSVFilename = String.format(pollutantPattern, year);
         DataLoader loader = new DataLoader();
-        DataSet dataSet = loader.loadDataFile("UKAirPollutionData/" + pollutant + "/" + pollutantCSVFilename);
+        DataSet dataSet = loader.loadDataFile(DATA_FOLDER + pollutant + "/" + pollutantCSVFilename);
 
         return dataSet;
     }
