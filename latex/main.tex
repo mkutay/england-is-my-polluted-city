@@ -32,12 +32,12 @@
             \vspace{0.5cm}
 
             \Large
-            \textbf{Fourth "London Air Pollution" Coursework (Mar 2025)}
+            \textbf{Fourth "Air Pollution" Coursework (Mar 2025)}
 
             \vspace{2cm}
 
             \Large
-            Project Name: The London
+            Project Name: Englang is My Polluted City
 
             \vspace{1cm}
 
@@ -53,7 +53,7 @@
                 Student ID: & 23078800 \\
                 \vspace{0.5cm} & \\
                 Student Name: & Chelsea Feliciano \\
-                Student ID: & xxxxxxxx
+                Student ID: & 22042916
             \end{tabular}
         \end{center}
         % \tableofcontents
@@ -72,11 +72,37 @@
 
         \subsection{Base Tasks}
 
-        \noindent \textbf{Something task:}
-        Something something
+        \noindent \textbf{Welcome Panel:}
+
+        \noindent \textbf{Data Visualisation Panel (Map View):} We have implemented a colour scheme for the entire map, where the colour
+        of a grid area is determined by the pollution
+        level of that area. The colour scheme is implemented as an interface \verb|ColourScheme| with a single method \verb|getColour()|.
+        This allows us to have different colour schemes for the map, and a way to switch between them quite easily — improving 
+        maintainability and responsibility-driven design.
+
+        \noindent \textbf{Pollution Statistics Panel:}
+
+        \noindent \textbf{Detailed Grid Data:}
+
+        \subsection{Unit Testing}
+
+        \noindent Unit testing was implemented for various classes and various methods within those classes. The unit tests are
+        implemented with JUnit. The tests were implemented to test the functionality of the methods in the classes, and to ensure
+        that the methods are working as expected. These tests were vital in adding functionality to the codebase, as they allowed
+        us to ensure that the new functionality did not break any existing functionality.
 
         \subsection{Challenge Tasks}
 
+        \noindent \textbf{More Extensive Graph Based Trends:}
+
+        \noindent \textbf{Interactive Map:}
+
+        \noindent \textbf{Adding the Entire UK in the Map:}
+
+        \noindent \textbf{Various Optimisations:} Various optimisations were made to the codebase to vastly improve performance.
+        LOD (Level of Detail) was implemented to decrease the number of grid areas rendered on the map, and the number of data points
+        rendered in the graph as the user zooms out. Additionally, culling was implemented to only render grid areas that are visible
+        on the screen.
        
         \section{Code Quality Considerations}
 
@@ -88,7 +114,6 @@
         
         \section{Final Remarks}
         
-
     \end{multicols}
 
 \end{document}
