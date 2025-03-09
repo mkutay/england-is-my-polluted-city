@@ -78,7 +78,7 @@ public class PollutionLayer extends MapLayer {
             if (dataPoint.value() == -1) continue; // Skip missing values.
 
             double v = (dataPoint.value() - minValue) / (maxValue - minValue); //TODO sophisticated colour scheme
-            int c = (int) ((v) * 255);
+            int c = (int) ((1 - v) * 255);
 
             Color color = Color.rgb(c, c, c);
             int sideLength = 1000 * LODdata.getLevelOfDetail();
