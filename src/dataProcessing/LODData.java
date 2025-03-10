@@ -45,12 +45,34 @@ public class LODData {
             for (int y = minNorthing; y < maxNorthing; y += gridSize) {
                 DataPoint point = dataSet.getDataPoint(x, y);
                 if (point == null) continue;
-                // TODO: Get average of values in LOD range and make new data point using this average.
-                data.add(point);
+                double value = getAverageValue(dataSet, gridSize, x, y);
+                DataPoint updatedPoint = new DataPoint(point.gridCode(), point.x(), point.y(), value);
+                data.add(updatedPoint);
             }
         }
 
         return data;
+    }
+
+    /**
+     * Averages all data points pollution values in a certain grid size from a certain easting and northing
+     * @param dataSet the DataSet of all points
+     * @param gridSize the size of the grid
+     * @param easting the easting of the larger grid
+     * @param northing the northing of the larger grid
+     * @return the average of all pollution values
+     */
+    private double getAverageValue(DataSet dataSet, int gridSize, int easting, int northing) {
+        double value = 0; int i = 0;
+        for (int x = easting; x < easting + gridSize; x+=1000) {
+            for (int y = northing; y < northing + gridSize; y+=1000) {
+                DataPoint dataPoint = dataSet.getDataPoint(x, y);
+                if (dataPoint == null) continue;
+                value += dataPoint.value();
+                i++;
+            }
+        }
+        return value/i;
     }
 
     // Getters:
