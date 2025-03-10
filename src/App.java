@@ -104,14 +104,17 @@ public class App extends Application {
         //Listener to change the pollutant on the map
         pollutantDropdown.setOnAction(e -> {
             System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
-            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+
 //            //Refresh the year drop down for the current pollutant by removing all the current items and adding them back in
 //            //TODO: could we make this more elegant and prevent the reuse of code from the main initialisation?
-//            // THIS CODE HAS BEEN COMMENTED OUT
+//            int currentYearSelected = yearDropdown.getValue();
 //            yearDropdown.getItems().removeAll(yearDropdown.getItems());
 //            for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
-//                yearDropdown.getItems().addAll(c); //TODO: remove hardcoding
+//                yearDropdown.getItems().addAll(c);
 //            }
+//            yearDropdown.getSelectionModel().select(0); //Set the first year from the list
+            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+
         });
 
 
