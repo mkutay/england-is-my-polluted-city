@@ -1,10 +1,9 @@
 import com.gluonhq.maps.MapPoint;
-import com.gluonhq.maps.MapView;
 
 import dataProcessing.DataPicker;
 import dataProcessing.DataSet;
-import dataProcessing.LODManager;
 import dataProcessing.Pollutant;
+
 import infoPopup.InfoPopup;
 import infoPopup.MapClickHandler;
 
@@ -12,17 +11,18 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import pollutionLayer.PollutionLayer;
+import utility.CustomMapView;
 
 /**
- * Main App class for the "England is my Polluted City" project. This class
- * creates a JavaFX application that can display a map of UK with pollution
+ * Main App class
+ * This class creates a JavaFX application that can display a map of UK with pollution
  * data. It centres the map on London.
  * 
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  * @version 1.0
  */
 public class App extends Application {
-    private LODManager lodManager; // The LOD manager for the pollution data.
     private InfoPopup infoPopup;
     private Stage primaryStage; // Store reference to the primary stage
 
@@ -31,7 +31,6 @@ public class App extends Application {
         this.primaryStage = stage; // Store the stage reference
         
         DataSet dataSet = DataPicker.getPollutantData(2023, Pollutant.PM10);
-        lodManager = new LODManager(dataSet, 4);
 
         // Create the info popup
         infoPopup = new InfoPopup();
@@ -39,8 +38,8 @@ public class App extends Application {
         // Create map click handler and set it as the click listener
         MapClickHandler clickHandler = new MapClickHandler(infoPopup, primaryStage);
 
-        MapView mapView = new MapView();
-        PollutionLayer pollutionLayer = new PollutionLayer(mapView, lodManager, clickHandler);
+        CustomMapView mapView = new CustomMapView();
+        PollutionLayer pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
     
 
         mapView.addLayer(pollutionLayer);

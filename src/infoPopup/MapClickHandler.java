@@ -2,7 +2,7 @@ package infoPopup;
 
 import java.util.List;
 
-import api.Api;
+import api.PostcodeAPI;
 import api.PostcodeResult;
 import javafx.stage.Stage;
 
@@ -20,7 +20,7 @@ public class MapClickHandler {
     private final Stage primaryStage;
     
     /**
-     * Constructor -- Creates a new map click handler.
+     * Creates a new map click handler.
      * @param infoPopup The popup to show information in.
      * @param primaryStage The primary stage of the application.
      */
@@ -46,12 +46,12 @@ public class MapClickHandler {
      */
     private String getAddressFromCoordinates(double latitude, double longitude) {
         try {
-            List<PostcodeResult> result = Api.fetchPostcodesByLatitudeLongitude(latitude, longitude).getResult();
+            List<PostcodeResult> result = PostcodeAPI.fetchPostcodesByLatitudeLongitude(latitude, longitude).getResult();
             if (result == null || result.isEmpty()) {
                 System.out.println("No address found for: lat=" + latitude + ", lon=" + longitude);
                 return null;
             }
-            return result.get(0).getParliamentary_constituency();
+            return result.getFirst().getParliamentary_constituency();
         } catch (Exception e) {
             System.out.println("Failed to get address: " + e.getMessage());
             return null;

@@ -1,11 +1,16 @@
+package pollutionLayer;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import colors.ColorScheme;
 import com.gluonhq.maps.MapPoint;
+import dataProcessing.DataPoint;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import utility.GeographicUtilities;
 
 /**
  * Class used for rendering a single pollution "value" on the map. These values are represented
@@ -20,48 +25,44 @@ public class PollutionPolygon {
     private final int topLeftEasting; // The easting value of the top left corner.
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
-    private Color color;
+
     private final double value; // Store the pollution value
+    private final double normalisedValue; // Store the normalized value for colour
 
     private final List<MapPoint> worldCoordinates; // The world coordinates of the polygon, stored in lat/lon.
 
-    private double[] xPoints;
-    private double[] yPoints;
+    private final double[] xPoints;
+    private final double[] yPoints;
 
     /**
      * Constructor for PollutionPolygon.
-     * @param topLeftEasting The easting value of the top left corner.
+     * @param topLeftEasting  The easting value of the top left corner.
      * @param topLeftNorthing The northing value of the top left corner.
-     * @param color The color of the polygon.
-     * @param sideLength The side length of the square in meters.
-     * @param value The pollution value this polygon represents.
+     * @param sideLength      The side length of the square in meters.
+     * @param value           The pollution value this polygon represents.
+     * @param normalisedValue The normalized pollution value of this polygon relative to all other datapoints
      */
-    public PollutionPolygon(int topLeftEasting, int topLeftNorthing, Color color, int sideLength, double value) {
+    public PollutionPolygon(int topLeftEasting, int topLeftNorthing, int sideLength, double value, double normalisedValue) {
         this.topLeftEasting = topLeftEasting;
         this.topLeftNorthing = topLeftNorthing;
         this.sideLength = sideLength;
-        this.color = color;
+        this.normalisedValue = normalisedValue;
         this.value = value;
         
         this.worldCoordinates = new ArrayList<>(4); // Pre-size for efficiency
         this.xPoints = new double[4];
         this.yPoints = new double[4];
 
-        generatePoints();
+        generateWorldCoordinates();
     }
 
-    /**
-     * Set the opacity of the polygon.
-     * @param opacity The opacity of the polygon, clamped to range [0.0, 1.0].
-     */
-    public void setOpacity(double opacity) {
-        opacity = Math.min(Math.max(0.0, opacity), 1.0); // Sanitise to be in range 0 - 1.
-        this.color = Color.rgb(
-            (int) (color.getRed() * 255),
-            (int) (color.getGreen() * 255),
-            (int) (color.getBlue() * 255),
-            opacity
-        );
+    public static PollutionPolygon createFromDataPoint(DataPoint dataPoint, int sideLength, double normalizedValue) {
+        // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
+        // We offset by 500m in both directions.
+        int topLeftEasting = dataPoint.x() - 500;
+        int topLeftNorthing = dataPoint.y() - 500;
+
+        return new PollutionPolygon(topLeftEasting, topLeftNorthing, sideLength, dataPoint.value(), normalizedValue);
     }
 
     /**
@@ -74,7 +75,7 @@ public class PollutionPolygon {
     /**
      * Generates the world coordinates of the polygon, converting the easting and northings into longitude and latitude.
      */
-    private void generatePoints() {
+    private void generateWorldCoordinates() {
         worldCoordinates.add(GeographicUtilities.convertEastingNorthingToLatLon(topLeftEasting, topLeftNorthing));
         worldCoordinates.add(GeographicUtilities.convertEastingNorthingToLatLon(topLeftEasting + sideLength, topLeftNorthing));
         worldCoordinates.add(GeographicUtilities.convertEastingNorthingToLatLon(topLeftEasting + sideLength, topLeftNorthing + sideLength));
@@ -104,10 +105,30 @@ public class PollutionPolygon {
     }
 
     /**
+     * Generate the colour of the polygon
+     * @param colorScheme The ColourScheme to use to generate the colour
+     * @param opacity The opacity of the colour
+     * @return the colour of this polygon based on the ColourScheme and opacity
+     */
+    public Color getColor(ColorScheme colorScheme, double opacity) {
+        opacity = Math.min(Math.max(0.0, opacity), 1.0); // Sanitise to be in range 0 - 1.
+        Color color = colorScheme.getColor(normalisedValue);
+        return Color.rgb( //apply opacity
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255),
+                opacity
+        );
+    }
+
+    /**
      * Draw the polygon to the canvas.
      * @param gc The graphics context to draw the polygon onto.
+     * @param colorScheme The ColourScheme to generate the colour for
+     * @param opacity The opacity of the polygon
      */
-    public void draw(GraphicsContext gc) {
+    public void draw(GraphicsContext gc, ColorScheme colorScheme, double opacity) {
+        Color color = getColor(colorScheme, opacity);
         gc.setFill(color);
         gc.fillPolygon(xPoints, yPoints, 4);
     }

@@ -8,7 +8,14 @@ import java.io.IOException;
 
 import com.google.gson.Gson;
 
-public class Api {
+/**
+ * Postcode API manager class
+ * Used to fetch postcode data from world coordinates
+ *
+ * @author Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano
+ * @version 1.0
+ */
+public class PostcodeAPI {
     private static final String POSTCODES_API_BASE_URL = "https://api.postcodes.io/";
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();

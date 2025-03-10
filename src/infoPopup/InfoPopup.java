@@ -48,6 +48,7 @@ public class InfoPopup extends Popup {
         content.setEffect(dropShadow);
         
         this.getContent().add(content);
+
         this.setAutoHide(true);
     }
     
