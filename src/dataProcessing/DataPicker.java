@@ -6,6 +6,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class DataPicker {
     private static final String USER_DIR = System.getProperty("user.dir");
 
     // Cache for available years for each pollutant:
-    private final HashMap<Pollutant, List<Integer>> availableYearsCache;
+    private final Map<Pollutant, List<Integer>> availableYearsCache;
 
     /**
      * Constructor to load the properties file.
