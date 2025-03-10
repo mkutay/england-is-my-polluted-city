@@ -1,7 +1,10 @@
-package dataProcessing;
+package lod;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dataProcessing.DataPoint;
+import dataProcessing.DataSet;
 
 /**
  * Store Level Of Detail data, generated from a DataSet's data.
@@ -11,7 +14,7 @@ import java.util.List;
  */
 public class LODData {
     // The levelOfDetail reduces the amount of data stored.
-    // The approximate amount of data points in an LOD is totalDataPoints / (levelOfDetail ^ 2)
+    // The approximate amount of data points in an LOD is totalDataPoints / (levelOfDetail ^ 2).
     // Pollution grid size length becomes levelOfDetail km long.
     private final int levelOfDetail;
     private final List<DataPoint> LODdata;
