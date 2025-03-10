@@ -7,6 +7,7 @@ import dataProcessing.LODManager;
 import dataProcessing.Pollutant;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -34,8 +35,16 @@ public class App extends Application {
 
         stage.setTitle("England is my Polluted City");
 
-        StackPane root = new StackPane();
-        root.getChildren().add(mapView);
+
+        StackPane mapRoot = new StackPane();
+        mapRoot.getChildren().add(mapView);
+
+        //Nest the Map StackPane inside the BorderPane
+        BorderPane root = new BorderPane();
+        //root.setLeft(sidePanel);
+        root.setCenter(mapView);
+
+
         Scene scene = new Scene(root, 900, 900);
 
         stage.setScene(scene);
