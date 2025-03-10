@@ -12,7 +12,7 @@ import com.google.gson.Gson;
  * Postcode API manager class
  * Used to fetch postcode data from world coordinates
  *
- * @author Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
 public class PostcodeAPI {

@@ -7,7 +7,7 @@ import java.util.Properties;
 /**
  * Class to dynamically load pollution data from both pollutant and year using a Java properties file.
  *
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Matthias Loong
  * @version 1.0
  */
 public class DataPicker {

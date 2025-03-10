@@ -7,7 +7,7 @@ import java.util.List;
  * Creates and manages multiple LODs, and holds the original data.
  * Identifies when to switch to larger/smaller LODs.
  * 
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Anas Ahmed
  * @version 1.0
  */
 public class LODManager {

@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * Handles the map click events and shows information popups.
  * 
- * @author Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.1
  */
 public class MapClickHandler {

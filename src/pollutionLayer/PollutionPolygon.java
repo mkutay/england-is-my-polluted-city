@@ -18,7 +18,7 @@ import utility.GeographicUtilities;
  * This polygon is, in reality, a close approximation of a square. The polygon has an area of 1 km^2.
  * We use these approximate squares to account for curvature of the earth, making a seamless grid mapped onto the earth
  *
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Anas Ahmed
  * @version 1.1
  */
 public class PollutionPolygon {
@@ -137,6 +137,8 @@ public class PollutionPolygon {
      * Checks if the given point is inside this polygon.
      * This method is taken from this StackOverflow answer:
      * https://stackoverflow.com/a/2922778/28383027 on 2025-03-09.
+     *
+     * Code by Mehmet Kutay Bozkurt
      * @param x The x coordinate in screen space.
      * @param y The y coordinate in screen space.
      * @return True if the point is inside the polygon, false otherwise.

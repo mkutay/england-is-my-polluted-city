@@ -18,8 +18,8 @@ import utility.CustomMapView;
 /**
  * Class for pollution rendering on the map.
  * Handles rendering pollution data as polygons on the map layer.
- * 
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ *
+ * @author Anas Ahmed
  * @version 2.0
  */
 public class PollutionLayer extends MapLayer {

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Store Level Of Detail data, generated from a DataSet's data.
  * 
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Anas Ahmed
  * @version 1.0
  */
 public class LODData {

@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
  * Default color scheme implementation for pollution visualization.
  * Uses a gradient from green (low) to yellow (medium) to red (high).
  * 
- * @author Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
 public class DefaultColorScheme implements ColorScheme {

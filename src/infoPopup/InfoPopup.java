@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 /**
  * A popup that displays information about a location on the map.
  * 
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.1
  */
 public class InfoPopup extends Popup {

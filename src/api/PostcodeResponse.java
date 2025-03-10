@@ -5,7 +5,7 @@ import java.util.List;
  * Represents a response from the postcodes.io API. This is used to display information
  * about a location.
  * 
- * @author Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
 public class PostcodeResponse {

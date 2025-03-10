@@ -3,6 +3,9 @@ package utility;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+/**
+ * @author Anas Ahmed
+ */
 public class CustomMapView extends MapView {
 
     /**

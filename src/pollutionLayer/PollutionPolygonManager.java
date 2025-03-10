@@ -12,6 +12,8 @@ import java.util.List;
 /**
  * Organises generating, updating and querying pollution polygons
  * Handles Level Of Detail updates
+ *
+ * @author Anas Ahmed
  */
 public class PollutionPolygonManager {
     private final List<PollutionPolygon> polygons;
