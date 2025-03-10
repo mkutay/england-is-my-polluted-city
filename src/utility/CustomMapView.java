@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
 /**
+ * Custom map view class to draw pollution data on the map.
  * Holds the utilities by extending the MapView class to use the map view functionality.
  * 
  * @author Anas Ahmed.
