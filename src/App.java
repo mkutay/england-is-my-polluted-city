@@ -157,11 +157,6 @@ public class App extends Application {
         mapView.addLayer(pollutionLayer);
         mapView.dirtyRefresh();
 
-
-        /*
-        There is currently a bug where you either need to resize the window or move the map around to redraw the PollutionLayer
-        TODO: Find a way to redraw the map without moving it around
-         */
     }
 
     public static void main(String[] args) {
