@@ -11,6 +11,7 @@ import uk.gov.dstl.geo.osgb.Constants;
  * Utility class for geographic calculations.
  *
  * @author Anas Ahmed
+ * @version 1.0
  */
 public class GeographicUtilities{
     /**
