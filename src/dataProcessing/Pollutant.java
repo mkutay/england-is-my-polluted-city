@@ -3,7 +3,7 @@ package dataProcessing;
 /**
  * Enum for the different pollutants that can be displayed on the map.
  * 
- * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
 public enum Pollutant {

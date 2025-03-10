@@ -1,3 +1,5 @@
+package utility;
+
 import com.gluonhq.maps.MapPoint;
 
 import net.sf.geographiclib.Geodesic;
@@ -7,6 +9,9 @@ import uk.gov.dstl.geo.osgb.Constants;
 
 /**
  * Utility class for geographic calculations.
+ *
+ * @author Anas Ahmed
+ * @version 1.0
  */
 public class GeographicUtilities{
     /**
@@ -62,15 +67,6 @@ public class GeographicUtilities{
                 Constants.NATIONALGRID_LON0);
 
         return new int[] { (int) Math.round(converted[0]), (int) Math.round(converted[1]) };
-    }
-
-    /**
-     * Converts a UK easting/northing value to the nearest grid coordinates.
-     * @param coords Easting and northing value as an array.
-     * @return The nearest grid coordinates as an int array.
-     */
-    public static int[] convertEastingNorthingToNearestGridCoordinates(int[] coords) {
-        return new int[] { (coords[0] / 1000) * 1000, (coords[1] / 1000) * 1000 };
     }
 }
 

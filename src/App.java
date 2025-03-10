@@ -1,37 +1,50 @@
 import com.gluonhq.maps.MapPoint;
-import com.gluonhq.maps.MapView;
 
-import dataProcessing.DataPicker;
+import dataProcessing.DataManager;
 import dataProcessing.DataSet;
-import dataProcessing.LODManager;
 import dataProcessing.Pollutant;
+
+import infoPopup.InfoPopup;
+import infoPopup.MapClickHandler;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import pollutionLayer.PollutionLayer;
+import utility.CustomMapView;
 
 /**
- * Main App class for the "England is my Polluted City" project. This class
- * creates a JavaFX application that can display a map of UK with pollution
+ * Main App class
+ * This class creates a JavaFX application that can display a map of UK with pollution
  * data. It centres the map on London.
  * 
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  * @version 1.0
  */
 public class App extends Application {
-    private LODManager lodManager; // The LOD manager for the pollution data.
+    private InfoPopup infoPopup;
+    private Stage primaryStage; // Store reference to the primary stage
 
     @Override
     public void start(Stage stage) {
-        DataSet dataSet = DataPicker.getPollutantData(2023, Pollutant.PM10);
-        lodManager = new LODManager(dataSet, 4);
+        this.primaryStage = stage; // Store the stage reference
+        
+        DataManager dataManager = DataManager.getInstance();
+        DataSet dataSet = dataManager.getPollutantData(2023, Pollutant.PM10);
 
-        MapView mapView = new MapView();
-        PollutionLayer pollutionLayer = new PollutionLayer(mapView, lodManager);
+        // Create the info popup
+        infoPopup = new InfoPopup();
+        
+        // Create map click handler and set it as the click listener
+        MapClickHandler clickHandler = new MapClickHandler(infoPopup, primaryStage);
 
+        CustomMapView mapView = new CustomMapView();
+        PollutionLayer pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
+    
         mapView.addLayer(pollutionLayer);
-        mapView.setZoom(14);
+        mapView.setZoom(10);
 
         stage.setTitle("England is my Polluted City");
 
