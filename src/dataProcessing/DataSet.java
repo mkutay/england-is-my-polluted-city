@@ -2,6 +2,8 @@ package dataProcessing;
 
 import java.util.*;
 
+import javafx.util.Pair;
+
 /**
  * A DataSet object holds all the data from a pollution data file.
  * 
@@ -11,8 +13,8 @@ import java.util.*;
  * The data consists of a few bits of information about the nature of the data, and a list
  * of data points.
  * 
- * @author Michael Kölling
- * @version 1.0
+ * @author Michael Kölling and Mehmet Kutay Bozkurt
+ * @version 2.0
  */
 public class DataSet {
     private final String pollutant;
@@ -20,7 +22,8 @@ public class DataSet {
     private final String metric;
     private final String units;
     
-    private final HashMap<String, DataPoint> data; // String is key of form "easting,northing" used for efficient lookup.
+    // Key is a pair of easting and northing respectively.
+    private final HashMap<Pair<Integer, Integer>, DataPoint> data;
 
     /**
      * Constructor for objects of class DataSet
@@ -69,8 +72,14 @@ public class DataSet {
         return new ArrayList<>(data.values());
     }
 
-    public DataPoint getDataPoint(int easting, int northing) { //may be a bottleneck for LOD generation performance
-        return data.get(easting + "," + northing);
+    /**
+     * Return a specific data point from this dataset.
+     * @param easting The easting value of the data point.
+     * @param northing The northing value of the data point.
+     * @return The data point at the specified easting and northing, or null if no such data point exists.
+     */
+    public DataPoint getDataPoint(int easting, int northing) {
+        return data.get(new Pair<>(easting, northing));
     }
     
     /**
@@ -84,7 +93,7 @@ public class DataSet {
      *
      * Adds to hash map of all data points with key of "easting,northing"
      *
-     * @param  values  An array with the four data values (as Strings)
+     * @param values An array with the four data values (as Strings)
      */
     public void addData(String[] values) {
         DataPoint dp = new DataPoint(
@@ -94,13 +103,13 @@ public class DataSet {
             toDouble(values[3])
         );
 
-        data.put(dp.x() + "," + dp.y(), dp);
+        data.put(new Pair<>(dp.x(), dp.y()), dp);
     }
     
     /**
      * Convert a string to int. 
-     * @param intString  The String holding the int value
-     * @return  The int value, or -1 if the string is not a readable number
+     * @param intString The String holding the int value
+     * @return The int value, or -1 if the string is not a readable number
      */
     private int toInt(String intString) {
         try {
@@ -112,8 +121,8 @@ public class DataSet {
 
     /**
      * Convert a string to double. 
-     * @param doubleString  The String holding the double value
-     * @return  The double value, or -1.0 if the string is not a readable number
+     * @param doubleString The String holding the double value
+     * @return The double value, or -1.0 if the string is not a readable number
      */
     private double toDouble(String doubleString) {
         try {
@@ -127,8 +136,7 @@ public class DataSet {
      * Return a string representation of this dataset info.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return String.format("Dataset: Pollutant: %s, Year: %s, Metric: %s, Units: %s (%d data points)",
             pollutant, year, metric, units, data.size());
     }

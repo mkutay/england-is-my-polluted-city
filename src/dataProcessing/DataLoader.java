@@ -40,14 +40,17 @@ public class DataLoader {
             DataSet dataSet = new DataSet(pollutant, year, metric, units);
             
             // Read all the data lines.
-            String line;
-            while ((line = br.readLine()) != null) {
+            String line = br.readLine();
+            while (line != null) {
                 String[] values = line.split(COMMA_DELIMITER);
                 dataSet.addData(values);
+                line = br.readLine();
             }
-            System.out.println("Loading file... done.");
+
+            System.out.println("File loaded.");
+
             return dataSet;
-        } catch(IOException | URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             System.out.println("Could not read file " + fileName);
             e.printStackTrace();
             return null;
