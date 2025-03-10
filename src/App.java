@@ -1,6 +1,6 @@
 import com.gluonhq.maps.MapPoint;
 
-import dataProcessing.DataPicker;
+import dataProcessing.DataManager;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 
@@ -30,7 +30,8 @@ public class App extends Application {
     public void start(Stage stage) {
         this.primaryStage = stage; // Store the stage reference
         
-        DataSet dataSet = DataPicker.getPollutantData(2023, Pollutant.PM10);
+        DataManager dataManager = DataManager.getInstance();
+        DataSet dataSet = dataManager.getPollutantData(2023, Pollutant.PM10);
 
         // Create the info popup
         infoPopup = new InfoPopup();
@@ -41,9 +42,8 @@ public class App extends Application {
         CustomMapView mapView = new CustomMapView();
         PollutionLayer pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
     
-
         mapView.addLayer(pollutionLayer);
-        mapView.setZoom(14);
+        mapView.setZoom(10);
 
         stage.setTitle("England is my Polluted City");
 
