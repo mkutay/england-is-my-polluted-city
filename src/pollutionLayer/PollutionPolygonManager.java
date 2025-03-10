@@ -2,8 +2,8 @@ package pollutionLayer;
 
 import dataProcessing.DataPoint;
 import dataProcessing.DataSet;
-import dataProcessing.LODData;
-import dataProcessing.LODManager;
+import lod.LODData;
+import lod.LODManager;
 import utility.CustomMapView;
 
 import java.util.ArrayList;

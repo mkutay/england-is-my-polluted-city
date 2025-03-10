@@ -4,13 +4,16 @@ import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
 /**
- * @author Anas Ahmed
+ * Custom map view class to draw pollution data on the map.
+ * Holds the utilities by extending the MapView class to use the map view functionality.
+ * 
+ * @author Anas Ahmed.
+ * @version 1.0
  */
 public class CustomMapView extends MapView {
-
     /**
      * Gets a scale factor to scale 1 pixel into 1 meter in the real world depending on current zoom level.
-     * ie pixel size * sf = real world size
+     * i.e. Pixel size * sf = real world size.
      * @return Scale factor for pixel scale.
      */
     public double getPixelScale() {
@@ -28,6 +31,6 @@ public class CustomMapView extends MapView {
      */
     public boolean isPointOnScreen(double x, double y, double padding) {
         return x >= -padding && x <= getWidth() + padding &&
-                y >= -padding && y <= getHeight() + padding;
+            y >= -padding && y <= getHeight() + padding;
     }
 }

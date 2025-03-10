@@ -9,8 +9,8 @@ import java.io.IOException;
 import com.google.gson.Gson;
 
 /**
- * Postcode API manager class
- * Used to fetch postcode data from world coordinates
+ * Postcode API manager class. Used to fetch postcode data from world coordinates.
+ * Uses https://api.postcodes.io/ as the data source in its current implementation.
  *
  * @author Mehmet Kutay Bozkurt
  * @version 1.0

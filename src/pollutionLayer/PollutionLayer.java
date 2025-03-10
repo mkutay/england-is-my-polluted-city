@@ -7,17 +7,17 @@ import colors.ColorScheme;
 import colors.DefaultColorScheme;
 import dataProcessing.*;
 import infoPopup.MapClickHandler;
+import utility.CustomMapView;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import utility.CustomMapView;
 
 /**
- * Class for pollution rendering on the map.
- * Handles rendering pollution data as polygons on the map layer.
+ * Class for pollution rendering on the map. Handles rendering pollution data as polygons
+ * on the map layer.
  *
  * @author Anas Ahmed
  * @version 2.0
@@ -29,24 +29,25 @@ public class PollutionLayer extends MapLayer {
     private final Canvas canvas;
     private final GraphicsContext gc;
     
-    // Color configuration
+    // Color configuration:
     private final ColorScheme colorScheme;
     private double polygonOpacity = 0.7;
 
-    // Callback interface for click events
+    // Callback interface for click events:
     private final MapClickHandler clickHandler;
 
     /**
-     * Initialises the PollutionLayer
+     * TODO: Dynamic dataset updating -- important.
+     * Initialises the PollutionLayer.
      * @param mapView The map view to render the pollution layer on.
-     * @param dataSet The currently used dataset TODO dynamic dataset updating
+     * @param dataSet The currently used dataset.
      */
     public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler) {
         this.mapView = mapView;
 
         pollutionPolygonManager = new PollutionPolygonManager(dataSet);
 
-        this.clickHandler = clickHandler;  //TODO move away from class icky
+        this.clickHandler = clickHandler; // TODO: Move away from this class into another.
         this.colorScheme = new DefaultColorScheme();
 
         canvas = new Canvas();
@@ -54,7 +55,7 @@ public class PollutionLayer extends MapLayer {
         this.getChildren().add(canvas);
 
         // Add click event handler to the canvas
-        canvas.setOnMouseClicked(this::handleMouseClick); //TODO probably should not be here and or on the canvas
+        canvas.setOnMouseClicked(this::handleMouseClick); // TODO: Probably should not be here and or on the canvas.
 
         pollutionPolygonManager.updatePollutionPolygons(mapView);
     }
@@ -83,8 +84,8 @@ public class PollutionLayer extends MapLayer {
         return null;
     }
 
-    //TODO this should (probably) NOT be here - we need an eventHandler class to control these things
     /**
+     * TODO: This should (probably) NOT be here - we need an eventHandler class to control these things.
      * Handles mouse click events on the canvas.
      * @param event The mouse event.
      */
@@ -130,7 +131,7 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Wrapper for getMapPoint to use in pollutionLayer.PollutionPolygon.updatePoints()
+     * Wrapper for getMapPoint to use in pollutionLayer.PollutionPolygon.updatePoints().
      * @param latitude Latitude of position.
      * @param longitude Longitude of the position.
      * @return The screen position of this longitude/latitude point.
