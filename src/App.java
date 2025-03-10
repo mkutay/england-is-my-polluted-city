@@ -49,7 +49,7 @@ public class App extends Application {
         this.primaryStage = stage; // Store the stage reference
 
         dataManager = DataManager.getInstance();
-        DataSet dataSet = dataManager.getPollutantData(2023, Pollutant.NO2); //Default launch
+        DataSet dataSet = dataManager.getPollutantData(2020, Pollutant.NO2); //Default launch
 
         // Create the info popup
         infoPopup = new InfoPopup();
@@ -91,7 +91,11 @@ public class App extends Application {
         // Dropdown menu for year selection wrapped in a VBox
         Label yearLabel = new Label("Year:");
         ComboBox<Integer> yearDropdown = new ComboBox<>();
-        yearDropdown.getItems().addAll(2023, 2022, 2021); //TODO: remove hardcoding
+        for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
+            yearDropdown.getItems().addAll(c);
+        }
+
+
         yearDropdown.setMaxWidth(Double.MAX_VALUE);
         yearDropdown.setPromptText("Select Year"); //Fallback
         yearDropdown.getSelectionModel().select(0); //set default as 2023
@@ -99,15 +103,20 @@ public class App extends Application {
 
         //Listener to change the pollutant on the map
         pollutantDropdown.setOnAction(e -> {
-
             System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
             changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+//            //Refresh the year drop down for the current pollutant by removing all the current items and adding them back in
+//            //TODO: could we make this more elegant and prevent the reuse of code from the main initialisation?
+//            // THIS CODE HAS BEEN COMMENTED OUT
+//            yearDropdown.getItems().removeAll(yearDropdown.getItems());
+//            for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
+//                yearDropdown.getItems().addAll(c); //TODO: remove hardcoding
+//            }
         });
 
 
         //Listener to change the year on the map
         yearDropdown.setOnAction(e -> {
-
             System.out.println("Selected Year: " + yearDropdown.getValue());
             changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
         });
