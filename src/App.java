@@ -59,7 +59,7 @@ public class App extends Application {
         infoPopup = new InfoPopup();
 
         // Create map click handler and set it as the click listener
-         clickHandler = new MapClickHandler(infoPopup, primaryStage);
+        clickHandler = new MapClickHandler(infoPopup, primaryStage);
 
         //Create a map view and PollutionLayer, adding the PollutionLayer to the map view
         mapView = new CustomMapView();
@@ -94,7 +94,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName());
+                setText(empty || item == null ? "" : item.toString());
             }
         });
 
@@ -103,7 +103,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName());
+                setText(empty || item == null ? "" : item.toString());
             }
         });
 
