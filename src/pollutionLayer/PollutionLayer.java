@@ -92,18 +92,30 @@ public class PollutionLayer extends MapLayer {
     private void handleMouseClick(MouseEvent event) {
         if (event.getButton() != MouseButton.SECONDARY) return; // Only handle right clicks.
 
+        //absolute values on the map
         double x = event.getX();
         double y = event.getY();
+
+        /*
+         *Get the exact coordinates of where the mouse is being clicked
+         * (https://stackoverflow.com/questions/38612350/getting-position-in-scene-of-a-node-with-localtoscenex-y-returns-wrong-value)
+         * TODO: add bounds for the right side of the window to prevent drawing outside of the application
+         */
+        double mouseX = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getX();
+        double mouseY = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getY();
+
+
         
         // Convert screen coordinates to map coordinates:
         MapPoint mapPoint = mapView.getMapPosition(x, y);
-        
+
+
         // Find the clicked polygon if any:
         PollutionPolygon clickedPolygon = getPolygonAtScreenCoordinates(x, y);
         Double pollutionValue = clickedPolygon == null ? null : clickedPolygon.getValue();
         
         // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), x, y, pollutionValue);
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, pollutionValue);
     }
 
     /**
