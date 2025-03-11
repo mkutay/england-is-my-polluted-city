@@ -7,7 +7,7 @@ package dataProcessing;
  * @version 1.0
  */
 public enum Pollutant {
-    NO2("NO2"), PM2_5("PM2_5"), PM10("PM10"); //TODO: Find a way to get the string to display PM2.5 and not mess up file loading
+    NO2("NO2"), PM2_5("PM2_5"), PM10("PM10");
 
     private final String name;
     Pollutant(String name) {
@@ -17,4 +17,11 @@ public enum Pollutant {
     public String toString(){
         return name;
     }
+
+    // returns default enum name, except for pollutant PM2_5
+    public String getDisplayName() {
+        if (this == PM2_5) return "PM2.5";
+        return name();
+    }
+
 }
