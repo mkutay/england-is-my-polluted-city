@@ -33,4 +33,11 @@ public class CustomMapView extends MapView {
         return x >= -padding && x <= getWidth() + padding &&
             y >= -padding && y <= getHeight() + padding;
     }
+
+    /**
+     * Forces a map refresh when called
+     */
+    public void dirtyRefresh() {
+        this.markDirty();
+    }
 }

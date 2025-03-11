@@ -7,7 +7,17 @@ package dataProcessing;
  * @version 1.0
  */
 public enum Pollutant {
-    NO2, PM2_5, PM10;
+    NO2("NO2"), PM2_5("PM2_5"), PM10("PM10");
+
+    private final String name;
+    Pollutant(String name) {
+        this.name = name;
+    }
+
+    public String getDisplayName() {
+        if (this == PM2_5) return "PM2.5";
+        return name();
+    }
 
     @Override
     public String toString() {

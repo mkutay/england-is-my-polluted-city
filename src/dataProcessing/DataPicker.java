@@ -49,7 +49,7 @@ public class DataPicker {
             throw new IllegalArgumentException("Pollutant pattern does not exist for pollutant: " + pollutant);
         }
 
-        System.out.println("Pollutant that is being loaded: " + pollutant);
+        System.out.println("Pollutant loaded: " + pollutant);
         System.out.println("Pollutant pattern: " + pollutantPattern);
 
         String pollutantCSVFilename = String.format(pollutantPattern, year);
