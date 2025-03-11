@@ -13,6 +13,17 @@ public enum Pollutant {
     public String toString() {
         return switch (this) {
             case NO2 -> "NO2";
+            case PM2_5 -> "PM2_5";
+            case PM10 -> "PM10";
+        };
+    }
+
+    /**
+     * @return The display name of the pollutant.
+     */
+    public String getDisplayName() {
+        return switch (this) {
+            case NO2 -> "NO2";
             case PM2_5 -> "PM2.5";
             case PM10 -> "PM10";
         };

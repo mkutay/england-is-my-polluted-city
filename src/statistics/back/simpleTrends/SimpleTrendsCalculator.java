@@ -63,7 +63,7 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Trends Over Time", 
-            "Analysis of pollution trends for " + pollutant + " from " + startYear + " to " + endYear,
+            "Analysis of pollution trends for " + pollutant.getDisplayName() + " from " + startYear + " to " + endYear,
             pollutant
         );
         

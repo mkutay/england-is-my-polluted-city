@@ -94,7 +94,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.toString());
+                setText(empty || item == null ? "" : item.getDisplayName());
             }
         });
 
@@ -103,7 +103,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.toString());
+                setText(empty || item == null ? "" : item.getDisplayName());
             }
         });
 

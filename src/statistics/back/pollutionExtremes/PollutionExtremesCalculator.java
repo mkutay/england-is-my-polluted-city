@@ -67,7 +67,7 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots Trends", 
-            "Trend analysis of pollution hotspots for " + pollutant + " from " + startYear + " to " + endYear,
+            "Trend analysis of pollution hotspots for " + pollutant.getDisplayName() + " from " + startYear + " to " + endYear,
             pollutant
         );
         
