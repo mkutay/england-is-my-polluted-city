@@ -36,7 +36,8 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
         
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Snapshot", 
-            "Basic statistics for " + dataSet.getPollutant() + " in " + dataSet.getYear()
+            "Basic statistics for " + dataSet.getPollutant() + " in " + dataSet.getYear(),
+            pollutant
         );
         
         List<DataPoint> dataPoints = dataSet.getData();
@@ -62,7 +63,8 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Trends Over Time", 
-            "Analysis of pollution trends for " + pollutant + " from " + startYear + " to " + endYear
+            "Analysis of pollution trends for " + pollutant + " from " + startYear + " to " + endYear,
+            pollutant
         );
         
         Map<Integer, Double> yearlyAverages = new HashMap<>();

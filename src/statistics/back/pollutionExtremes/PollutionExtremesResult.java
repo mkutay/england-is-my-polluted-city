@@ -1,6 +1,7 @@
 package statistics.back.pollutionExtremes;
 
 import dataProcessing.DataPoint;
+import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class PollutionExtremesResult implements StatisticsResult {
     private final String title; // Title of the result.
     private final String description; // Description of the result.
+    private final Pollutant pollutant;
     private final Map<String, Object> values; // Key-value pairs for the result, including specific values and objects.
     
     private DataPoint maxPoint; // Data point with max value.
@@ -29,9 +31,10 @@ public class PollutionExtremesResult implements StatisticsResult {
      * @param title A short title describing these results
      * @param description A longer description of the results
      */
-    public PollutionExtremesResult(String title, String description) {
+    public PollutionExtremesResult(String title, String description, Pollutant pollutant) {
         this.title = title;
         this.description = description;
+        this.pollutant = pollutant;
         this.values = new HashMap<>();
     }
     
@@ -139,5 +142,10 @@ public class PollutionExtremesResult implements StatisticsResult {
     @Override
     public Map<String, Object> getAllValues() {
         return new HashMap<>(values);
+    }
+
+    @Override
+    public Pollutant getPollutant() {
+        return pollutant;
     }
 }

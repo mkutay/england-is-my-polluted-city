@@ -3,6 +3,7 @@ package statistics.back.simpleTrends;
 import java.util.HashMap;
 import java.util.Map;
 
+import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;
 
 /**
@@ -15,6 +16,7 @@ import statistics.back.StatisticsResult;
 public class SimpleTrendsResult implements StatisticsResult {
     private final String title;
     private final String description;
+    private final Pollutant pollutant;
     private final Map<String, Object> values;
     
     private Map<Integer, Double> yearlyAverages;
@@ -27,9 +29,10 @@ public class SimpleTrendsResult implements StatisticsResult {
      * @param title A short title describing these results.
      * @param description A longer description of the results.
      */
-    public SimpleTrendsResult(String title, String description) {
+    public SimpleTrendsResult(String title, String description, Pollutant pollutant) {
         this.title = title;
         this.description = description;
+        this.pollutant = pollutant;
         this.values = new HashMap<>();
     }
     
@@ -125,5 +128,10 @@ public class SimpleTrendsResult implements StatisticsResult {
     @Override
     public Map<String, Object> getAllValues() {
         return new HashMap<>(values);
+    }
+
+    @Override
+    public Pollutant getPollutant() {
+        return pollutant;
     }
 }

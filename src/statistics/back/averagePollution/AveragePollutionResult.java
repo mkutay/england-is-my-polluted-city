@@ -3,6 +3,7 @@ package statistics.back.averagePollution;
 import java.util.HashMap;
 import java.util.Map;
 
+import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;
 
 /**
@@ -13,30 +14,30 @@ import statistics.back.StatisticsResult;
  * @version 1.0
  */
 public class AveragePollutionResult implements StatisticsResult {
-    private final String title;
-    private final String description;
-    private final Map<String, Object> values;
+    private final String title; // Title of the result.
+    private final String description; // Description of the result.
+    private final Pollutant pollutant; // The pollutant this result is for.
+    private final Map<String, Object> values; // Map of all values for this result.
     
-    private double mean;
-    private double median;
-    private double standardDeviation;
+    private double mean; // Mean of the data for this result.
+    private double median; // Median of the data for this result.
+    private double standardDeviation; // Standard deviation of the data.
     
     /**
-     * Constructor for AveragePollutionResult.
-     * 
-     * @param title A short title describing these results
-     * @param description A longer description of the results
+     * Constructor.
+     * @param title A short title describing these results.
+     * @param description A longer description of the results.
      */
-    public AveragePollutionResult(String title, String description) {
+    public AveragePollutionResult(String title, String description, Pollutant pollutant) {
         this.title = title;
         this.description = description;
+        this.pollutant = pollutant;
         this.values = new HashMap<>();
     }
     
     /**
-     * Set the mean value
-     * 
-     * @param mean The mean value
+     * Set the mean value.
+     * @param mean The mean value.
      */
     public void setMean(double mean) {
         this.mean = mean;
@@ -44,9 +45,8 @@ public class AveragePollutionResult implements StatisticsResult {
     }
     
     /**
-     * Set the median value
-     * 
-     * @param median The median value
+     * Set the median value.
+     * @param median The median value.
      */
     public void setMedian(double median) {
         this.median = median;
@@ -54,9 +54,8 @@ public class AveragePollutionResult implements StatisticsResult {
     }
     
     /**
-     * Set the standard deviation
-     * 
-     * @param standardDeviation The standard deviation
+     * Set the standard deviation.
+     * @param standardDeviation The standard deviation.
      */
     public void setStandardDeviation(double standardDeviation) {
         this.standardDeviation = standardDeviation;
@@ -64,50 +63,26 @@ public class AveragePollutionResult implements StatisticsResult {
     }
     
     /**
-     * Add a year-specific mean value for trend analysis
-     * 
-     * @param year The year
-     * @param mean The mean value for that year
+     * Add a year-specific mean value for trend analysis.
+     * @param year The year.
+     * @param mean The mean value for that year.
      */
     public void setYearlyMean(int year, double mean) {
         values.put("mean_" + year, mean);
     }
     
     /**
-     * Set the overall trend value
-     * 
-     * @param trend The trend value
+     * Set the overall trend value.
+     * @param trend The trend value.
      */
     public void setOverallTrend(double trend) {
         values.put("overallTrend", trend);
     }
     
-    /**
-     * Get the mean value
-     * 
-     * @return The mean value
-     */
-    public double getMean() {
-        return mean;
-    }
-    
-    /**
-     * Get the median value
-     * 
-     * @return The median value
-     */
-    public double getMedian() {
-        return median;
-    }
-    
-    /**
-     * Get the standard deviation
-     * 
-     * @return The standard deviation
-     */
-    public double getStandardDeviation() {
-        return standardDeviation;
-    }
+    // Simple getters:
+    public double getMean() { return mean; }
+    public double getMedian() { return median; }
+    public double getStandardDeviation() { return standardDeviation; }
     
     @Override
     public String getTitle() {
@@ -127,5 +102,10 @@ public class AveragePollutionResult implements StatisticsResult {
     @Override
     public Map<String, Object> getAllValues() {
         return new HashMap<>(values);
+    }
+
+    @Override
+    public Pollutant getPollutant() {
+        return pollutant;
     }
 }

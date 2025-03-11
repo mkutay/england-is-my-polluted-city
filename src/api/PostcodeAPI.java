@@ -6,7 +6,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.io.IOException;
 
+import com.gluonhq.maps.MapPoint;
 import com.google.gson.Gson;
+
+import utility.GeographicUtilities;
 
 /**
  * Postcode API manager class. Used to fetch postcode data from world coordinates.
@@ -30,6 +33,33 @@ public class PostcodeAPI {
      */
     public static PostcodeResponse fetchPostcodesByLatitudeLongitude(double latitude, double longitude) throws IOException, InterruptedException {
         String url = POSTCODES_API_BASE_URL + "postcodes?lon=" + longitude + "&lat=" + latitude;
+        
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .GET()
+            .build();
+        
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        
+        if (response.statusCode() == 200) {
+            return gson.fromJson(response.body(), PostcodeResponse.class);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Fetches address data from postcodes.io using easting and northing coordinates.
+     * @param easting The easting coordinate.
+     * @param northing The northing coordinate.
+     * @return PostcodeResponse containing all address data.
+     * @throws IOException If an I/O error occurs.
+     * @throws InterruptedException If the operation is interrupted on the network.
+     */
+    public static PostcodeResponse fetchPostcodesByEastingNorthing(int easting, int northing) throws IOException, InterruptedException {
+        MapPoint point = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);;
+
+        String url = POSTCODES_API_BASE_URL + "postcodes?lon=" + point.getLongitude() + "&lat=" + point.getLatitude();
         
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))

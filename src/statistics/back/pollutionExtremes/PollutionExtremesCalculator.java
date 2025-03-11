@@ -38,7 +38,8 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots", 
             "Analysis of highest pollution areas for " + 
-            dataSet.getPollutant() + " in " + dataSet.getYear()
+            dataSet.getPollutant().toString() + " in " + dataSet.getYear(),
+            pollutant
         );
         
         List<DataPoint> dataPoints = dataSet.getData();
@@ -55,7 +56,7 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         List<DataPoint> topHotspots = findTopHotspots(dataPoints, TOP_HOTSPOTS_COUNT);
         result.setTopHotspots(topHotspots);
         
-        // Calculate some percentile:
+        // Get according to some percentile:
         double percentileValue = calculatePercentile(dataPoints, PERCENTILE);
         result.setPercentile(percentileValue, PERCENTILE);
         
@@ -66,7 +67,8 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots Trends", 
-            "Trend analysis of pollution hotspots for " + pollutant + " from " + startYear + " to " + endYear
+            "Trend analysis of pollution hotspots for " + pollutant + " from " + startYear + " to " + endYear,
+            pollutant
         );
         
         Map<Integer, DataPoint> yearToMaxPoint = new HashMap<>();

@@ -1,3 +1,6 @@
+import java.util.Iterator;
+import java.util.Map;
+
 import com.gluonhq.maps.MapPoint;
 
 import dataProcessing.DataManager;
@@ -13,6 +16,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import pollutionLayer.PollutionLayer;
+import statistics.back.StatisticsManager;
+import statistics.back.StatisticsResult;
+import statistics.ui.StatisticsPanel;
+import statistics.ui.StatisticsPanelFactory;
 import utility.CustomMapView;
 
 /**
@@ -60,6 +67,8 @@ public class App extends Application {
 
         Scene scene = new Scene(root, 900, 900);
 
+        // showStatsPanel(stage);
+
         stage.setScene(scene);
         stage.show();
 
@@ -69,5 +78,20 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void showStatsPanel(Stage stage) {
+        StatisticsManager sm = StatisticsManager.getInstance();
+        Map<String, StatisticsResult> m = sm.calculateStatisticsOverTime(Pollutant.PM10, 2018, 2023);
+        Iterator<String> it = m.keySet().iterator();
+        it.next();
+        it.next();
+        StatisticsResult sr = m.get(it.next());
+        System.out.println(sr.getTitle());
+
+        StatisticsPanel statsRoot = StatisticsPanelFactory.createPanel(sr);
+        Scene scene = new Scene(statsRoot, 900, 900);
+        stage.setScene(scene);
+        stage.show();
     }
 }

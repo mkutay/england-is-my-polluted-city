@@ -2,6 +2,8 @@ package statistics.back;
 
 import java.util.Map;
 
+import dataProcessing.Pollutant;
+
 /**
  * Interface for statistics calculation results. Different calculators can implement this
  * interface to provide specialised result types.
@@ -31,4 +33,9 @@ public interface StatisticsResult {
      * @return Map containing all key-value pairs.
      */
     Map<String, Object> getAllValues();
+
+    /**
+     * @return The pollutant associated with this result.
+     */
+    Pollutant getPollutant();
 }

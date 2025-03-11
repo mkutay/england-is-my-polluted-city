@@ -34,7 +34,8 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         AveragePollutionResult result = new AveragePollutionResult(
             "Average Pollution Levels", 
             "Statistical analysis of average pollution levels for " + 
-            dataSet.getPollutant() + " in " + dataSet.getYear()
+            dataSet.getPollutant() + " in " + dataSet.getYear(),
+            pollutant
         );
         
         List<DataPoint> dataPoints = dataSet.getData();
@@ -48,8 +49,8 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         result.setMedian(median);
         
         // Calculate standard deviation:
-        double stdDev = calculateStandardDeviation(dataPoints, mean);
-        result.setStandardDeviation(stdDev);
+        double standardDeviation = calculateStandardDeviation(dataPoints, mean);
+        result.setStandardDeviation(standardDeviation);
         
         return result;
     }
@@ -59,10 +60,14 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         AveragePollutionResult result = new AveragePollutionResult(
             "Average Pollution Trends", 
             "Trend analysis of average pollution levels for " + 
-            pollutant + " from " + startYear + " to " + endYear
+            pollutant + " from " + startYear + " to " + endYear,
+            pollutant
         );
         
         double[] yearlyAverages = new double[endYear - startYear + 1];
+        double meanOverall = 0.0;
+        double medianOverall = 0.0;
+        double standardDeviationOverall = 0.0;
         
         for (int year = startYear; year <= endYear; year++) {
             DataSet dataSet = dataManager.getPollutantData(year, pollutant);
@@ -71,7 +76,15 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
             double mean = calculateMean(dataPoints);
             yearlyAverages[year - startYear] = mean;
             result.setYearlyMean(year, mean);
+
+            meanOverall += mean;
+            medianOverall += calculateMedian(dataPoints);
+            standardDeviationOverall += calculateStandardDeviation(dataPoints, mean);
         }
+
+        result.setMean(meanOverall / yearlyAverages.length);
+        result.setMedian(medianOverall / yearlyAverages.length);
+        result.setStandardDeviation(standardDeviationOverall / yearlyAverages.length);
         
         // Calculate trend:
         double trend = yearlyAverages[yearlyAverages.length - 1] - yearlyAverages[0];
