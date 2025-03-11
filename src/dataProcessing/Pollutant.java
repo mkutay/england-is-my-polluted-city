@@ -13,15 +13,18 @@ public enum Pollutant {
     Pollutant(String name) {
         this.name = name;
     }
-    @Override
-    public String toString(){
-        return name;
-    }
 
-    // returns default enum name, except for pollutant PM2_5
     public String getDisplayName() {
         if (this == PM2_5) return "PM2.5";
         return name();
     }
 
+    @Override
+    public String toString() {
+        return switch (this) {
+            case NO2 -> "NO2";
+            case PM2_5 -> "PM2.5";
+            case PM10 -> "PM10";
+        };
+    }
 }
