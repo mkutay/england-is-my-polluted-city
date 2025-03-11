@@ -28,7 +28,9 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
     }
     
     @Override
-    public StatisticsResult calculateStatistics(DataSet dataSet) {
+    public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
+        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
+        
         AveragePollutionResult result = new AveragePollutionResult(
             "Average Pollution Levels", 
             "Statistical analysis of average pollution levels for " + 
@@ -72,7 +74,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         }
         
         // Calculate trend:
-        double trend = calculateTrend(yearlyAverages);
+        double trend = yearlyAverages[yearlyAverages.length - 1] - yearlyAverages[0];
         result.setOverallTrend(trend);
         
         return result;
@@ -141,19 +143,5 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
             .count();
         
         return Math.sqrt(sumSquaredDiffs / validCount);
-    }
-    
-    /**
-     * Calculate the trend from an array of yearly values.
-     * @param yearlyValues Array of values by year.
-     * @return Trend value (positive means increasing, negative means decreasing).
-     */
-    private double calculateTrend(double[] yearlyValues) {
-        if (yearlyValues.length <= 1) {
-            return 0.0;
-        }
-        
-        // Simple trend calculation: last value minus first value.
-        return yearlyValues[yearlyValues.length - 1] - yearlyValues[0];
     }
 }

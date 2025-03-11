@@ -28,9 +28,11 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
     }
     
     @Override
-    public StatisticsResult calculateStatistics(DataSet dataSet) {
+    public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
         // For a single dataset, we can't calculate much trend information,
         // but we can provide some basic statistics that will be useful for comparison.
+        
+        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
         
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Snapshot", 

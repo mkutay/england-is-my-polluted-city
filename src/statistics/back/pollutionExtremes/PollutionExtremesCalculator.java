@@ -32,7 +32,9 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
     }
     
     @Override
-    public StatisticsResult calculateStatistics(DataSet dataSet) {
+    public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
+        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
+        
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots", 
             "Analysis of highest pollution areas for " + 

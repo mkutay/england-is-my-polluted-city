@@ -1,7 +1,5 @@
 package statistics.back;
 
-import dataProcessing.DataManager;
-import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.averagePollution.AveragePollutionCalculator;
 import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
@@ -25,7 +23,6 @@ public class StatisticsManager {
     
     private final List<StatisticsCalculator> calculators;
     private final Map<String, StatisticsResult> resultCache;
-    private final DataManager dataManager;
     
     /**
      * Private constructor for singleton pattern.
@@ -33,7 +30,6 @@ public class StatisticsManager {
     private StatisticsManager() {
         calculators = new ArrayList<>();
         resultCache = new HashMap<>();
-        dataManager = DataManager.getInstance();
         
         // Register default calculators, for now:
         registerCalculator(new AveragePollutionCalculator());
@@ -56,7 +52,7 @@ public class StatisticsManager {
      * Register a new statistics calculator.
      * @param calculator The calculator to register.
      */
-    public void registerCalculator(StatisticsCalculator calculator) {
+    private void registerCalculator(StatisticsCalculator calculator) {
         calculators.add(calculator);
     }
     
@@ -64,17 +60,16 @@ public class StatisticsManager {
      * @return List of all registered calculators.
      */
     public List<StatisticsCalculator> getCalculators() {
-        return new ArrayList<>(calculators);
+        return calculators;
     }
     
     /**
      * Calculate statistics for a specific data set information.
-     * @param year The year of data to analyse.
      * @param pollutant The pollutant to analyse.
+     * @param year The year of data to analyse.
      * @return Map of calculator names to their results.
      */
-    public Map<String, StatisticsResult> calculateStatistics(int year, Pollutant pollutant) {
-        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
+    public Map<String, StatisticsResult> calculateStatistics(Pollutant pollutant, int year) {
         Map<String, StatisticsResult> results = new HashMap<>();
         
         for (StatisticsCalculator calculator : calculators) {
@@ -87,7 +82,7 @@ public class StatisticsManager {
             }
             
             // Calculate and cache:
-            StatisticsResult result = calculator.calculateStatistics(dataSet);
+            StatisticsResult result = calculator.calculateStatistics(pollutant, year);
             resultCache.put(key, result);
             results.put(calculator.getStatisticsName(), result);
         }
@@ -135,12 +130,5 @@ public class StatisticsManager {
      */
     private String makeTimeSeriesKey(String calculatorName, Pollutant pollutant, int startYear, int endYear) {
         return calculatorName + "_" + pollutant + "_" + startYear + "_" + endYear;
-    }
-    
-    /**
-     * Clear the result cache.
-     */
-    public void clearCache() {
-        resultCache.clear();
     }
 }
