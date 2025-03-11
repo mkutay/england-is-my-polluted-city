@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -22,9 +21,6 @@ import pollutionLayer.PollutionLayer;
 import utility.CustomMapView;
 
 import java.util.Arrays;
-
-import static com.gluonhq.maps.MapLayer.*;
-
 /**
  * Main App class
  * This class creates a JavaFX application that can display a map of UK with pollution
@@ -91,7 +87,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
+                setText(empty || item == null ? "" : item.getDisplayName());
             }
         });
 
@@ -100,7 +96,7 @@ public class App extends Application {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
+                setText(empty || item == null ? "" : item.getDisplayName());
             }
         });
 
@@ -119,16 +115,7 @@ public class App extends Application {
         //Listener to change the pollutant on the map
         pollutantDropdown.setOnAction(e -> {
             System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
-
-//            //Refresh the year drop down for the current pollutant by removing all the current items and adding them back in
-//            //TODO: could we make this more elegant and prevent the reuse of code from the main initialisation?
-//            int currentYearSelected = yearDropdown.getValue();
-//            yearDropdown.getItems().removeAll(yearDropdown.getItems());
-//            for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
-//                yearDropdown.getItems().addAll(c);
-//            }
-//            yearDropdown.getSelectionModel().select(0); //Set the first year from the list
-            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
 
         });
 
@@ -136,7 +123,7 @@ public class App extends Application {
         //Listener to change the year on the map
         yearDropdown.setOnAction(e -> {
             System.out.println("Selected Year: " + yearDropdown.getValue());
-            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
         });
 
 
@@ -170,11 +157,11 @@ public class App extends Application {
     }
 
     /**
-     * A function that changes the
+     * A function that updates the map dataset
      * @param year Year as an integer from the
      * @param pollutant The Pollutant enum value (e.g NO2, PM10)
      */
-    private void changeMapValues(int year, Pollutant pollutant){
+    private void updateMapDataSet(int year, Pollutant pollutant){
         //remove the original pollutionLayer
         mapView.removeLayer(pollutionLayer);
         //Modify the pollution layer
