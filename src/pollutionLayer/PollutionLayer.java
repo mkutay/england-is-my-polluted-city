@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 public class PollutionLayer extends MapLayer {
     private final CustomMapView mapView;
     private final PollutionPolygonManager pollutionPolygonManager;
+    private final PollutionLayerEventHandler pollutionLayerEventHandler;
 
     private final Canvas canvas;
     private final GraphicsContext gc;
@@ -46,6 +47,7 @@ public class PollutionLayer extends MapLayer {
         this.mapView = mapView;
 
         pollutionPolygonManager = new PollutionPolygonManager(dataSet);
+        pollutionLayerEventHandler = new PollutionLayerEventHandler(clickHandler, mapView);
 
         this.clickHandler = clickHandler; // TODO: Move away from this class into another.
         this.colorScheme = new DefaultColorScheme();
@@ -54,8 +56,9 @@ public class PollutionLayer extends MapLayer {
         gc = canvas.getGraphicsContext2D();
         this.getChildren().add(canvas);
 
-        // Add click event handler to the canvas
-        canvas.setOnMouseClicked(this::handleMouseClick); // TODO: Probably should not be here and or on the canvas.
+        // Add click event handler to the canvas TODO refactor
+        canvas.setOnMouseClicked(
+                e-> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, e));
 
         pollutionPolygonManager.updatePollutionPolygons(mapView);
     }
@@ -67,55 +70,6 @@ public class PollutionLayer extends MapLayer {
     protected void layoutLayer() {
         pollutionPolygonManager.updatePollutionPolygons(mapView);
         renderPolygons();
-    }
-
-    /**
-     * Finds a polygon at the given screen coordinates.
-     * @param x The x coordinate in screen space.
-     * @param y The y coordinate in screen space.
-     * @return A pollution polygon if found, null otherwise.
-     */
-    public PollutionPolygon getPolygonAtScreenCoordinates(double x, double y) {
-        for (PollutionPolygon polygon : pollutionPolygonManager.getPolygons()) {
-            if (polygon.containsScreenPoint(x, y)) {
-                return polygon;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * TODO: This should (probably) NOT be here - we need an eventHandler class to control these things.
-     * Handles mouse click events on the canvas.
-     * @param event The mouse event.
-     */
-    private void handleMouseClick(MouseEvent event) {
-        if (event.getButton() != MouseButton.SECONDARY) return; // Only handle right clicks.
-
-        //absolute values on the map
-        double x = event.getX();
-        double y = event.getY();
-
-        /*
-         *Get the exact coordinates of where the mouse is being clicked
-         * (https://stackoverflow.com/questions/38612350/getting-position-in-scene-of-a-node-with-localtoscenex-y-returns-wrong-value)
-         * TODO: add bounds for the right side of the window to prevent drawing outside of the application
-         */
-        double mouseX = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getX();
-        double mouseY = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getY();
-
-
-        
-        // Convert screen coordinates to map coordinates:
-        MapPoint mapPoint = mapView.getMapPosition(x, y);
-
-
-        // Find the clicked polygon if any:
-        PollutionPolygon clickedPolygon = getPolygonAtScreenCoordinates(x, y);
-        Double pollutionValue = clickedPolygon == null ? null : clickedPolygon.getValue();
-        
-        // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, pollutionValue);
     }
 
     /**
