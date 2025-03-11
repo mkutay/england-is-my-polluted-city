@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -78,15 +79,30 @@ public class App extends Application {
         ComboBox<Pollutant> pollutantDropdown = new ComboBox<>();
 
         //Add all pollutants to the dropdown
-        for(Pollutant c : Pollutant.values())
-            pollutantDropdown.getItems().addAll(c);
+        pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
 
         pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
         pollutantDropdown.setPromptText("Select Pollutant"); //Fallback
         pollutantDropdown.getSelectionModel().select(0); //set default as NO2
         VBox pollutantDropdownBox = new VBox(6, pollutantLabel, pollutantDropdown);
 
+        //Modifies appearance of each item in dropdown menu
+        pollutantDropdown.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
+            }
+        });
 
+        //Modifies appearance of selected item (button cell) in dropdown menu
+        pollutantDropdown.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
+            }
+        });
 
         // Dropdown menu for year selection wrapped in a VBox
         Label yearLabel = new Label("Year:");
@@ -94,8 +110,7 @@ public class App extends Application {
         for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
             yearDropdown.getItems().addAll(c);
         }
-
-
+        
         yearDropdown.setMaxWidth(Double.MAX_VALUE);
         yearDropdown.setPromptText("Select Year"); //Fallback
         yearDropdown.getSelectionModel().select(0); //set default as 2023
