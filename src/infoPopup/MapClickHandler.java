@@ -34,6 +34,7 @@ public class MapClickHandler {
     public void onMapClicked(double latitude, double longitude, double screenX, double screenY, double width, double height, Double pollutionValue) {
         // Update the popup with the clicked location information:
         Map<String, String> addressDetails = getAddressFromCoordinates(latitude, longitude);
+
         infoPopup.update(latitude, longitude, pollutionValue, addressDetails);
         
         if (screenX + infoPopup.getWidth() > width) {
@@ -61,8 +62,7 @@ public class MapClickHandler {
         try {
             List<PostcodeResult> result = PostcodeAPI.fetchPostcodesByLatitudeLongitude(latitude, longitude).getResult();
             if (result == null || result.isEmpty()) {
-                System.out.println("No address found for: lat=" + latitude + ", lon=" + longitude);
-                return null;
+                return getDefaultAddress();
             }
 
             /**
@@ -77,7 +77,15 @@ public class MapClickHandler {
             return addressDetails;
         } catch (Exception e) {
             System.out.println("Failed to get address: " + e.getMessage());
-            return null;
+            return getDefaultAddress();
         }
+    }
+
+    private Map<String, String> getDefaultAddress() {
+        return Map.of(
+                "borough", "Unknown",
+                "postcode", "Unknown",
+                "country", "Unknown"
+        );
     }
 }

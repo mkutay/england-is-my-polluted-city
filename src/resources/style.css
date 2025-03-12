@@ -20,11 +20,11 @@
     -fx-font-size: 15px;
 }
 .dropdown {
-    -fx-max-width: 200px;
+    -fx-max-width: 230px;
 }
 .legend-header {
     -fx-padding: 0 0 0 8px;    /* left padding */
-    -fx-spacing: 12px;          /* spacing between titleLabel and titleIcon */
+    -fx-spacing: 12px;         /* spacing between titleLabel and titleIcon */
     -fx-cursor: hand;
 }
 
@@ -48,9 +48,10 @@
     -fx-text-fill: rgba(0,0,0,0.8);
 }
 
+/* hamburger icon */
 .legend-title-icon {
     -fx-font-size: 14px;
-    -fx-padding: 1,0,0,0;
+    -fx-padding: 2,0,0,0;
     -fx-text-fill: rgba(0,0,0,0.8);
 }
 
