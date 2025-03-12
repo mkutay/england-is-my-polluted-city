@@ -5,18 +5,14 @@ import dataProcessing.DataManager;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 
+import guiComponents.SidePanel;
 import infoPopup.InfoPopup;
 import infoPopup.MapClickHandler;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pollutionLayer.PollutionLayer;
 import utility.CustomMapView;
@@ -66,59 +62,12 @@ public class App extends Application {
         mapView.addLayer(mapLayer);
         mapView.setZoom(10);
 
-        // Create a Vbox for the side panel next to the map holding the dropdown menus to select pollutant and year
-        VBox sidePanel = new VBox(10);
-        sidePanel.setStyle("-fx-padding: 10; -fx-background-color: #f4f4f4;");
-
-        //Create Label / title for the side panel
-        Label applicationLabel = new Label(PROJECT_NAME);
-        applicationLabel.setStyle("-fx-spacing: 10; -fx-font-weight: bold; -fx-font-size: 30px;");
-
-        // Dropdown menu for pollutant selection wrapped in a VBox
-        Label pollutantLabel = new Label("Pollutant:");
-        ComboBox<Pollutant> pollutantDropdown = new ComboBox<>();
-
-        //Add all pollutants to the dropdown
-        pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
-
-        pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
-        pollutantDropdown.setPromptText("Select Pollutant"); //Fallback
-        pollutantDropdown.getSelectionModel().select(0); //set default as NO2
-        VBox pollutantDropdownBox = new VBox(6, pollutantLabel, pollutantDropdown);
-
-        //Modifies appearance of each item in dropdown menu
-        pollutantDropdown.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Pollutant item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
-            }
-        });
-
-        //Modifies appearance of selected item (button cell) in dropdown menu
-        pollutantDropdown.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Pollutant item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName()); // Shows "PM2.5"
-            }
-        });
-
-        // Dropdown menu for year selection wrapped in a VBox
-        Label yearLabel = new Label("Year:");
-        ComboBox<Integer> yearDropdown = new ComboBox<>();
-        for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
-            yearDropdown.getItems().addAll(c);
-        }
-        
-        yearDropdown.setMaxWidth(Double.MAX_VALUE);
-        yearDropdown.setPromptText("Select Year"); //Fallback
-        yearDropdown.getSelectionModel().select(0); //set default as 2023
-        VBox yearDropdownBox = new VBox(6, yearLabel, yearDropdown);
+        //Create the SidePanel
+        SidePanel sidePanel = SidePanel.getInstance(dataManager, PROJECT_NAME);
 
         //Listener to change the pollutant on the map
-        pollutantDropdown.setOnAction(e -> {
-            System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
+        sidePanel.getPollutantDropdown().setOnAction(e -> {
+            System.out.println("Selected Pollutant: " + sidePanel.getPollutantDropdown().getValue());
 
 //            //Refresh the year drop down for the current pollutant by removing all the current items and adding them back in
 //            //TODO: could we make this more elegant and prevent the reuse of code from the main initialisation?
@@ -128,20 +77,16 @@ public class App extends Application {
 //                yearDropdown.getItems().addAll(c);
 //            }
 //            yearDropdown.getSelectionModel().select(0); //Set the first year from the list
-            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+            changeMapValues(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
 
         });
 
 
         //Listener to change the year on the map
-        yearDropdown.setOnAction(e -> {
-            System.out.println("Selected Year: " + yearDropdown.getValue());
-            changeMapValues(yearDropdown.getValue(), pollutantDropdown.getValue());
+        sidePanel.getYearDropdown().setOnAction(e -> {
+            System.out.println("Selected Year: " + sidePanel.getYearDropdown().getValue());
+            changeMapValues(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
         });
-
-
-        // Add items to the side panel
-        sidePanel.getChildren().addAll(applicationLabel, pollutantDropdownBox, yearDropdownBox);
 
 
         stage.setTitle("England is my Polluted City");
@@ -154,7 +99,7 @@ public class App extends Application {
          * Place the side panel to the left of the map
          */
         BorderPane root = new BorderPane();
-        root.setLeft(sidePanel);
+        root.setLeft(sidePanel.getSidePanel());
         root.setCenter(mapView);
 
 
