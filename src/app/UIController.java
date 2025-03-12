@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Manages all UI elements that are not a part of the map, eg. the side panel.
+ * Manages all UI elements that are not a part of the map. e.g. the side panel.
  *
  * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors.
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
@@ -31,7 +31,6 @@ public class UIController {
 
     /**
      * Constructor for UIController.
-     * @param dataManager The current data manger instance.
      * @param mapController The current map controller.
      */
     public UIController(MapController mapController) {
@@ -95,7 +94,10 @@ public class UIController {
      */
     private VBox createPollutantDropdownBox(MapController mapController) {
         Label label = new Label("Pollutant:");
+        label.getStyleClass().add("dropdown-label");
         pollutantDropdown = new ComboBox<>();
+        pollutantDropdown.getStyleClass().add("dropdown");
+
         pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
         pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
 
@@ -117,7 +119,9 @@ public class UIController {
      */
     private VBox createYearDropdownBox(MapController mapController) {
         Label label = new Label("Year:");
+        label.getStyleClass().add("dropdown-label");
         yearDropdown = new ComboBox<>();
+        yearDropdown.getStyleClass().add("dropdown");
 
         // Add all years that the currently selected pollutant supports data for:
         List<Integer> years = dataManager.getAvailableYears(pollutantDropdown.getValue());
@@ -157,7 +161,7 @@ public class UIController {
         // Temporarily disable yearDropdown listener so we don't call listener when updating dropdown values.
         yearDropdown.setOnAction(null);
 
-        // Update dropdown values:
+        // Update dropdown values
         yearDropdown.getItems().clear();
 
         List<Integer> years = dataManager.getAvailableYears(pollutantDropdown.getValue());
@@ -169,12 +173,11 @@ public class UIController {
             yearDropdown.getSelectionModel().select(0); // First in the list.
         } else {
             int index = yearDropdown.getItems().indexOf(currentYear);
-            yearDropdown.getSelectionModel().select(index);  // Otherwise, re-select current value.
+            yearDropdown.getSelectionModel().select(index);  // Otherwise, re-select current value
         }
 
         yearDropdown.setOnAction(e -> updateMapDataSet(mapController)); // Re-enable the listener.
     }
-
     // Getters:
     public VBox getSidePanel() { return sidePanel; }
     public MenuBar getTopNav() { return topNavBar; }
