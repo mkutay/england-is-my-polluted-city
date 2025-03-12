@@ -10,6 +10,9 @@ import java.util.Arrays;
 
 /**
  * Manages all UI elements that are not a part of the map - the side panel
+ *
+ * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors
+ * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  */
 public class UIController {
     private final VBox sidePanel;

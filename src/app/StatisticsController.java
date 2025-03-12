@@ -14,6 +14,8 @@ import java.util.Map;
 /**
  * Handles all statistics ui elements
  * TODO implement fully and make gooder
+ * Refactor class by Anas Ahmed
+ * @author Mehmet Kutay Bozkurt
  */
 public class StatisticsController {
     public void showStatsPanel(Stage stage) {

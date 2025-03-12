@@ -12,6 +12,7 @@ import javafx.stage.Stage;
  * This class creates a JavaFX application that can display a map of UK with pollution
  * data. It centres the map on London.
  *
+ * Refactor by Anas Ahmed
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  * @version 1.0
  */

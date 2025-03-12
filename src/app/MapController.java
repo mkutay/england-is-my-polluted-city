@@ -15,6 +15,9 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Handles all the map UI elements, like the map layer, pollution rendering, popups
  * Receives requests to update the map data
+ *
+ * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors
+ * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  */
 public class MapController {
     private final CustomMapView mapView;
