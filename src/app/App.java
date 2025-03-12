@@ -1,9 +1,13 @@
 package app;
 
+import com.gluonhq.maps.MapView;
+
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 
 import dataProcessing.Pollutant;
 import utility.Namer;
@@ -23,17 +27,28 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws PollutionLayerNotInitialisedException {
-        stage.setTitle(Namer.APP_NAME);
 
+        stage.setTitle(Namer.APP_NAME);
         mapController = new MapController(stage);
         uiController = new UIController(mapController);
 
         mapController.initialisePollutionLayer(2020, Pollutant.NO2);
 
+        // Use a StackPane to overlay legend inside the map
+        StackPane mapOverlay = new StackPane();
+        mapOverlay.getStyleClass().add("map-overlay");
+
+        LegendPane legend = new LegendPane();
+
+        // Position legend near the top right of map
+        StackPane.setAlignment(legend, Pos.TOP_RIGHT);
+
+        mapOverlay.getChildren().addAll(mapController.getMapView(), legend);
+
         BorderPane root = new BorderPane();
         root.setTop(uiController.getTopNav());
         root.setLeft(uiController.getSidePanel());
-        root.setCenter(mapController.getMapView());
+        root.setCenter(mapOverlay);
 
         Scene scene = new Scene(root, 900, 900);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
