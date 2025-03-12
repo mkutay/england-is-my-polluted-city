@@ -1,6 +1,5 @@
 package infoPopup;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,12 @@ import javafx.stage.Stage;
 
 /**
  * Handles the map click events and shows information popups.
+ * TODO: refactor and likely rename.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 1.1
+ * @version 2.0
  */
-public class MapClickHandler { //TODO refactor and likely rename
+public class MapClickHandler {
     private static final int POPUP_OFFSET_X = 10;
     private static final int POPUP_OFFSET_Y = 10;
     
@@ -26,18 +26,29 @@ public class MapClickHandler { //TODO refactor and likely rename
      * Creates a new map click handler.
      * @param primaryStage The primary stage of the application.
      */
-    public MapClickHandler( Stage primaryStage) {
+    public MapClickHandler(Stage primaryStage) {
         infoPopup = new InfoPopup();
         this.primaryStage = primaryStage;
     }
     
-    public void onMapClicked(double latitude, double longitude, double screenX, double screenY, Double pollutionValue) {
+    public void onMapClicked(double latitude, double longitude, double screenX, double screenY, double width, double height, Double pollutionValue) {
         // Update the popup with the clicked location information:
         Map<String, String> addressDetails = getAddressFromCoordinates(latitude, longitude);
         infoPopup.update(latitude, longitude, pollutionValue, addressDetails);
         
+        if (screenX + infoPopup.getWidth() > width) {
+            screenX -= infoPopup.getWidth() + POPUP_OFFSET_X;
+        } else {
+            screenX += POPUP_OFFSET_X;
+        }
+        
+        if (screenY + infoPopup.getHeight() > height) {
+            screenY -= infoPopup.getHeight() + POPUP_OFFSET_Y;
+        } else {
+            screenY += POPUP_OFFSET_Y;
+        }
         // Show the popup at the clicked location using the primary stage as owner:
-        infoPopup.show(primaryStage, screenX + POPUP_OFFSET_X, screenY + POPUP_OFFSET_Y);
+        infoPopup.show(primaryStage, screenX, screenY);
     }
     
     /**
@@ -53,16 +64,16 @@ public class MapClickHandler { //TODO refactor and likely rename
                 System.out.println("No address found for: lat=" + latitude + ", lon=" + longitude);
                 return null;
             }
-            /*
-                Use a hashmap to store first address detail returned in a (key, value) pair
-                The key is the info type (e.g postcode, borough, etc)
-             */
 
+            /**
+             * Use a hashmap to store first address detail returned in a (key, value) pair.
+             * The key is the info type (e.g postcode, borough, etc).
+             */
             Map<String, String> addressDetails = new HashMap<>();
-            addressDetails.put("borough", result.getFirst().getAdmin_district()); //borough aka city/district council
-            addressDetails.put("constituency", result.getFirst().getParliamentary_constituency()); //constituency
-            addressDetails.put("postcode", result.getFirst().getPostcode()); //Postcode returned (e.g WC2B 4BG)
-            addressDetails.put("country", result.getFirst().getCountry()); //country (e.g England, Scotland, Wales, etc)
+            addressDetails.put("borough", result.getFirst().getAdmin_district()); // Borough aka city/district council.
+            addressDetails.put("constituency", result.getFirst().getParliamentary_constituency()); // Constituency.
+            addressDetails.put("postcode", result.getFirst().getPostcode()); // Postcode returned (e.g WC2B 4BG).
+            addressDetails.put("country", result.getFirst().getCountry()); // Country (e.g England, Scotland, Wales, etc).
             return addressDetails;
         } catch (Exception e) {
             System.out.println("Failed to get address: " + e.getMessage());

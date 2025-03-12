@@ -1,32 +1,41 @@
 package pollutionLayer;
 
-//TODO
-
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
-import infoPopup.MapClickHandler;
+
+import javafx.stage.Window;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import infoPopup.MapClickHandler;
+
 /**
+ * Handles the mouse click events on the pollution layer. Currently handles 
+ * right clicks to open the info popup.
+ * 
+ * Refactor by Anas Ahmed, base code by Mehmet Kutay Bozkurt
  * @author Anas Ahmed and Mehmet Kutay Bozkurt
- * Refactor by Anas Ahmed, base code by
  */
 public class PollutionLayerEventHandler {
-    private final MapClickHandler clickHandler;  // Callback interface for click events
+    private final MapClickHandler clickHandler; // Callback interface for click events.
     private final MapView mapView;
 
+    /**
+     * Constructor.
+     * @param clickHandler The click handler to notify when a polygon is clicked.
+     * @param mapView The map view to render the pollution layer on.
+     */
     public PollutionLayerEventHandler(MapClickHandler clickHandler, MapView mapView) {
         this.clickHandler = clickHandler;
         this.mapView = mapView;
     }
 
     /**
-     * Method by Mehmet Kutay Bozkurt
      * Finds a polygon at the given screen coordinates.
      * @param x The x coordinate in screen space.
      * @param y The y coordinate in screen space.
      * @return A pollution polygon if found, null otherwise.
+     * @author Mehmet Kutay Bozkurt
      */
     public PollutionPolygon getPolygonAtScreenCoordinates(double x, double y, PollutionPolygonManager polygonManager) {
         for (PollutionPolygon polygon : polygonManager.getPolygons()) {
@@ -39,9 +48,9 @@ public class PollutionLayerEventHandler {
 
     /**
      * Handles mouse click events on the canvas.
-     * Method by Mehmet Kutay Bozkurt
      * @param polygonManager The polygon manager class.
      * @param event The mouse event.
+     * @author Mehmet Kutay Bozkurt
      */
     public void handleMouseClick(PollutionPolygonManager polygonManager, MouseEvent event) {
         if (event.getButton() != MouseButton.SECONDARY) return; // Only handle right clicks.
@@ -50,9 +59,8 @@ public class PollutionLayerEventHandler {
         double y = event.getY();
 
         /*
-         *Get the exact coordinates of where the mouse is being clicked
+         * Get the exact coordinates of where the mouse is being clicked.
          * (https://stackoverflow.com/questions/38612350/getting-position-in-scene-of-a-node-with-localtoscenex-y-returns-wrong-value)
-         * TODO: add bounds for the right side of the window to prevent drawing outside of the application
          */
         double mouseX = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getX();
         double mouseY = event.getPickResult().getIntersectedNode().localToScreen(event.getX(), event.getY()).getY();
@@ -64,7 +72,11 @@ public class PollutionLayerEventHandler {
         PollutionPolygon clickedPolygon = getPolygonAtScreenCoordinates(x, y, polygonManager);
         Double pollutionValue = clickedPolygon == null ? null : clickedPolygon.getValue();
 
+        Window window = mapView.getScene().getWindow();
+        double width = window.getWidth();
+        double height = window.getHeight();
+
         // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, pollutionValue);
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, pollutionValue);
     }
 }

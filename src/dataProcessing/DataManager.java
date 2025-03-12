@@ -66,6 +66,7 @@ public class DataManager {
      * Get a list of available years in the data for a specific pollutant.
      * @param pollutant The pollutant to check for available years.
      * @return A list of available years.
+     * @apiNote The returned list is arbitrary and may not be sorted.
      */
     public List<Integer> getAvailableYears(Pollutant pollutant) {
         return dataPicker.getAvailableYears(pollutant);

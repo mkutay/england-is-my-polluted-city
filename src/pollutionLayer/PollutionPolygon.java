@@ -19,7 +19,7 @@ import utility.GeographicUtilities;
  * We use these approximate squares to account for curvature of the earth, making a seamless grid mapped onto the earth
  *
  * @author Anas Ahmed
- * @version 1.1
+ * @version 2.0
  */
 public class PollutionPolygon {
     private final int topLeftEasting; // The easting value of the top left corner.
@@ -138,7 +138,6 @@ public class PollutionPolygon {
      * This method is taken from this StackOverflow answer:
      * https://stackoverflow.com/a/2922778/28383027 on 2025-03-09.
      *
-     * Code by Mehmet Kutay Bozkurt
      * @param x The x coordinate in screen space.
      * @param y The y coordinate in screen space.
      * @return True if the point is inside the polygon, false otherwise.

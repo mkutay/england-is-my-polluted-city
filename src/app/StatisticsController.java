@@ -12,9 +12,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Handles all statistics ui elements
- * TODO implement fully and make gooder
- * Refactor class by Anas Ahmed
+ * Handles all statistics UI elements and changes.
+ * TODO: implement fully and make gooder
+ * 
+ * Refactor class by Anas Ahmed.
  * @author Mehmet Kutay Bozkurt
  */
 public class StatisticsController {

@@ -13,7 +13,7 @@ import java.util.Map;
  * A popup that displays information about a location on the map.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 1.1
+ * @version 2.0
  */
 public class InfoPopup extends Popup {
     private static final String TITLE_STYLE = "-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333333;";
@@ -31,7 +31,7 @@ public class InfoPopup extends Popup {
      * Constructor -- Creates a new info popup with an enhanced visual design.
      */
     public InfoPopup() {
-        // Initialize labels with appropriate styles
+        // Initialize labels with appropriate styles:
         titleLabel = new Label("Location Information");
         titleLabel.setStyle(TITLE_STYLE);
         
@@ -39,20 +39,20 @@ public class InfoPopup extends Popup {
 
         pollutionLabel = new Label();
 
-        //Labels associated with address
+        // Labels associated with address:
         boroughLabel = new Label();
         countryLabel = new Label();
         postcodeLabel = new Label();
 
         
-        // Create drop shadow effect for the popup
+        // Create drop shadow effect for the popup:
         DropShadow dropShadow = new DropShadow();
         dropShadow.setColor(Color.rgb(0, 0, 0, 0.3));
         dropShadow.setRadius(5.0);
         dropShadow.setOffsetX(2.0);
         dropShadow.setOffsetY(2.0);
         
-        // Set up the content container
+        // Set up the content container:
         VBox content = new VBox(10, titleLabel, coordinatesLabel, pollutionLabel, boroughLabel, countryLabel, postcodeLabel);
         content.setPadding(new Insets(12));
         content.setStyle(CONTENT_STYLE);
@@ -65,21 +65,20 @@ public class InfoPopup extends Popup {
     
     /**
      * Updates the popup with information about a location.
-     * 
      * @param latitude The latitude of the location.
      * @param longitude The longitude of the location.
      * @param pollutionValue The pollution value at the location, or null if unknown.
-     * @param addressDetails A HashMap containing the address details of the queried point, or null if unknown.
+     * @param addressDetails A Map containing the address details of the queried point, or null if unknown.
      */
     public void update(double latitude, double longitude, Double pollutionValue, Map<String, String> addressDetails) {
-        // Format coordinate display with appropriate precision
+        // Format coordinate display with appropriate precision:
         coordinatesLabel.setText(String.format("Coordinates: %.6f, %.6f", latitude, longitude));
         String boroughDetails = addressDetails.get("borough");
         String countryDetails = addressDetails.get("country");
         String postcodeDetails = addressDetails.get("postcode");
 
 
-        // Set pollution information if available
+        // Set pollution information if available:
         if (pollutionValue != null) {
             pollutionLabel.setText(String.format("Pollution level: %.2f ppm", pollutionValue));
             pollutionLabel.setVisible(true);
@@ -88,7 +87,8 @@ public class InfoPopup extends Popup {
             pollutionLabel.setVisible(true);
         }
         
-        // Set address information if available
+        // Set address information if available:
+
         if (boroughDetails != null && !boroughDetails.isEmpty()) {
             boroughLabel.setText("County / Borough: " + boroughDetails);
             boroughLabel.setVisible(true);
@@ -96,6 +96,7 @@ public class InfoPopup extends Popup {
             boroughLabel.setText("County / Borough: Not available");
             boroughLabel.setVisible(true);
         }
+
         if (countryDetails != null && !countryDetails.isEmpty()) {
             countryLabel.setText("Country: " + countryDetails);
             countryLabel.setVisible(true);

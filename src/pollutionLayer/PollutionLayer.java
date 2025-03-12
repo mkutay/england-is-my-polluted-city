@@ -3,17 +3,14 @@ package pollutionLayer;
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 
-import colors.ColorScheme;
-import colors.DefaultColorScheme;
-import dataProcessing.*;
+import colors.*;
+import dataProcessing.DataSet;
 import infoPopup.MapClickHandler;
 import utility.CustomMapView;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 
 /**
  * Class for pollution rendering on the map. Handles rendering pollution data as polygons
@@ -34,11 +31,7 @@ public class PollutionLayer extends MapLayer {
     private final ColorScheme colorScheme;
     private double polygonOpacity = 0.7;
 
-    // Callback interface for click events:
-    private final MapClickHandler clickHandler;
-
     /**
-     * TODO: Dynamic dataset updating -- important.
      * Initialises the PollutionLayer.
      * @param mapView The map view to render the pollution layer on.
      * @param dataSet The currently used dataset.
@@ -49,16 +42,14 @@ public class PollutionLayer extends MapLayer {
         pollutionPolygonManager = new PollutionPolygonManager(dataSet);
         pollutionLayerEventHandler = new PollutionLayerEventHandler(clickHandler, mapView);
 
-        this.clickHandler = clickHandler; // TODO: Move away from this class into another.
         this.colorScheme = new DefaultColorScheme();
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
         this.getChildren().add(canvas);
 
-        // Add click event handler to the canvas TODO refactor
-        canvas.setOnMouseClicked(
-                e-> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, e));
+        // Add click event handler to the canvas. TODO refactor
+        canvas.setOnMouseClicked(e -> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, e));
 
         pollutionPolygonManager.updatePollutionPolygons(mapView);
     }
@@ -73,7 +64,7 @@ public class PollutionLayer extends MapLayer {
     }
 
     /**
-     * Draw all polygons to the canvas
+     * Draw all polygons to the canvas.
      */
     private void renderPolygons() {
         double iconSize = 1000 * pollutionPolygonManager.getCurrentLevelOfDetail() * mapView.getPixelScale();

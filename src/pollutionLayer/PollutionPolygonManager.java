@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Organises generating, updating and querying pollution polygons
- * Handles Level Of Detail updates
+ * Organises generating, updating and querying pollution polygons.
+ * Handles Level Of Detail updates.
  *
  * @author Anas Ahmed
+ * @version 2.0
  */
 public class PollutionPolygonManager {
     private final List<PollutionPolygon> polygons;
@@ -22,6 +23,9 @@ public class PollutionPolygonManager {
     private int currentLODIndex = -1;
     private final static int NUMBER_OF_LODS = 4;
 
+    /**
+     * Constructor.
+     */
     public PollutionPolygonManager(DataSet dataSet) {
         polygons = new ArrayList<>();
         lodManager = new LODManager(dataSet, NUMBER_OF_LODS);
@@ -58,7 +62,7 @@ public class PollutionPolygonManager {
 
     /**
      * Generates pollution data polygons from the CSV files.
-     * Should be called every time a LOD change is detected
+     * Should be called every time a LOD change is detected.
      */
     public void updatePollutionPolygons(CustomMapView mapView) {
         int lodIndex = lodManager.getLODIndex(mapView.getPixelScale(), mapView.getWidth(), mapView.getHeight());
@@ -68,11 +72,9 @@ public class PollutionPolygonManager {
         generatePollutionPolygons(lodManager.getLODData(currentLODIndex));
     }
 
-    public List<PollutionPolygon> getPolygons() {
-        return polygons;
-    }
-
-    public int getCurrentLevelOfDetail(){
+    // Getters:
+    public int getCurrentLevelOfDetail() {
         return lodManager.getLODData(currentLODIndex).getLevelOfDetail();
     }
+    public List<PollutionPolygon> getPolygons() { return polygons; }
 }

@@ -1,31 +1,34 @@
 package app;
 
 import com.gluonhq.maps.MapPoint;
+
+import javafx.stage.Stage;
+
 import dataProcessing.DataManager;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
-import infoPopup.InfoPopup;
 import infoPopup.MapClickHandler;
-import javafx.stage.Stage;
 import pollutionLayer.PollutionLayer;
 import utility.CustomMapView;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
- * Handles all the map UI elements, like the map layer, pollution rendering, popups
- * Receives requests to update the map data
+ * Handles all the map UI elements, like the map layer, pollution rendering, and popups.
+ * Receives requests to update the map data.
  *
- * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors
+ * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors.
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  */
 public class MapController {
     private final CustomMapView mapView;
     private final MapClickHandler clickHandler;
+
     private PollutionLayer pollutionLayer;
+    private boolean pollutionLayerInitialised = false;
 
-    private boolean pollutionLayerInitialized = false;
-
+    /**
+     * Constructor for MapController.
+     * @param stage The current stage.
+     */
     public MapController(Stage stage) {
         mapView = new CustomMapView();
         clickHandler = new MapClickHandler(stage);
@@ -33,14 +36,18 @@ public class MapController {
         setupMapView();
     }
 
-
-    public void initialisePollutionLayer(int year, Pollutant pollutant, DataManager dataManager) {
-        updateMapDataSet(year, pollutant, dataManager);
-        pollutionLayerInitialized = true;
+    /**
+     * Initialises the pollution layer on the map with some data.
+     * @param year The year to initialise with.
+     * @param pollutant The pollutant to initialise with.
+     */
+    public void initialisePollutionLayer(int year, Pollutant pollutant) {
+        updateMapDataSet(year, pollutant);
+        pollutionLayerInitialised = true;
     }
 
     /**
-     * Sets the initial position of the MapView onto London, and initialises the default zoom
+     * Sets the initial position of the MapView onto London, and initialises the default zoom.
      */
     private void setupMapView() {
         mapView.flyTo(0, new MapPoint(51.508045, -0.128217), 0.01);
@@ -48,23 +55,28 @@ public class MapController {
     }
 
     /**
-     * Gets the map view
-     * @throws PollutionLayerNotInitialisedException If pollution layer is not initialised
+     * @return The map view.
+     * @throws PollutionLayerNotInitialisedException If pollution layer is not initialised.
      */
     public CustomMapView getMapView() throws PollutionLayerNotInitialisedException {
-        if (!pollutionLayerInitialized) {
-            throw new PollutionLayerNotInitialisedException("Map is not initialised. Call initialisePollutionLayer first.");
-        }
-        return mapView;
+        if (pollutionLayerInitialised) return mapView;
+
+        throw new PollutionLayerNotInitialisedException("Map is not initialised. Call initialisePollutionLayer first.");
     }
 
+    /**
+     * Updates the map data set with the new year and pollutant.
+     * @param year The year to update to.
+     * @param pollutant The pollutant to update to.
+     */
+    public void updateMapDataSet(int year, Pollutant pollutant) {
+        if (pollutionLayer != null) mapView.removeLayer(pollutionLayer);
 
-    public void updateMapDataSet(int year, Pollutant pollutant, DataManager dataManager) {
-        if (pollutionLayer != null) {mapView.removeLayer(pollutionLayer);}
-
+        DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
+
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
-        mapView.addLayer(pollutionLayer); //add back the new pollution layer
+        mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }
 }
