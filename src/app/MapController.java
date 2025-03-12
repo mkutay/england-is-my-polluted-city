@@ -28,8 +28,7 @@ public class MapController {
 
     public MapController(Stage stage) {
         mapView = new CustomMapView();
-        InfoPopup infoPopup = new InfoPopup(); //TODO is this nessesary? can we create this inside of mapclickhandler?
-        clickHandler = new MapClickHandler(infoPopup, stage);
+        clickHandler = new MapClickHandler(stage);
 
         setupMapView();
     }
