@@ -70,73 +70,24 @@ public class App extends Application {
         mapView.addLayer(mapLayer);
         mapView.setZoom(10);
 
-        // Create a Vbox for the side panel next to the map holding the dropdown menus to select pollutant and year
-        VBox sidePanel = new VBox(10);
-        sidePanel.setStyle("-fx-padding: 10; -fx-background-color: #f4f4f4;");
+        //create SidePanel
+        SidePanel sidePanel = SidePanel.getInstance(dataManager, PROJECT_NAME);
 
-        //Create Label / title for the side panel
-        Label applicationLabel = new Label(PROJECT_NAME);
-        applicationLabel.setStyle("-fx-spacing: 10; -fx-font-weight: bold; -fx-font-size: 30px;");
-
-        // Dropdown menu for pollutant selection wrapped in a VBox
-        Label pollutantLabel = new Label("Pollutant:");
-        ComboBox<Pollutant> pollutantDropdown = new ComboBox<>();
-
-        //Add all pollutants to the dropdown
-        pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
-
-        pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
-        pollutantDropdown.setPromptText("Select Pollutant"); //Fallback
-        pollutantDropdown.getSelectionModel().select(0); //set default as NO2
-        VBox pollutantDropdownBox = new VBox(6, pollutantLabel, pollutantDropdown);
-
-        //Modifies appearance of each item in dropdown menu
-        pollutantDropdown.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(Pollutant item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName());
-            }
-        });
-
-        //Modifies appearance of selected item (button cell) in dropdown menu
-        pollutantDropdown.setButtonCell(new ListCell<>() {
-            @Override
-            protected void updateItem(Pollutant item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? "" : item.getDisplayName());
-            }
-        });
-
-        // Dropdown menu for year selection wrapped in a VBox
-        Label yearLabel = new Label("Year:");
-        ComboBox<Integer> yearDropdown = new ComboBox<>();
-        for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
-            yearDropdown.getItems().addAll(c);
-        }
-        
-        yearDropdown.setMaxWidth(Double.MAX_VALUE);
-        yearDropdown.setPromptText("Select Year"); //Fallback
-        yearDropdown.getSelectionModel().select(0); //set default as 2023
-        VBox yearDropdownBox = new VBox(6, yearLabel, yearDropdown);
 
         //Listener to change the pollutant on the map
-        pollutantDropdown.setOnAction(e -> {
-            System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
-            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
+        sidePanel.getPollutantDropdown().setOnAction(e -> {
+            System.out.println("Selected Pollutant: " + sidePanel.getPollutantDropdown().getValue());
+            updateMapDataSet(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
 
         });
 
 
         //Listener to change the year on the map
-        yearDropdown.setOnAction(e -> {
-            System.out.println("Selected Year: " + yearDropdown.getValue());
-            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
+        sidePanel.getYearDropdown().setOnAction(e -> {
+            System.out.println("Selected Year: " + sidePanel.getYearDropdown().getValue());
+            updateMapDataSet(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
         });
 
-
-        // Add items to the side panel
-        sidePanel.getChildren().addAll(applicationLabel, pollutantDropdownBox, yearDropdownBox);
 
 
         stage.setTitle("England is my Polluted City");
@@ -149,7 +100,7 @@ public class App extends Application {
          * Place the side panel to the left of the map
          */
         BorderPane root = new BorderPane();
-        root.setLeft(sidePanel);
+        root.setLeft(sidePanel.getSidePanel());
         root.setCenter(mapView);
 
 
