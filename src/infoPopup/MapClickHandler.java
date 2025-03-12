@@ -12,7 +12,7 @@ import javafx.stage.Stage;
  * @author Mehmet Kutay Bozkurt
  * @version 1.1
  */
-public class MapClickHandler {
+public class MapClickHandler { //TODO refactor and likely rename
     private static final int POPUP_OFFSET_X = 10;
     private static final int POPUP_OFFSET_Y = 10;
     
