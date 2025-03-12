@@ -1,0 +1,17 @@
+/* styles for menu bar */
+.top-nav {
+    -fx-padding: 5px;
+}
+
+/* styles for side panel */
+.side-panel {
+    -fx-padding: 10;
+    -fx-background-color: #f4f4f4;
+}
+
+/* styles for title */
+.app-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 30px;
+    -fx-text-fill: #333;
+}

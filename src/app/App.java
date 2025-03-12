@@ -36,14 +36,15 @@ public class App extends Application {
         mapController.initialisePollutionLayer(2020, Pollutant.NO2, dataManager);
 
         BorderPane root = new BorderPane();
+        root.setTop(uiController.getTopNav());
         root.setLeft(uiController.getSidePanel());
         root.setCenter(mapController.getMapView());
 
         Scene scene = new Scene(root, 900, 900);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("resources/style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

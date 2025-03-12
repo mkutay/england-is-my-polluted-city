@@ -5,6 +5,9 @@ import dataProcessing.Pollutant;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 
 import java.util.Arrays;
 
@@ -16,6 +19,7 @@ import java.util.Arrays;
  */
 public class UIController {
     private final VBox sidePanel;
+    private final MenuBar topNavBar;
     private final DataManager dataManager;
     private ComboBox<Pollutant> pollutantDropdown;
     private ComboBox<Integer> yearDropdown;
@@ -28,20 +32,24 @@ public class UIController {
     public UIController(DataManager dataManager, MapController mapController) {
         this.dataManager = dataManager;
 
-        // Create a Vbox for the side panel next to the map holding the dropdown menus to select pollutant and year
-        sidePanel = new VBox(10);
-        sidePanel.setStyle("-fx-padding: 10; -fx-background-color: #f4f4f4;");
+        // Create top navigation bar - currently has file and help menu
+        topNavBar = createTopNavBar();
+        topNavBar.getStyleClass().add("top-nav");
 
-        initialiseUI(mapController);
+        // Create a Vbox for the side panel next to the map holding the dropdown menus to select pollutant and year
+        sidePanel = createSidePanel(mapController);
+        sidePanel.getStyleClass().add("side-panel");
     }
 
     /**
      * Initialises the UI, creating all UI elements and adding them to the side panel.
+     * @return side panel
      */
-    private void initialiseUI(MapController mapController) {
+    private VBox createSidePanel(MapController mapController) {
+        VBox sidePanel = new VBox(10);
         //Create Label / title for the side panel
         Label applicationLabel = new Label("UK Pollution Explorer");
-        applicationLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 30px;");
+        applicationLabel.getStyleClass().add("app-title");
 
         //Create VBox containing dropdown menus
         VBox pollutantDropdownBox = createPollutantDropdownBox(mapController);
@@ -49,6 +57,30 @@ public class UIController {
 
         //Add dropdown menus to side panel
         sidePanel.getChildren().addAll(applicationLabel, pollutantDropdownBox, yearDropdownBox);
+        return sidePanel;
+    }
+
+    /**
+     * Creates menus file and help, then adds to top navigation bar.
+     * @return top navigation bar
+     */
+    private MenuBar createTopNavBar() {
+        MenuBar topNavBar = new MenuBar();
+
+        //File Menu
+        Menu fileMenu = new Menu("File");
+        MenuItem exitItem = new MenuItem("Exit");
+        exitItem.setOnAction(e -> System.exit(0));
+        fileMenu.getItems().add(exitItem);
+
+        //Help Menu
+        Menu helpMenu = new Menu("Help");
+        MenuItem aboutItem = new MenuItem("About");
+        //aboutItem.setOnAction(e -> );
+        helpMenu.getItems().add(aboutItem);
+
+        topNavBar.getMenus().addAll(fileMenu, helpMenu);
+        return topNavBar;
     }
 
     /**
@@ -72,7 +104,6 @@ public class UIController {
 
         return new VBox(6, label, pollutantDropdown);
     }
-
 
     /**
      * Sets up the pollutant dropdown
@@ -135,4 +166,5 @@ public class UIController {
     public VBox getSidePanel() {
         return sidePanel;
     }
+    public MenuBar getTopNav() { return topNavBar; }
 }
