@@ -7,21 +7,25 @@ package dataProcessing;
  * @version 1.0
  */
 public enum Pollutant {
-    NO2("NO2"), PM2_5("PM2_5"), PM10("PM10");
+    NO2, PM2_5, PM10;
 
-    private final String name;
-    Pollutant(String name) {
-        this.name = name;
-    }
     @Override
-    public String toString(){
-        return name;
+    public String toString() {
+        return switch (this) {
+            case NO2 -> "NO2";
+            case PM2_5 -> "PM2_5";
+            case PM10 -> "PM10";
+        };
     }
 
-    // returns default enum name, except for pollutant PM2_5
+    /**
+     * @return The display name of the pollutant.
+     */
     public String getDisplayName() {
-        if (this == PM2_5) return "PM2.5";
-        return name();
+        return switch (this) {
+            case NO2 -> "NO2";
+            case PM2_5 -> "PM2.5";
+            case PM10 -> "PM10";
+        };
     }
-
 }

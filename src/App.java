@@ -11,15 +11,23 @@ import infoPopup.MapClickHandler;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pollutionLayer.PollutionLayer;
+import statistics.back.StatisticsManager;
+import statistics.back.StatisticsResult;
+import statistics.ui.StatisticsPanel;
+import statistics.ui.StatisticsPanelFactory;
 import utility.CustomMapView;
 
 import java.util.Arrays;
-
-import static com.gluonhq.maps.MapLayer.*;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Main App class
@@ -52,7 +60,7 @@ public class App extends Application {
         infoPopup = new InfoPopup();
 
         // Create map click handler and set it as the click listener
-         clickHandler = new MapClickHandler(infoPopup, primaryStage);
+        clickHandler = new MapClickHandler(infoPopup, primaryStage);
 
         //Create a map view and PollutionLayer, adding the PollutionLayer to the map view
         mapView = new CustomMapView();
@@ -62,31 +70,73 @@ public class App extends Application {
         mapView.addLayer(mapLayer);
         mapView.setZoom(10);
 
-        //Create the SidePanel
-        SidePanel sidePanel = SidePanel.getInstance(dataManager, PROJECT_NAME);
+        // Create a Vbox for the side panel next to the map holding the dropdown menus to select pollutant and year
+        VBox sidePanel = new VBox(10);
+        sidePanel.setStyle("-fx-padding: 10; -fx-background-color: #f4f4f4;");
+
+        //Create Label / title for the side panel
+        Label applicationLabel = new Label(PROJECT_NAME);
+        applicationLabel.setStyle("-fx-spacing: 10; -fx-font-weight: bold; -fx-font-size: 30px;");
+
+        // Dropdown menu for pollutant selection wrapped in a VBox
+        Label pollutantLabel = new Label("Pollutant:");
+        ComboBox<Pollutant> pollutantDropdown = new ComboBox<>();
+
+        //Add all pollutants to the dropdown
+        pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
+
+        pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
+        pollutantDropdown.setPromptText("Select Pollutant"); //Fallback
+        pollutantDropdown.getSelectionModel().select(0); //set default as NO2
+        VBox pollutantDropdownBox = new VBox(6, pollutantLabel, pollutantDropdown);
+
+        //Modifies appearance of each item in dropdown menu
+        pollutantDropdown.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getDisplayName());
+            }
+        });
+
+        //Modifies appearance of selected item (button cell) in dropdown menu
+        pollutantDropdown.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item.getDisplayName());
+            }
+        });
+
+        // Dropdown menu for year selection wrapped in a VBox
+        Label yearLabel = new Label("Year:");
+        ComboBox<Integer> yearDropdown = new ComboBox<>();
+        for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
+            yearDropdown.getItems().addAll(c);
+        }
+        
+        yearDropdown.setMaxWidth(Double.MAX_VALUE);
+        yearDropdown.setPromptText("Select Year"); //Fallback
+        yearDropdown.getSelectionModel().select(0); //set default as 2023
+        VBox yearDropdownBox = new VBox(6, yearLabel, yearDropdown);
 
         //Listener to change the pollutant on the map
-        sidePanel.getPollutantDropdown().setOnAction(e -> {
-            System.out.println("Selected Pollutant: " + sidePanel.getPollutantDropdown().getValue());
-
-//            //Refresh the year drop down for the current pollutant by removing all the current items and adding them back in
-//            //TODO: could we make this more elegant and prevent the reuse of code from the main initialisation?
-//            int currentYearSelected = yearDropdown.getValue();
-//            yearDropdown.getItems().removeAll(yearDropdown.getItems());
-//            for (Integer c : dataManager.getAvailableYears(pollutantDropdown.getValue())){
-//                yearDropdown.getItems().addAll(c);
-//            }
-//            yearDropdown.getSelectionModel().select(0); //Set the first year from the list
-            changeMapValues(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
+        pollutantDropdown.setOnAction(e -> {
+            System.out.println("Selected Pollutant: " + pollutantDropdown.getValue());
+            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
 
         });
 
 
         //Listener to change the year on the map
-        sidePanel.getYearDropdown().setOnAction(e -> {
-            System.out.println("Selected Year: " + sidePanel.getYearDropdown().getValue());
-            changeMapValues(sidePanel.getYearDropdown().getValue(), sidePanel.getPollutantDropdown().getValue());
+        yearDropdown.setOnAction(e -> {
+            System.out.println("Selected Year: " + yearDropdown.getValue());
+            updateMapDataSet(yearDropdown.getValue(), pollutantDropdown.getValue());
         });
+
+
+        // Add items to the side panel
+        sidePanel.getChildren().addAll(applicationLabel, pollutantDropdownBox, yearDropdownBox);
 
 
         stage.setTitle("England is my Polluted City");
@@ -99,11 +149,13 @@ public class App extends Application {
          * Place the side panel to the left of the map
          */
         BorderPane root = new BorderPane();
-        root.setLeft(sidePanel.getSidePanel());
+        root.setLeft(sidePanel);
         root.setCenter(mapView);
 
 
         Scene scene = new Scene(root, 900, 900);
+
+        // showStatsPanel(stage);
 
         stage.setScene(scene);
         stage.show();
@@ -115,11 +167,11 @@ public class App extends Application {
     }
 
     /**
-     * A function that changes the
+     * A function that updates the map dataset
      * @param year Year as an integer from the
      * @param pollutant The Pollutant enum value (e.g NO2, PM10)
      */
-    private void changeMapValues(int year, Pollutant pollutant){
+    private void updateMapDataSet(int year, Pollutant pollutant){
         //remove the original pollutionLayer
         mapView.removeLayer(pollutionLayer);
         //Modify the pollution layer
@@ -133,5 +185,20 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void showStatsPanel(Stage stage) {
+        StatisticsManager sm = StatisticsManager.getInstance();
+        Map<String, StatisticsResult> m = sm.calculateStatisticsOverTime(Pollutant.PM10, 2018, 2023);
+        Iterator<String> it = m.keySet().iterator();
+        it.next();
+        it.next();
+        StatisticsResult sr = m.get(it.next());
+        System.out.println(sr.getTitle());
+
+        StatisticsPanel statsRoot = StatisticsPanelFactory.createPanel(sr);
+        Scene scene = new Scene(statsRoot, 900, 900);
+        stage.setScene(scene);
+        stage.show();
     }
 }
