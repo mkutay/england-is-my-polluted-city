@@ -1,5 +1,7 @@
 package dataProcessing;
 
+import java.util.Map;
+
 /**
  * Enum for the different pollutants that can be displayed on the map.
  * 
@@ -9,6 +11,24 @@ package dataProcessing;
 public enum Pollutant {
     NO2, PM2_5, PM10;
 
+    /**
+     * Concentration bands include an array of 9 integers
+     * The indexes of this array refer to the following:
+     * 0 - 2: Low Band
+     * 3 - 5: Moderate Band
+     * 6 - 8 : High Band
+     * 9: Very High band
+     */
+    public final static Map<Pollutant, int[]> CONCENTRATION_BANDS = Map.of(
+            NO2, new int[]{68, 135, 201, 268, 335, 401, 468, 535, 601},
+            PM2_5, new int[]{11, 24, 36, 42, 48, 54, 59, 65, 71},
+            PM10, new int[]{17, 34, 51, 59, 67, 76, 84, 92, 101}
+    );
+
+    /**
+     * All data is in microgram per meter cubed. This string is the symbol for that
+     */
+    public final static String UNITS = "µg/m³";
     /**
      * Returns an index depending on the level of severity of the pollution concentration.
      * Most inputs will not yield above 1 or 2, but data conditions are fully represented here for completeness
@@ -20,45 +40,16 @@ public enum Pollutant {
      * Data taken from https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm25#pollutant
      *
      * @param pollutionConcentration Pollution Concentration expressed as ug/m^3
-     * @return
+     * @return the pollution band this pollution falls into
      */
-    public int getPollutionLevel(double pollutionConcentration){
-        return switch (this){
-            case PM2_5:
-                if (pollutionConcentration >= 71) yield 10;
-                else if (pollutionConcentration >= 65) yield 9;
-                else if (pollutionConcentration >= 59) yield 8;
-                else if (pollutionConcentration >= 54) yield 7;
-                else if (pollutionConcentration >= 48) yield 6;
-                else if (pollutionConcentration >= 42) yield 5;
-                else if (pollutionConcentration >= 36) yield 4;
-                else if (pollutionConcentration >= 24) yield 3;
-                else if (pollutionConcentration >= 11) yield 2;
-                else yield 1;
-            case NO2:
-                if (pollutionConcentration >= 601) yield 10;
-                else if (pollutionConcentration >= 535) yield 9;
-                else if (pollutionConcentration >= 468) yield 8;
-                else if (pollutionConcentration >= 401) yield 7;
-                else if (pollutionConcentration >= 335) yield 6;
-                else if (pollutionConcentration >= 268) yield 5;
-                else if (pollutionConcentration >= 201) yield 4;
-                else if (pollutionConcentration >= 135) yield 3;
-                else if (pollutionConcentration >= 68) yield 2;
-                else yield 1;
-            case PM10:
-                if (pollutionConcentration >= 101) yield 10;
-                else if (pollutionConcentration >= 92) yield 9;
-                else if (pollutionConcentration >= 84) yield 8;
-                else if (pollutionConcentration >= 76) yield 7;
-                else if (pollutionConcentration >= 67) yield 6;
-                else if (pollutionConcentration >= 59) yield 5;
-                else if (pollutionConcentration >= 51) yield 4;
-                else if (pollutionConcentration >= 34) yield 3;
-                else if (pollutionConcentration >= 17) yield 2;
-                else yield 1;
-
-        };
+    public static int getPollutionLevel(Pollutant pollutant, double pollutionConcentration){
+        int[] concentrationBand = CONCENTRATION_BANDS.get(pollutant);
+        for (int i = 0; i < concentrationBand.length; i++) {
+            if (pollutionConcentration < concentrationBand[i]) {
+                return i + 1;
+            }
+        }
+        return concentrationBand.length + 1;
     }
 
     @Override

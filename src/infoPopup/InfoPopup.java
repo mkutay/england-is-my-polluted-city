@@ -1,5 +1,6 @@
 package infoPopup;
 
+import dataProcessing.Pollutant;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -127,7 +128,7 @@ public class InfoPopup extends Popup {
 
         // Set pollution information if available:
         if (pollutionValue != null) {
-            pollutionInformation.setText(String.format("%.2f \u00B5g/m\u00B3", pollutionValue)); //displays microgram per meter cubed
+            pollutionInformation.setText(String.format("%.2f" + Pollutant.UNITS, pollutionValue)); //displays micrograms per meter cubed
         } else {
             pollutionInformation.setText("Not available");
         }

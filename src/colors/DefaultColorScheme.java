@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
  * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
-public class DefaultColorScheme implements ColorScheme {
+public class DefaultColorScheme extends ColorScheme {
     @Override
     public Color getColor(double normalisedValue) {
         // Ensure value is within range:

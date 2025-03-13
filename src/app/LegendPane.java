@@ -1,5 +1,6 @@
 package app;
 
+import dataProcessing.Pollutant;
 import javafx.animation.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -8,22 +9,26 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+/**
+ * Adds a legend that displays the pollution level and its corresponding colour
+ * @author Chelsea Feliciano
+ */
 public class LegendPane extends VBox {
-    private Label titleLabel;
-    private Label titleIcon;
-    private VBox content;
+    private final VBox content;
     private boolean expanded = false;
 
     public LegendPane() {
-        getStyleClass().add("legend-pane");
-
         HBox header = new HBox();
-        titleLabel = new Label("Legend");
+        Label titleLabel = new Label("Legend");
+        Label titleIcon = new Label("☰");
+
         titleLabel.getStyleClass().add("legend-title");
-        titleIcon = new Label("☰");
         titleIcon.getStyleClass().add("legend-title-icon");
+
         header.getChildren().addAll(titleIcon, titleLabel);
         header.getStyleClass().add("legend-header");
+        getStyleClass().add("legend-pane");
+
 
         // Content area (initially hidden)
         content = new VBox();
@@ -31,16 +36,34 @@ public class LegendPane extends VBox {
         content.setVisible(false); // Start hidden
         content.setManaged(false); // Prevent layout from affecting surrounding elements
 
-        // Add pollutant ranges (visible when expanded)
-        addLegendItem("0-3 ppm", Color.GREEN);
-        addLegendItem("3-6 ppm", Color.ORANGE);
-        addLegendItem(">6 ppm", Color.RED);
-
         getChildren().addAll(header, content);
         getStyleClass().add("legend-pane");
 
         // Toggle visibility when clicking the title
         header.setOnMouseClicked(e -> toggle());
+    }
+
+    public void updateLegend(Pollutant currentPollutant){
+        int[] bands = Pollutant.CONCENTRATION_BANDS.get(currentPollutant); //Get pollutant concentration data
+
+        //Get the values of the concentration at each band lower boundary and upper boundary
+        int lowBandLower = 0, lowBandUpper = bands[2];
+        int moderateBandLower = lowBandUpper + 1, moderateBandUpper = bands[5];
+        int highBandLower = moderateBandUpper + 1, highBandUpper = bands[8];
+        int veryHighBand = bands[9];
+
+        String lowLabel = formatRange(lowBandLower, lowBandUpper);
+        String moderateLabel = formatRange(moderateBandLower, moderateBandUpper);
+        String highLabel = formatRange(highBandLower, highBandUpper);
+        String veryHighLabel = ">" + veryHighBand + " " + Pollutant.UNITS;
+    }
+
+    /**
+     * Formats string for legend
+     * @return A string of the form: "low-high µg/m³"
+     */
+    private String formatRange(int low, int high) {
+        return low + "-" + high + " " + Pollutant.UNITS;
     }
 
     private void addLegendItem(String label, Color color) {
@@ -50,6 +73,10 @@ public class LegendPane extends VBox {
         Circle colorBox = new Circle(7.5,color);
         item.getChildren().addAll(colorBox, itemLabel);
         content.getChildren().add(item);
+    }
+
+    private void clearLegendItems(){
+        content.getChildren().clear();
     }
 
     private void toggle() {
