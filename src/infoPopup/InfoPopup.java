@@ -127,7 +127,7 @@ public class InfoPopup extends Popup {
 
         // Set pollution information if available:
         if (pollutionValue != null) {
-            pollutionInformation.setText(String.format("%.2f ppm", pollutionValue));
+            pollutionInformation.setText(String.format("%.2f \u00B5g/m\u00B3", pollutionValue)); //displays microgram per meter cubed
         } else {
             pollutionInformation.setText("Not available");
         }
