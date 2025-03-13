@@ -75,7 +75,7 @@ public abstract class StatisticsPanel extends BorderPane {
         
         return header;
     }
-    
+
     /**
      * Initialise the main statistics content of the panel.
      * This method should be implemented by subclasses to display

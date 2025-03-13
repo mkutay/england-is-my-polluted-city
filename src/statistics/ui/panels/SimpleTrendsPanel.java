@@ -50,7 +50,7 @@ public class SimpleTrendsPanel extends StatisticsPanel {
             // Add snapshot data if no time series
             Double totalPollution = (Double) statisticsResult.getValue("totalPollution");
             Double avgPollution = (Double) statisticsResult.getValue("averagePollution");
-            Integer dataPointCount = (Integer) statisticsResult.getValue("dataPointCount");
+            Long dataPointCount = (Long) statisticsResult.getValue("dataPointCount");
             
             if (totalPollution != null) {
                 addKeyValueRow("Total Pollution", formatDouble(totalPollution));
