@@ -2,13 +2,11 @@ package app;
 
 import colors.ColorSchemeManager;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.scene.layout.StackPane;
 import dataProcessing.Pollutant;
-import utility.Namer;
+
 import app.uiControllers.StatisticsController;
 
 /**
@@ -21,6 +19,8 @@ import app.uiControllers.StatisticsController;
  * @version 3.0
  */
 public class App extends Application {
+    public static final String APP_NAME = "UK Emissions Interactive Map";
+
     private static MapController mapController;
     private UIController uiController;
     private StatisticsController statisticsController;
@@ -28,7 +28,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws PollutionLayerNotInitialisedException {
-        stage.setTitle(Namer.APP_NAME);
+        stage.setTitle(APP_NAME);
 
         colorSchemeManager = new ColorSchemeManager();
         mapController = new MapController(stage, colorSchemeManager);
@@ -39,14 +39,14 @@ public class App extends Application {
 
         mapController.initialisePollutionLayer(2018, Pollutant.NO2);
         uiController = new UIController(mapController, statisticsController, root);
-        
+
         root.setTop(uiController.getTopNav());
         root.setLeft(uiController.getSidePanel());
         root.setCenter(mapController.getMapOverlay());
 
         Scene scene = new Scene(root, 900, 900);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
-        
+
         stage.setScene(scene);
         stage.show();
     }
