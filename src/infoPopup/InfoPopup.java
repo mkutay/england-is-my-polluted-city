@@ -21,14 +21,12 @@ public class InfoPopup extends Popup {
     private static final String CONTENT_STYLE = "-fx-background-color: white; -fx-border-color: #cccccc; -fx-border-width: 1px; -fx-background-radius: 4px; -fx-border-radius: 4px;";
     private static final String LABEL_STYLE = "-fx-font-weight: bold";
 
-
     //Declare TextFlow to store the labels of the popup
     private final TextFlow coordinatesFlow;
     private final TextFlow pollutionFlow;
     private final TextFlow boroughFlow;
     private final TextFlow postcodeFlow;
     private final TextFlow countryFlow;
-
 
     private final Label titleLabel;
     private final Label coordinatesLabel;
@@ -87,8 +85,6 @@ public class InfoPopup extends Popup {
         boroughFlow.getChildren().addAll(boroughLabel, boroughInformation);
         countryFlow.getChildren().addAll(countryLabel, countryInformation);
         postcodeFlow.getChildren().addAll(postcodeLabel, postcodeInformation);
-
-
 
 
         // Create drop shadow effect for the popup:

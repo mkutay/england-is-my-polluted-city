@@ -81,6 +81,11 @@ public class MapClickHandler {
         }
     }
 
+    //TODO: Fill this in
+//    private Map<String, String> getRealtimeData(){
+//
+//    }
+
     private Map<String, String> getDefaultAddress() {
         return Map.of(
                 "borough", "Unknown",

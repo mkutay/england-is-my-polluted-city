@@ -57,7 +57,7 @@ public class PostcodeAPI {
      * @throws InterruptedException If the operation is interrupted on the network.
      */
     public static PostcodeResponse fetchPostcodesByEastingNorthing(int easting, int northing) throws IOException, InterruptedException {
-        MapPoint point = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);;
+        MapPoint point = GeographicUtilities.convertEastingNorthingToLatLon(easting, northing);
 
         String url = POSTCODES_API_BASE_URL + "postcodes?lon=" + point.getLongitude() + "&lat=" + point.getLatitude();
         
