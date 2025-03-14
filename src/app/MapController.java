@@ -4,7 +4,6 @@ import colors.ColorScheme;
 import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
-import dataProcessing.DataPoint;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -17,7 +16,7 @@ import pollutionLayer.PollutionLayer;
 import utility.CustomMapView;
 
 /**
- * Handles all the map UI elements, like the map layer, pollution rendering, and popups.
+ * Handles all the map UI elements, like the map layer, pollution rendering, point selection and popups.
  * Receives requests to update the map data.
  *
  * Refactor and class by Anas Ahmed, contributions of functionality attributed to all authors.
@@ -32,6 +31,7 @@ public class MapController {
     private final LegendPane legend;
 
     private PollutionLayer pollutionLayer;
+    private PollutionPolygonSelector pollutionPolygonSelector;
     private boolean pollutionLayerInitialised = false;
 
     /**
@@ -51,6 +51,8 @@ public class MapController {
         legend = new LegendPane();
         StackPane.setAlignment(legend, Pos.TOP_RIGHT);// Position legend near the top right of map
         mapOverlay.getChildren().addAll(mapView, legend); // Add elements to map overlay
+
+        //pollutionPolygonSelector = new PollutionPolygonSelector(mapView, mapOverlay);
 
         setupMapView();
     }

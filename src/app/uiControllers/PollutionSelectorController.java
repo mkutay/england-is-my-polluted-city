@@ -26,7 +26,7 @@ public class PollutionSelectorController {
     private final DataManager dataManager;
     private final ComboBox<Pollutant> pollutantDropdown;
     private final ComboBox<Integer> yearDropdown;
-    private final ComboBox<ColorScheme> colorDropdown;
+    private final ComboBox<ColorScheme> colorDropdown; //todo move to seperate class
     private TriConsumer<Integer, Pollutant, ColorScheme> onSelectionChangedCallback;
 
     /**
