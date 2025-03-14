@@ -20,31 +20,32 @@ public enum Pollutant {
      * 9: Very High band
      */
     public final static Map<Pollutant, int[]> CONCENTRATION_BANDS = Map.of(
-            NO2, new int[]{68, 135, 201, 268, 335, 401, 468, 535, 601},
-            PM2_5, new int[]{11, 24, 36, 42, 48, 54, 59, 65, 71},
-            PM10, new int[]{17, 34, 51, 59, 67, 76, 84, 92, 101}
+        NO2, new int[]{ 68, 135, 201, 268, 335, 401, 468, 535, 601 },
+        PM2_5, new int[]{ 11, 24, 36, 42, 48, 54, 59, 65, 71 },
+        PM10, new int[]{ 17, 34, 51, 59, 67, 76, 84, 92, 101 }
     );
 
     /**
-     * All data is in microgram per meter cubed. This string is the symbol for that
+     * All data is in microgram per meter cubed. This string is the symbol for that.
      */
     public final static String UNITS = "µg/m³";
+
     /**
      * Returns an index depending on the level of severity of the pollution concentration.
-     * Most inputs will not yield above 1 or 2, but data conditions are fully represented here for completeness
-     * INDEX MEANING
+     * Most inputs will not yield above 1 or 2, but data conditions are fully represented here for completeness.
+     * INDEX MEANING:
      * 1 - 3: Low Band
      * 4 - 6: Moderate Band
      * 7 - 9 : High Band
      * 10: Very High band
      * Data taken from https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm25#pollutant
      *
-     * TODO decide what to do with this - this can be useful as an extra thing to display data for, but may also be redundant
+     * TODO: decide what to do with this - this can be useful as an extra thing to display data for, but may also be redundant
      *
-     * @param pollutionConcentration Pollution Concentration expressed as ug/m^3
-     * @return the pollution band this pollution falls into
+     * @param pollutionConcentration Pollution Concentration expressed as ug/m^3.
+     * @return The pollution band this pollution falls into.
      */
-    public static int getPollutionLevel(Pollutant pollutant, double pollutionConcentration){
+    public static int getPollutionLevel(Pollutant pollutant, double pollutionConcentration) {
         int[] concentrationBand = CONCENTRATION_BANDS.get(pollutant);
         for (int i = 0; i < concentrationBand.length; i++) {
             if (pollutionConcentration < concentrationBand[i]) {
