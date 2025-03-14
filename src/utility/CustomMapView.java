@@ -35,7 +35,7 @@ public class CustomMapView extends MapView {
     }
 
     /**
-     * Forces a map refresh when called
+     * Forces a map refresh when called.
      */
     public void dirtyRefresh() {
         this.markDirty();

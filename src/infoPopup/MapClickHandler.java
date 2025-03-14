@@ -10,6 +10,8 @@ import api.*;
 import dataProcessing.Pollutant;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
+
 /**
  * Handles the map click events and shows information popups.
  * TODO: refactor and likely rename.
@@ -37,7 +39,6 @@ public class MapClickHandler {
         // Update the popup with the clicked location information:
         Map<String, String> addressDetails = getAddressFromCoordinates(latitude, longitude);
         Map<String, Object> realtimeDataDetails = getRealtimeData(latitude, longitude);
-
 
         infoPopup.update(latitude, longitude, pollutionValue, addressDetails, realtimeDataDetails, pollutant);
         

@@ -2,9 +2,9 @@ package statistics.back.pollutionExtremes;
 
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
+import javafx.util.Pair;
 import statistics.back.StatisticsResult;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +19,13 @@ public class PollutionExtremesResult implements StatisticsResult {
     private final String title; // Title of the result.
     private final String description; // Description of the result.
     private final Pollutant pollutant;
-    private final Map<String, Object> values; // Key-value pairs for the result, including specific values and objects.
     
     private DataPoint maxPoint; // Data point with max value.
     private DataPoint minPoint; // Data point with min value.
     private List<DataPoint> topHotspots; // List of top hotspot points.
+    private Pair<Double, Integer> percentile;
+    private Pair<Integer, Double> highestOverallYear;
+    private Map<Integer, DataPoint> yearToMaxPoints;
     
     /**
      * Constructor for PollutionExtremesResult.
@@ -35,7 +37,6 @@ public class PollutionExtremesResult implements StatisticsResult {
         this.title = title;
         this.description = description;
         this.pollutant = pollutant;
-        this.values = new HashMap<>();
     }
     
     /**
@@ -44,12 +45,6 @@ public class PollutionExtremesResult implements StatisticsResult {
      */
     public void setMaxPoint(DataPoint maxPoint) {
         this.maxPoint = maxPoint;
-        if (maxPoint != null) {
-            values.put("maxValue", maxPoint.value());
-            String locationString = String.format("Grid %d (Easting: %d, Northing: %d)", 
-                maxPoint.gridCode(), maxPoint.x(), maxPoint.y());
-            values.put("maxValueLocation", locationString);
-        }
     }
     
     /**
@@ -58,12 +53,6 @@ public class PollutionExtremesResult implements StatisticsResult {
      */
     public void setMinPoint(DataPoint minPoint) {
         this.minPoint = minPoint;
-        if (minPoint != null) {
-            values.put("minValue", minPoint.value());
-            String locationString = String.format("Grid %d (Easting: %d, Northing: %d)", 
-                minPoint.gridCode(), minPoint.x(), minPoint.y());
-            values.put("minValueLocation", locationString);
-        }
     }
     
     /**
@@ -72,7 +61,6 @@ public class PollutionExtremesResult implements StatisticsResult {
      */
     public void setTopHotspots(List<DataPoint> topHotspots) {
         this.topHotspots = topHotspots;
-        values.put("topHotspots", topHotspots);
     }
     
     /**
@@ -81,16 +69,7 @@ public class PollutionExtremesResult implements StatisticsResult {
      * @param percentile The percentile value (e.g. 90 for 90th percentile).
      */
     public void setPercentile(double percentileValue, int percentile) {
-        values.put("percentileValue_" + percentile, percentileValue);
-    }
-    
-    /**
-     * Set yearly maximum data.
-     * @param year The year.
-     * @param maxValue The maximum value for that year.
-     */
-    public void setYearlyMaxValue(int year, double maxValue) {
-        values.put("maxValue_" + year, maxValue);
+        this.percentile = new Pair<>(percentileValue, percentile);
     }
     
     /**
@@ -99,30 +78,24 @@ public class PollutionExtremesResult implements StatisticsResult {
      * @param value The highest value.
      */
     public void setHighestOverallYear(int year, double value) {
-        values.put("yearWithHighestValue", year);
-        values.put("highestOverallValue", value);
+        this.highestOverallYear = new Pair<>(year, value);
     }
 
     /**
      * Store yearly max points.
      * @param yearToMaxPoint Map of year to max point.
      */
-    public void setYearlyMaxPoints(Map<Integer, DataPoint> yearToMaxPoint) {
-        values.put("yearlyMaxPoints", yearToMaxPoint);
-    }
-    
-    /**
-     * Store yearly max values.
-     * @param yearToMaxValue Map of year to max value.
-     */
-    public void setYearlyMaxValues(Map<Integer, Double> yearToMaxValue) {
-        values.put("yearlyMaxValues", yearToMaxValue);
+    public void setYearlyMaxPoints(Map<Integer, DataPoint> yearToMaxPoints) {
+        this.yearToMaxPoints = yearToMaxPoints;
     }
     
     // Simple getters:
     public DataPoint getMaxPoint() { return maxPoint; }
     public DataPoint getMinPoint() { return minPoint; }
     public List<DataPoint> getTopHotspots() { return topHotspots; }
+    public Pair<Double, Integer> getPercentile() { return percentile; }
+    public Pair<Integer, Double> getHighestOverallYear() { return highestOverallYear; }
+    public Map<Integer, DataPoint> getYearToMaxPoints() { return yearToMaxPoints; }
     
     @Override
     public String getTitle() {
@@ -132,16 +105,6 @@ public class PollutionExtremesResult implements StatisticsResult {
     @Override
     public String getDescription() {
         return description;
-    }
-    
-    @Override
-    public Object getValue(String key) {
-        return values.get(key);
-    }
-    
-    @Override
-    public Map<String, Object> getAllValues() {
-        return new HashMap<>(values);
     }
 
     @Override

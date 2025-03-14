@@ -1,6 +1,5 @@
 package statistics.back.simpleTrends;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import dataProcessing.Pollutant;
@@ -17,12 +16,15 @@ public class SimpleTrendsResult implements StatisticsResult {
     private final String title;
     private final String description;
     private final Pollutant pollutant;
-    private final Map<String, Object> values;
     
     private Map<Integer, Double> yearlyAverages;
     private Map<Integer, Double> yearlyTotals;
-    private double trendSlope;
-    private double trendIntercept;
+    private Double trendSlope;
+    private Double trendIntercept;
+    private Double percentChange;
+    private Double totalPollution;
+    private Double averagePollution;
+    private Long dataPointCount;
     
     /**
      * Constructor.
@@ -33,7 +35,6 @@ public class SimpleTrendsResult implements StatisticsResult {
         this.title = title;
         this.description = description;
         this.pollutant = pollutant;
-        this.values = new HashMap<>();
     }
     
     /**
@@ -42,7 +43,6 @@ public class SimpleTrendsResult implements StatisticsResult {
      */
     public void setYearlyAverages(Map<Integer, Double> yearlyAverages) {
         this.yearlyAverages = yearlyAverages;
-        values.put("yearlyAverages", yearlyAverages);
     }
     
     /**
@@ -51,25 +51,6 @@ public class SimpleTrendsResult implements StatisticsResult {
      */
     public void setYearlyTotals(Map<Integer, Double> yearlyTotals) {
         this.yearlyTotals = yearlyTotals;
-        values.put("yearlyTotals", yearlyTotals);
-    }
-    
-    /**
-     * Set the total pollution for a specific year
-     * @param year The year.
-     * @param total The total pollution value.
-     */
-    public void setYearlyTotal(int year, double total) {
-        values.put("total_" + year, total);
-    }
-    
-    /**
-     * Set the average pollution for a specific year.
-     * @param year The year.
-     * @param average The average pollution value.
-     */
-    public void setYearlyAverage(int year, double average) {
-        values.put("average_" + year, average);
     }
     
     /**
@@ -80,8 +61,6 @@ public class SimpleTrendsResult implements StatisticsResult {
     public void setTrendCoefficients(double slope, double intercept) {
         this.trendSlope = slope;
         this.trendIntercept = intercept;
-        values.put("trendSlope", slope);
-        values.put("trendIntercept", intercept);
     }
     
     /**
@@ -89,7 +68,7 @@ public class SimpleTrendsResult implements StatisticsResult {
      * @param percentChange Percentage change value.
      */
     public void setPercentChange(double percentChange) {
-        values.put("percentChange", percentChange);
+        this.percentChange = percentChange;
     }
     
     /**
@@ -99,9 +78,9 @@ public class SimpleTrendsResult implements StatisticsResult {
      * @param dataPointCount Number of data points.
      */
     public void setSnapshotData(double totalPollution, double averagePollution, long dataPointCount) {
-        values.put("totalPollution", totalPollution);
-        values.put("averagePollution", averagePollution);
-        values.put("dataPointCount", dataPointCount);
+        this.totalPollution = totalPollution;
+        this.averagePollution = averagePollution;
+        this.dataPointCount = dataPointCount;
     }
     
     // Simple getters:
@@ -109,6 +88,10 @@ public class SimpleTrendsResult implements StatisticsResult {
     public Map<Integer, Double> getYearlyTotals() { return yearlyTotals; }
     public double getTrendSlope() { return trendSlope; }
     public double getTrendIntercept() { return trendIntercept; }
+    public double getPercentChange() { return percentChange; }
+    public double getTotalPollution() { return totalPollution; }
+    public double getAveragePollution() { return averagePollution; }
+    public long getDataPointCount() { return dataPointCount; }
     
     @Override
     public String getTitle() {
@@ -118,16 +101,6 @@ public class SimpleTrendsResult implements StatisticsResult {
     @Override
     public String getDescription() {
         return description;
-    }
-    
-    @Override
-    public Object getValue(String key) {
-        return values.get(key);
-    }
-    
-    @Override
-    public Map<String, Object> getAllValues() {
-        return new HashMap<>(values);
     }
 
     @Override

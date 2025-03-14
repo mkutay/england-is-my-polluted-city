@@ -1,6 +1,5 @@
 package statistics.back.averagePollution;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import dataProcessing.Pollutant;
@@ -11,17 +10,18 @@ import statistics.back.StatisticsResult;
  * Provides type-safe accessors for common average statistics.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 1.0
+ * @version 2.0
  */
 public class AveragePollutionResult implements StatisticsResult {
     private final String title; // Title of the result.
     private final String description; // Description of the result.
     private final Pollutant pollutant; // The pollutant this result is for.
-    private final Map<String, Object> values; // Map of all values for this result.
     
-    private double mean; // Mean of the data for this result.
-    private double median; // Median of the data for this result.
-    private double standardDeviation; // Standard deviation of the data.
+    private Double mean; // Mean of the data for this result.
+    private Double median; // Median of the data for this result.
+    private Double standardDeviation; // Standard deviation of the data.
+    private Double overallTrend; // Overall trend value.
+    private Map<Integer, Double> yearlyMeans; // Yearly mean values.
     
     /**
      * Constructor.
@@ -32,7 +32,6 @@ public class AveragePollutionResult implements StatisticsResult {
         this.title = title;
         this.description = description;
         this.pollutant = pollutant;
-        this.values = new HashMap<>();
     }
     
     /**
@@ -41,7 +40,6 @@ public class AveragePollutionResult implements StatisticsResult {
      */
     public void setMean(double mean) {
         this.mean = mean;
-        values.put("mean", mean);
     }
     
     /**
@@ -50,7 +48,6 @@ public class AveragePollutionResult implements StatisticsResult {
      */
     public void setMedian(double median) {
         this.median = median;
-        values.put("median", median);
     }
     
     /**
@@ -59,16 +56,14 @@ public class AveragePollutionResult implements StatisticsResult {
      */
     public void setStandardDeviation(double standardDeviation) {
         this.standardDeviation = standardDeviation;
-        values.put("standardDeviation", standardDeviation);
     }
     
     /**
-     * Add a year-specific mean value for trend analysis.
-     * @param year The year.
-     * @param mean The mean value for that year.
+     * Set the yearly means.
+     * @param yearlyMeans A map of year to mean value.
      */
-    public void setYearlyMean(int year, double mean) {
-        values.put("mean_" + year, mean);
+    public void setYearlyMeans(Map<Integer, Double> yearlyMeans) {
+        this.yearlyMeans = yearlyMeans;
     }
     
     /**
@@ -76,13 +71,15 @@ public class AveragePollutionResult implements StatisticsResult {
      * @param trend The trend value.
      */
     public void setOverallTrend(double trend) {
-        values.put("overallTrend", trend);
+        this.overallTrend = trend;
     }
     
     // Simple getters:
     public double getMean() { return mean; }
     public double getMedian() { return median; }
     public double getStandardDeviation() { return standardDeviation; }
+    public double getOverallTrend() { return overallTrend; }
+    public Map<Integer, Double> getYearlyMeans() { return yearlyMeans; }
     
     @Override
     public String getTitle() {
@@ -92,16 +89,6 @@ public class AveragePollutionResult implements StatisticsResult {
     @Override
     public String getDescription() {
         return description;
-    }
-    
-    @Override
-    public Object getValue(String key) {
-        return values.get(key);
-    }
-    
-    @Override
-    public Map<String, Object> getAllValues() {
-        return new HashMap<>(values);
     }
 
     @Override

@@ -41,16 +41,16 @@ public class SimpleTrendsPanel extends StatisticsPanel {
             addKeyValueRow("Trend Slope", formatDouble(statisticsResult.getTrendSlope()) + " units per year");
             
             // Add percent change if available:
-            Double percentChange = (Double) statisticsResult.getValue("percentChange");
+            Double percentChange = statisticsResult.getPercentChange();
             if (percentChange != null) {
                 String changeDirection = percentChange >= 0 ? "increase" : "decrease";
                 addKeyValueRow("Percent Change", formatDouble(Math.abs(percentChange)) + "% " + changeDirection);
             }
         } else {
             // Add snapshot data if no time series
-            Double totalPollution = (Double) statisticsResult.getValue("totalPollution");
-            Double avgPollution = (Double) statisticsResult.getValue("averagePollution");
-            Integer dataPointCount = (Integer) statisticsResult.getValue("dataPointCount");
+            Double totalPollution = statisticsResult.getTotalPollution();
+            Double avgPollution = statisticsResult.getAveragePollution();
+            Long dataPointCount = statisticsResult.getDataPointCount();
             
             if (totalPollution != null) {
                 addKeyValueRow("Total Pollution", formatDouble(totalPollution));

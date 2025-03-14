@@ -2,17 +2,18 @@ package app;
 
 import api.AQICNAPI;
 import api.AQICNData;
-
 import api.AQIResponse;
+import colors.ColorSchemeManager;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.scene.layout.StackPane;
-
 import dataProcessing.Pollutant;
-import utility.Namer;
+import javafx.geometry.Orientation;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Separator;
+
+import app.uiControllers.StatisticsController;
 
 import java.io.IOException;
 
@@ -26,42 +27,48 @@ import java.io.IOException;
  * @version 3.0
  */
 public class App extends Application {
-    private MapController mapController;
+    public static final String APP_NAME = "UK Emissions Interactive Map";
+
+    private static MapController mapController;
     private UIController uiController;
+    private StatisticsController statisticsController;
+    private ColorSchemeManager colorSchemeManager;
 
     @Override
     public void start(Stage stage) throws PollutionLayerNotInitialisedException, IOException, InterruptedException {
+        stage.setTitle(APP_NAME);
 
-        stage.setTitle(Namer.APP_NAME);
-        mapController = new MapController(stage);
-        uiController = new UIController(mapController);
+        colorSchemeManager = new ColorSchemeManager();
+        mapController = new MapController(stage, colorSchemeManager);
+        statisticsController = new StatisticsController();
 
-        mapController.initialisePollutionLayer(2020, Pollutant.NO2);
-
-        // Use a StackPane to overlay legend inside the map
-        StackPane mapOverlay = new StackPane();
-        mapOverlay.getStyleClass().add("map-overlay");
-
-        LegendPane legend = new LegendPane();
-
-        // Position legend near the top right of map
-        StackPane.setAlignment(legend, Pos.TOP_RIGHT);
-
-        mapOverlay.getChildren().addAll(mapController.getMapView(), legend);
-
+        // Create root layout
         BorderPane root = new BorderPane();
+
+        mapController.initialisePollutionLayer(2018, Pollutant.NO2);
+        uiController = new UIController(mapController, statisticsController, root);
+
+        Separator verticalSeparator = new Separator(Orientation.VERTICAL);
+
+        HBox leftPane = new HBox();
+        leftPane.getChildren().addAll(uiController.getSidePanel(),verticalSeparator);
+
         root.setTop(uiController.getTopNav());
-        root.setLeft(uiController.getSidePanel());
-        root.setCenter(mapOverlay);
+        root.setLeft(leftPane);
+        root.setCenter(mapController.getMapOverlay());
         AQICNAPI testres = new AQICNAPI();
         AQIResponse test = testres.getPollutionData(51.395246,-0.40653443);
         System.out.println("NO2: "+ test.getData().getPollutantValues().getNo2().getIAQIValue());
 
         System.out.println("Last Updated: " + test.getData().getTimeData().getDateTimeString());
 
-        Scene scene = new Scene(root, 900, 900);
+        Scene scene = new Scene(root, 900, 800);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
+
+
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setMaximized(true);
         stage.show();
 
 

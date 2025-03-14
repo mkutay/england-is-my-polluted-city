@@ -7,7 +7,9 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
@@ -68,6 +70,8 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         double meanOverall = 0.0;
         double medianOverall = 0.0;
         double standardDeviationOverall = 0.0;
+
+        Map<Integer, Double> yearlyMeans = new HashMap<>();
         
         for (int year = startYear; year <= endYear; year++) {
             DataSet dataSet = dataManager.getPollutantData(year, pollutant);
@@ -75,7 +79,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
             
             double mean = calculateMean(dataPoints);
             yearlyAverages[year - startYear] = mean;
-            result.setYearlyMean(year, mean);
+            yearlyMeans.put(year, mean);
 
             meanOverall += mean;
             medianOverall += calculateMedian(dataPoints);
@@ -85,6 +89,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         result.setMean(meanOverall / yearlyAverages.length);
         result.setMedian(medianOverall / yearlyAverages.length);
         result.setStandardDeviation(standardDeviationOverall / yearlyAverages.length);
+        result.setYearlyMeans(yearlyMeans);
         
         // Calculate trend:
         double trend = yearlyAverages[yearlyAverages.length - 1] - yearlyAverages[0];

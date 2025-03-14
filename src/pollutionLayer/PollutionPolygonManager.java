@@ -21,8 +21,7 @@ public class PollutionPolygonManager {
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
-    private final static int NUMBER_OF_LODS = 4;
-
+    private final static int NUMBER_OF_LODS = 3;
     /**
      * Constructor.
      */
@@ -51,18 +50,19 @@ public class PollutionPolygonManager {
         for (DataPoint dataPoint : lodData.getData()) {
             if (dataPoint.value() == -1) continue; // Do not generate polygons for missing values.
 
-            // Map data value to a color using the color scheme
-            double normalizedValue = (dataPoint.value() - minValue) / (maxValue - minValue);
+            // Normalise the pollution value for colour interpolation
+            double normalisedValue = (dataPoint.value() - minValue) / (maxValue - minValue);
+
             int sideLength = 1000 * lodManager.getLODData(currentLODIndex).getLevelOfDetail();
 
-            PollutionPolygon polygon = PollutionPolygon.createFromDataPoint(dataPoint, sideLength, normalizedValue);
+            PollutionPolygon polygon = new PollutionPolygon(sideLength, dataPoint, normalisedValue);
             polygons.add(polygon);
         }
     }
 
     /**
      * Generates pollution data polygons from the CSV files.
-     * Should be called every time a LOD change is detected.
+     * Should be called every time a LOD change is detected, or a new dataset is added.
      */
     public void updatePollutionPolygons(CustomMapView mapView) {
         int lodIndex = lodManager.getLODIndex(mapView.getPixelScale(), mapView.getWidth(), mapView.getHeight());
@@ -70,6 +70,7 @@ public class PollutionPolygonManager {
 
         currentLODIndex = lodIndex;
         generatePollutionPolygons(lodManager.getLODData(currentLODIndex));
+
     }
 
     // Getters:

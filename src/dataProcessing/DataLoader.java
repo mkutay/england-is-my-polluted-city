@@ -24,7 +24,7 @@ public class DataLoader {
     public DataSet loadDataFile(String fileName) {
         System.out.println("Loading file " + fileName + "...");
         
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(fileName)))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             // The first four lines of the file hold special information; read them in:
             String pollutant = readDataHeader(br);
             String year = readDataHeader(br);

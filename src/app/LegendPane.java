@@ -1,5 +1,7 @@
 package app;
 
+import colors.ColorSchemeManager;
+import dataProcessing.Pollutant;
 import javafx.animation.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -8,22 +10,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.util.List;
+
+/**
+ * Adds a legend that displays the pollution level and its corresponding colour
+ * @author Chelsea Feliciano
+ */
 public class LegendPane extends VBox {
-    private Label titleLabel;
-    private Label titleIcon;
-    private VBox content;
+    private final VBox content;
     private boolean expanded = false;
 
     public LegendPane() {
-        getStyleClass().add("legend-pane");
-
         HBox header = new HBox();
-        titleLabel = new Label("Legend");
+        Label titleLabel = new Label("Legend");
+        Label titleIcon = new Label("☰");
+
         titleLabel.getStyleClass().add("legend-title");
-        titleIcon = new Label("☰");
         titleIcon.getStyleClass().add("legend-title-icon");
+
         header.getChildren().addAll(titleIcon, titleLabel);
         header.getStyleClass().add("legend-header");
+        getStyleClass().add("legend-pane");
 
         // Content area (initially hidden)
         content = new VBox();
@@ -31,10 +38,8 @@ public class LegendPane extends VBox {
         content.setVisible(false); // Start hidden
         content.setManaged(false); // Prevent layout from affecting surrounding elements
 
-        // Add pollutant ranges (visible when expanded)
-        addLegendItem("0-3 ppm", Color.GREEN);
-        addLegendItem("3-6 ppm", Color.ORANGE);
-        addLegendItem(">6 ppm", Color.RED);
+        setPrefWidth(USE_COMPUTED_SIZE);
+        setMaxWidth(USE_PREF_SIZE);
 
         getChildren().addAll(header, content);
         getStyleClass().add("legend-pane");
@@ -43,13 +48,38 @@ public class LegendPane extends VBox {
         header.setOnMouseClicked(e -> toggle());
     }
 
+    public void updateLegend(ColorSchemeManager colorSchemeManager, double maxPollutionValue){
+        clearLegendItems();
+
+        List<Color> colors = colorSchemeManager.getColorScheme().getColors();
+        for (int i = 0; i < colors.size(); i++) {
+            Color color = colors.get(i);
+
+            double lowerBound = ((double) i / colors.size()) * maxPollutionValue;
+            double upperBound = ((double) (i + 1) / colors.size()) * maxPollutionValue;
+
+            lowerBound =  (double) (int) (lowerBound * 10) / 10; //Round to 1dp
+            upperBound =  (double) (int) (upperBound * 10) / 10;
+
+            String label = lowerBound + "-" + upperBound + " " + Pollutant.UNITS;
+
+            addLegendItem(label, color);
+        }
+
+    }
+
     private void addLegendItem(String label, Color color) {
         HBox item = new HBox(5);
         Label itemLabel = new Label(label);
         item.getStyleClass().add("legend-item");
         Circle colorBox = new Circle(7.5,color);
+        colorBox.getStyleClass().add("legend-circle");
         item.getChildren().addAll(colorBox, itemLabel);
         content.getChildren().add(item);
+    }
+
+    private void clearLegendItems(){
+        content.getChildren().clear();
     }
 
     private void toggle() {
