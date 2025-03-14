@@ -28,8 +28,15 @@
 }
 
 .nav-label:hover {
-    -fx-text-fill: white; /* Change color on hover */
+    -fx-text-fill: rgba(0,0,0,0.5);/* Change color on hover */
     -fx-underline: true;  /* Add underline on hover */
+}
+
+/* Active state styling */
+.nav-label.active {
+    -fx-text-fill: rgba(0,0,0,0.5);
+    -fx-underline: true;
+    -fx-font-weight: bold;
 }
 .dropdown-box {
     -fx-pref-height: 50px;

@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Manages the side panel UI elements including dropdown menus and buttons.
  * 
@@ -33,6 +36,10 @@ public class SidePanelController {
     private Button viewMapButton;
     private Node currentCenterContent;
     private boolean mapShown = true;
+
+    private Label homeLabel;
+    private Label statsLabel;
+    private List<Label> navLabels;
 
     /**
      * Constructor for SidePanelController.
@@ -93,13 +100,19 @@ public class SidePanelController {
 
         // Create side panel navigation
         HBox panelNav = new HBox();
-        Label homeLabel = new Label("Home");
+        homeLabel = new Label("Home");
+        statsLabel = new Label("Pollutant Statistics");
         Label signLabel = new Label(">");
-        Label statsLabel = new Label("Pollutant Statistics");
         panelNav.getChildren().addAll(homeLabel, signLabel, statsLabel);
         panelNav.getStyleClass().add("side-panel-nav");
         homeLabel.getStyleClass().add("nav-label");
         statsLabel.getStyleClass().add("nav-label");
+
+        navLabels = Arrays.asList(homeLabel, statsLabel);
+        homeLabel.getStyleClass().add("active");
+        // Toggle visibility when clicking the title
+        homeLabel.setOnMouseClicked(e -> togglePanel("home"));
+        statsLabel.setOnMouseClicked(e -> togglePanel("stats"));
 
         // Get dropdown containers from the selector controller:
         VBox pollutantDropdownBox = selectorController.createPollutantSelector();
@@ -164,8 +177,22 @@ public class SidePanelController {
     }
 
     /**
-     * Shows the map panel and updates the UI state.
+     * Toggles between Home and Statistics panel
      */
+    private void togglePanel(String panel) {
+        navLabels.forEach(label-> label.getStyleClass().remove("active"));
+        if (panel.equals("home")) {
+            homeLabel.getStyleClass().add("active");
+            showMapPanel();
+        } else if (panel.equals("stats")) {
+            statsLabel.getStyleClass().add("active");
+            showStatisticsPanel();
+        }
+    }
+
+        /**
+         * Shows the map panel and updates the UI state.
+         */
     private void showMapPanel() {
         // Update button visibility:
         sidePanel.getChildren().remove(viewMapButton);
