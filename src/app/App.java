@@ -37,7 +37,7 @@ public class App extends Application {
         // Create root layout
         BorderPane root = new BorderPane();
 
-        mapController.initialisePollutionLayer(2020, Pollutant.NO2);
+        mapController.initialisePollutionLayer(2018, Pollutant.NO2);
         uiController = new UIController(mapController, statisticsController, root);
         
         root.setTop(uiController.getTopNav());

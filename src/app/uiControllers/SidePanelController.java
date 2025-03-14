@@ -58,9 +58,7 @@ public class SidePanelController {
      * Sets up listener for pollutant/year selection changes.
      */
     private void setupSelectionChangeListener() {
-        selectorController.setOnSelectionChanged((year, pollutant) -> {
-            updateData(year, pollutant);
-        });
+        selectorController.setOnSelectionChanged(this::updateData);
     }
 
     /**
