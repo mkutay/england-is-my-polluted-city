@@ -50,7 +50,8 @@ public class MapController {
      * Sets the initial position of the MapView onto London, and initialises the default zoom.
      */
     private void setupMapView() {
-        mapView.flyTo(0, new MapPoint(51.508045, -0.128217), 0.01);
+        MapPoint startLoc = new MapPoint(51.508045, -0.128217); // London coordinates.
+        mapView.setCenter(startLoc); // Instantly centers the map
         mapView.setZoom(10);
     }
 
