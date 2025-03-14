@@ -2,8 +2,8 @@ package colors;
 
 /**
  * Holds the current active colour scheme and handles updating it when necessary
- * TODO complete
- * @author Anas Ahmed
+ *
+ * @author Anas Ahmed, Chelsea Feliciano
  */
 public class ColorSchemeManager {
     private ColorScheme colorScheme;
@@ -12,9 +12,21 @@ public class ColorSchemeManager {
         colorScheme = new DefaultColorScheme();
     }
 
+    /**
+     * Returns the currently active color scheme.
+     * @return The active ColorScheme.
+     */
     public ColorScheme getColorScheme() {
         return colorScheme;
     }
 
-    public void updateColorScheme(){}
+    /**
+     * Updates the color scheme to a new scheme.
+     * @param newScheme The new ColorScheme to apply.
+     */
+    public void updateColorScheme(ColorScheme newScheme) {
+        if (newScheme != null) {
+            this.colorScheme = newScheme;
+        }
+    }
 }
