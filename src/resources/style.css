@@ -3,9 +3,13 @@
     -fx-padding: 5px;
 }
 
+.separator {
+    -fx-background-color: gray;/* Gray color */
+}
+
 /* styles for side panel */
 .side-panel {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: ivory;
 }
 
 /* styles for title */
@@ -69,7 +73,7 @@
 }
 
 .legend-pane {
-    -fx-max-width: 155px; /* Limit size to avoid large appearance */
+    -fx-max-width: 170px; /* Limit size to avoid large appearance */
     -fx-max-height: 20px;
     -fx-background-color: #f4f4f4;
     -fx-border-color: #333;
@@ -79,7 +83,7 @@
     -fx-spacing: 5px;
     -fx-background-radius: 4px;
     -fx-translate-x: -20px;
-    -fx-translate-y: 20px;
+    -fx-translate-y: -20px;
 }
 
 .legend-title {

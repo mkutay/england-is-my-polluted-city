@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import dataProcessing.Pollutant;
+import javafx.geometry.Orientation;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Separator;
 
 import app.uiControllers.StatisticsController;
 
@@ -40,14 +43,22 @@ public class App extends Application {
         mapController.initialisePollutionLayer(2018, Pollutant.NO2);
         uiController = new UIController(mapController, statisticsController, root);
 
+        Separator verticalSeparator = new Separator(Orientation.VERTICAL);
+
+        HBox leftPane = new HBox();
+        leftPane.getChildren().addAll(uiController.getSidePanel(),verticalSeparator);
+
         root.setTop(uiController.getTopNav());
-        root.setLeft(uiController.getSidePanel());
+        root.setLeft(leftPane);
         root.setCenter(mapController.getMapOverlay());
 
-        Scene scene = new Scene(root, 900, 900);
+        Scene scene = new Scene(root, 900, 800);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
 
+
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.setMaximized(true);
         stage.show();
     }
 

@@ -41,6 +41,7 @@ public class SidePanelController {
     private Label statsLabel;
     private List<Label> navLabels;
 
+
     /**
      * Constructor for SidePanelController.
      * @param mapController The current map controller.

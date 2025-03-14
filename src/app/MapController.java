@@ -49,7 +49,7 @@ public class MapController {
         mapOverlay.getStyleClass().add("map-overlay");
 
         legend = new LegendPane();
-        StackPane.setAlignment(legend, Pos.TOP_RIGHT);// Position legend near the top right of map
+        StackPane.setAlignment(legend, Pos.BOTTOM_RIGHT);// Position legend near the top right of map
         mapOverlay.getChildren().addAll(mapView, legend); // Add elements to map overlay
 
         //pollutionPolygonSelector = new PollutionPolygonSelector(mapView, mapOverlay);
