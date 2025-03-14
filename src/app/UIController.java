@@ -24,9 +24,9 @@ public class UIController {
      * @param mapController The current map controller.
      * @param statisticsController The statistics controller.
      */
-    public UIController(MapController mapController, StatisticsController statisticsController, BorderPane rootPane) {
+    public UIController(MapController mapController, BorderPane rootPane) {
         this.navBarController = new NavigationBarController();
-        this.sidePanelController = new SidePanelController(mapController, statisticsController, rootPane);
+        this.sidePanelController = new SidePanelController(mapController, rootPane);
     }
 
     // Getters:

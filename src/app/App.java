@@ -28,7 +28,6 @@ public class App extends Application {
 
     private static MapController mapController;
     private UIController uiController;
-    private StatisticsController statisticsController;
     private ColorSchemeManager colorSchemeManager;
 
     @Override
@@ -37,13 +36,12 @@ public class App extends Application {
 
         colorSchemeManager = new ColorSchemeManager();
         mapController = new MapController(stage, colorSchemeManager);
-        statisticsController = new StatisticsController();
 
         // Create root layout
         BorderPane root = new BorderPane();
 
         mapController.initialisePollutionLayer(2018, Pollutant.NO2);
-        uiController = new UIController(mapController, statisticsController, root);
+        uiController = new UIController(mapController, root);
 
         Separator verticalSeparator = new Separator(Orientation.VERTICAL);
 
