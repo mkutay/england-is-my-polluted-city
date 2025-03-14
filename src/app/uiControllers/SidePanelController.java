@@ -1,8 +1,9 @@
 package app.uiControllers;
 
 import app.MapController;
+import colors.ColorScheme;
 import dataProcessing.Pollutant;
-import utility.Namer;
+import app.App;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -65,10 +66,10 @@ public class SidePanelController {
      * Updates both map and statistics data with new selections.
      * @param year Selected year.
      * @param pollutant Selected pollutant.
+     * @param colorScheme Selected color scheme.
      */
-    private void updateData(Integer year, Pollutant pollutant) {
-        mapController.updateMapDataSet(year, pollutant); // Update map data.
-        
+    private void updateData(Integer year, Pollutant pollutant, ColorScheme colorScheme) {
+        mapController.updateMapDataSet(year, pollutant, colorScheme); // Update map data.
         statisticsController.updateDataSet(year, pollutant); // Update statistics data.
         
         // Refresh the view if we're showing statistics:
@@ -82,18 +83,27 @@ public class SidePanelController {
      * @return The side panel VBox containing all UI elements.
      */
     private VBox createSidePanel() {
-        VBox sidePanel = new VBox(10);
+        VBox sidePanel = new VBox();
+        sidePanel.getStyleClass().add("side-panel");
         
         // Create the title label for the side panel:
-        Label applicationLabel = new Label(Namer.APP_NAME);
-        applicationLabel.getStyleClass().add("app-title");
+        Label applicationLabel = new Label(App.APP_NAME);
+        applicationLabel.getStyleClass().add("sidepanel-title");
 
         // Get dropdown containers from the selector controller:
         VBox pollutantDropdownBox = selectorController.createPollutantSelector();
         VBox yearDropdownBox = selectorController.createYearSelector();
+        VBox colorDropdownBox = selectorController.createColorSelector();
+        pollutantDropdownBox.getStyleClass().add("dropdown");
+        yearDropdownBox.getStyleClass().add("dropdown");
+        colorDropdownBox.getStyleClass().add("dropdown");
+
+        VBox sidePanelDropdownBox = new VBox();
+        sidePanelDropdownBox.getChildren().addAll(pollutantDropdownBox, yearDropdownBox, colorDropdownBox);
+        sidePanelDropdownBox.getStyleClass().add("dropdown-box");
 
         // Add dropdown menus to side panel:
-        sidePanel.getChildren().addAll(applicationLabel, pollutantDropdownBox, yearDropdownBox);
+        sidePanel.getChildren().addAll(applicationLabel, sidePanelDropdownBox);
 
         // Add buttons to side panel:
         addSidePanelButtons(sidePanel);
@@ -107,14 +117,16 @@ public class SidePanelController {
      */
     private void addSidePanelButtons(VBox sidePanel) {
         // Create a button for statistics panel:
-        viewStatisticsButton = new Button("View Statistics");
+        viewStatisticsButton = new Button("About Current Pollutant");
         viewStatisticsButton.setMaxWidth(Double.MAX_VALUE);
         viewStatisticsButton.setOnAction(e -> showStatisticsPanel());
+        viewStatisticsButton.getStyleClass().add("view-stats");
 
         // Create a button for going back to the map:
         viewMapButton = new Button("Go Back to Map");
         viewMapButton.setMaxWidth(Double.MAX_VALUE);
         viewMapButton.setOnAction(e -> showMapPanel());
+        viewMapButton.getStyleClass().add("view-map");
 
         // Initially show the statistics button:
         sidePanel.getChildren().add(viewStatisticsButton);
