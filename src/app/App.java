@@ -12,8 +12,6 @@ import java.io.IOException;
 
 import dataProcessing.Pollutant;
 import app.uiControllers.StatisticsController;
-import api.aqicn.AQICNAPI;
-import api.aqicn.AQIResponse;
 import colors.ColorSchemeManager;
 
 /**
@@ -55,25 +53,17 @@ public class App extends Application {
         root.setTop(uiController.getTopNav());
         root.setLeft(leftPane);
         root.setCenter(mapController.getMapOverlay());
-        AQIResponse test = AQICNAPI.getPollutionData(51.395246,-0.40653443);
-        System.out.println("NO2: "+ test.getData().getPollutantValues().getNo2().getIAQIValue());
-
-        System.out.println("Last Updated: " + test.getData().getTimeData().getDateTimeString());
 
         Scene scene = new Scene(root, 900, 800);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
-
 
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setMaximized(true);
         stage.show();
-
-
     }
 
     public static void main(String[] args){
-
         launch(args);
     }
 }
