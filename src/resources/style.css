@@ -5,23 +5,40 @@
 
 /* styles for side panel */
 .side-panel {
-    -fx-padding: 10;
     -fx-background-color: #f4f4f4;
-    -fx-padding: 20px;
 }
 
 /* styles for title */
-.app-title {
+.sidepanel-title {
+    -fx-padding: 10;
     -fx-font-weight: bold;
-    -fx-font-size: 25px;
+    -fx-font-size: 20px;
     -fx-text-fill: #333;
 }
-.dropdown-label {
+.dropdown-box {
+    -fx-pref-height: 50px;
     -fx-font-size: 15px;
+    -fx-padding: 0 15 15 15 px;
 }
 .dropdown {
-    -fx-max-width: 230px;
+    -fx-padding: 5px;
 }
+.view-stats {
+    -fx-background-color: gainsboro;
+    -fx-pref-width: 170px;
+    -fx-cursor: hand;
+    -fx-font-size: 15px;
+    -fx-padding: 10px;
+}
+
+.view-map {
+    -fx-background-color: gainsboro;
+    -fx-pref-width: 170px;
+    -fx-cursor: hand;
+    -fx-font-size: 15px;
+    -fx-padding: 10px;
+}
+
 .legend-header {
     -fx-padding: 0 0 0 8px;    /* left padding */
     -fx-spacing: 12px;         /* spacing between titleLabel and titleIcon */
@@ -29,7 +46,7 @@
 }
 
 .legend-pane {
-    -fx-min-width: 120px;
+    -fx-max-width: 155px; /* Limit size to avoid large appearance */
     -fx-max-height: 20px;
     -fx-background-color: #f4f4f4;
     -fx-border-color: #333;
@@ -65,19 +82,11 @@
 }
 
 .legend-item {
-    -fx-padding: 2px;
-}
-/* Hidden initially */
-.legend-content.collapsed {
-    -fx-max-height: 0;
-    -fx-opacity: 0;
-    -fx-padding: 0;
+    -fx-padding: 3px;
 }
 
-/* Expanded content */
-.legend-content.expanded {
-    -fx-max-height: 100px;
-    -fx-opacity: 1;
-    -fx-padding: 5px;
-
+/* Styles for the color indicator in the legend */
+.legend-circle {
+    -fx-stroke: #333; /* Add a border around the circle */
+    -fx-stroke-width: 0.5px;
 }

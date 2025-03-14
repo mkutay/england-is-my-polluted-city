@@ -1,6 +1,5 @@
 package app;
 
-import colors.ColorScheme;
 import colors.ColorSchemeManager;
 import dataProcessing.Pollutant;
 import javafx.animation.*;
@@ -69,12 +68,12 @@ public class LegendPane extends VBox {
 
     }
 
-
     private void addLegendItem(String label, Color color) {
         HBox item = new HBox(5);
         Label itemLabel = new Label(label);
         item.getStyleClass().add("legend-item");
         Circle colorBox = new Circle(7.5,color);
+        colorBox.getStyleClass().add("legend-circle");
         item.getChildren().addAll(colorBox, itemLabel);
         content.getChildren().add(item);
     }
