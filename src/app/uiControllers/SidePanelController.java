@@ -7,6 +7,7 @@ import app.App;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
@@ -90,6 +91,16 @@ public class SidePanelController {
         Label applicationLabel = new Label(App.APP_NAME);
         applicationLabel.getStyleClass().add("sidepanel-title");
 
+        // Create side panel navigation
+        HBox panelNav = new HBox();
+        Label homeLabel = new Label("Home");
+        Label signLabel = new Label(">");
+        Label statsLabel = new Label("Pollutant Statistics");
+        panelNav.getChildren().addAll(homeLabel, signLabel, statsLabel);
+        panelNav.getStyleClass().add("side-panel-nav");
+        homeLabel.getStyleClass().add("nav-label");
+        statsLabel.getStyleClass().add("nav-label");
+
         // Get dropdown containers from the selector controller:
         VBox pollutantDropdownBox = selectorController.createPollutantSelector();
         VBox yearDropdownBox = selectorController.createYearSelector();
@@ -103,7 +114,7 @@ public class SidePanelController {
         sidePanelDropdownBox.getStyleClass().add("dropdown-box");
 
         // Add dropdown menus to side panel:
-        sidePanel.getChildren().addAll(applicationLabel, sidePanelDropdownBox);
+        sidePanel.getChildren().addAll(applicationLabel, panelNav, sidePanelDropdownBox);
 
         // Add buttons to side panel:
         addSidePanelButtons(sidePanel);
