@@ -26,23 +26,22 @@ public class PollutionLayer extends MapLayer {
 
     private final Canvas canvas;
     private final GraphicsContext gc;
-    
-    // Color configuration:
-    private final ColorScheme colorScheme;
+
     private double polygonOpacity = 0.7;
+    private final ColorSchemeManager colorSchemeManager;
 
     /**
      * Initialises the PollutionLayer.
      * @param mapView The map view to render the pollution layer on.
      * @param dataSet The currently used dataset.
      */
-    public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler) {
+    public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, ColorSchemeManager colorSchemeManager) {
         this.mapView = mapView;
 
         pollutionPolygonManager = new PollutionPolygonManager(dataSet);
         pollutionLayerEventHandler = new PollutionLayerEventHandler(clickHandler, mapView);
 
-        this.colorScheme = new DefaultColorScheme();
+        this.colorSchemeManager = colorSchemeManager;
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
@@ -83,7 +82,7 @@ public class PollutionLayer extends MapLayer {
             }
 
             polygon.updatePoints(this);
-            polygon.draw(gc, colorScheme, polygonOpacity);
+            polygon.draw(gc, colorSchemeManager.getColorScheme(), polygonOpacity);
         }
     }
 

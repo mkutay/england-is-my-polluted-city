@@ -14,7 +14,7 @@ import javafx.util.Pair;
  * of data points.
  * 
  * @author Michael Kölling and Mehmet Kutay Bozkurt
- * @version 2.0
+ * @version 2.1
  */
 public class DataSet {
     private final String pollutant;
@@ -70,6 +70,13 @@ public class DataSet {
      */
     public List<DataPoint> getData() {
         return new ArrayList<>(data.values());
+    }
+
+    public double getMaxPollutionValue(){
+        return data.values().stream()
+                .mapToDouble(DataPoint::value)
+                .max()
+                .orElse(Double.NaN); // Return NaN if list is empty
     }
 
     /**

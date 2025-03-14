@@ -1,5 +1,7 @@
 package app;
 
+import colors.ColorScheme;
+import colors.ColorSchemeManager;
 import dataProcessing.Pollutant;
 import javafx.animation.*;
 import javafx.scene.control.Label;
@@ -8,6 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+
+import java.util.List;
 
 /**
  * Adds a legend that displays the pollution level and its corresponding colour
@@ -29,12 +33,14 @@ public class LegendPane extends VBox {
         header.getStyleClass().add("legend-header");
         getStyleClass().add("legend-pane");
 
-
         // Content area (initially hidden)
         content = new VBox();
         content.getStyleClass().add("legend-content");
         content.setVisible(false); // Start hidden
         content.setManaged(false); // Prevent layout from affecting surrounding elements
+
+        setPrefWidth(USE_COMPUTED_SIZE);
+        setMaxWidth(USE_PREF_SIZE);
 
         getChildren().addAll(header, content);
         getStyleClass().add("legend-pane");
@@ -43,28 +49,26 @@ public class LegendPane extends VBox {
         header.setOnMouseClicked(e -> toggle());
     }
 
-    public void updateLegend(Pollutant currentPollutant){
-        int[] bands = Pollutant.CONCENTRATION_BANDS.get(currentPollutant); //Get pollutant concentration data
+    public void updateLegend(ColorSchemeManager colorSchemeManager, double maxPollutionValue){
+        clearLegendItems();
 
-        //Get the values of the concentration at each band lower boundary and upper boundary
-        int lowBandLower = 0, lowBandUpper = bands[2];
-        int moderateBandLower = lowBandUpper + 1, moderateBandUpper = bands[5];
-        int highBandLower = moderateBandUpper + 1, highBandUpper = bands[8];
-        int veryHighBand = bands[9];
+        List<Color> colors = colorSchemeManager.getColorScheme().getColors();
+        for (int i = 0; i < colors.size(); i++) {
+            Color color = colors.get(i);
 
-        String lowLabel = formatRange(lowBandLower, lowBandUpper);
-        String moderateLabel = formatRange(moderateBandLower, moderateBandUpper);
-        String highLabel = formatRange(highBandLower, highBandUpper);
-        String veryHighLabel = ">" + veryHighBand + " " + Pollutant.UNITS;
+            double lowerBound = ((double) i / colors.size()) * maxPollutionValue;
+            double upperBound = ((double) (i + 1) / colors.size()) * maxPollutionValue;
+
+            lowerBound =  (double) (int) (lowerBound * 10) / 10; //Round to 1dp
+            upperBound =  (double) (int) (upperBound * 10) / 10;
+
+            String label = lowerBound + "-" + upperBound + " " + Pollutant.UNITS;
+
+            addLegendItem(label, color);
+        }
+
     }
 
-    /**
-     * Formats string for legend
-     * @return A string of the form: "low-high µg/m³"
-     */
-    private String formatRange(int low, int high) {
-        return low + "-" + high + " " + Pollutant.UNITS;
-    }
 
     private void addLegendItem(String label, Color color) {
         HBox item = new HBox(5);

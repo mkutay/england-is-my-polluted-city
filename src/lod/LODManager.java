@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dataProcessing.DataSet;
+import dataProcessing.Pollutant;
 
 /**
  * Creates and manages multiple LODs, and holds the original data.
@@ -14,7 +15,7 @@ import dataProcessing.DataSet;
  */
 public class LODManager {
     private final List<LODData> LODDataList;
-    private final static int MAX_VISIBLE_DATAPOINTS = 5000; // If visible data points exceeds this number, attempt to use smaller LOD.
+    private final static int MAX_VISIBLE_DATAPOINTS = 12_000; // If visible data points exceeds this number, attempt to use smaller LOD.
 
     public LODManager(DataSet dataSet, int numLODs) {
         System.out.println("Creating " + numLODs + " LODs");

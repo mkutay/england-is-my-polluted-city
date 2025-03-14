@@ -2,28 +2,25 @@ package colors;
 
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 /**
  * Default color scheme implementation for pollution visualization.
- * Uses a gradient from green (low) to yellow (medium) to red (high).
+ * Uses a gradient from green (low) to yellow (medium) to red (high) to purple (very high).
  * 
- * @author Mehmet Kutay Bozkurt
+ * @author Mehmet Kutay Bozkurt and Anas Ahmed
  * @version 1.0
  */
 public class DefaultColorScheme extends ColorScheme {
-    @Override
-    public Color getColor(double normalisedValue) {
-        // Ensure value is within range:
-        normalisedValue = Math.min(1.0, Math.max(0.0, normalisedValue));
-        
-        // Green (low) to yellow (medium) to red (high) gradient
-        if (normalisedValue < 0.5) {
-            // Green to yellow (0.0 - 0.5)
-            double ratio = normalisedValue * 2;
-            return Color.color(ratio, 1.0, 0.0);
-        } else {
-            // Yellow to red (0.5 - 1.0)
-            double ratio = (normalisedValue - 0.5) * 2;
-            return Color.color(1.0, 1.0 - ratio, 0.0);
-        }
+    public DefaultColorScheme() {
+        //colors = List.of(Color.GREEN, Color.YELLOW, Color.RED, Color.rgb(128, 0, 128));
+        colors = List.of(
+                Color.rgb(53, 215, 0),
+                Color.rgb(255, 220, 0),
+                Color.rgb(255, 20, 60),
+                Color.rgb(115, 0, 120),
+                Color.rgb(0, 0, 0)
+        );
+
     }
 }

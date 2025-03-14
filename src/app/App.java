@@ -1,5 +1,6 @@
 package app;
 
+import colors.ColorSchemeManager;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,32 +24,25 @@ public class App extends Application {
     private static MapController mapController;
     private UIController uiController;
     private StatisticsController statisticsController;
+    private ColorSchemeManager colorSchemeManager;
 
     @Override
     public void start(Stage stage) throws PollutionLayerNotInitialisedException {
         stage.setTitle(Namer.APP_NAME);
-        mapController = new MapController(stage);
+
+        colorSchemeManager = new ColorSchemeManager();
+        mapController = new MapController(stage, colorSchemeManager);
         statisticsController = new StatisticsController();
 
         // Create root layout
         BorderPane root = new BorderPane();
-        
-        // Create a StackPane to overlay legend inside the map
-        StackPane mapOverlay = new StackPane();
-        mapOverlay.getStyleClass().add("map-overlay");
 
-        LegendPane legend = new LegendPane();
-        // Position legend near the top right of map
-        StackPane.setAlignment(legend, Pos.TOP_RIGHT);
-
-        mapController.initialisePollutionLayer(2020, Pollutant.NO2);
-        mapOverlay.getChildren().addAll(mapController.getMapView(), legend);
-        
+        mapController.initialisePollutionLayer(2018, Pollutant.NO2);
         uiController = new UIController(mapController, statisticsController, root);
         
         root.setTop(uiController.getTopNav());
         root.setLeft(uiController.getSidePanel());
-        root.setCenter(mapOverlay);
+        root.setCenter(mapController.getMapOverlay());
 
         Scene scene = new Scene(root, 900, 900);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());

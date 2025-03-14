@@ -7,6 +7,7 @@ import java.util.List;
 import colors.ColorScheme;
 import com.gluonhq.maps.MapPoint;
 import dataProcessing.DataPoint;
+import dataProcessing.Pollutant;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -26,29 +27,30 @@ public class PollutionPolygon {
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
 
-    private final double value; // Store the pollution value
-    private final double normalisedValue; // Store the normalized value for colour
+    private final DataPoint dataPoint; // Store the pollution datapoint
+    private final double normalisedValue; // The normalised pollution value in range 0-1
 
     private final List<MapPoint> worldCoordinates; // The world coordinates of the polygon, stored in lat/lon.
 
     private final double[] xPoints;
     private final double[] yPoints;
 
+
     /**
      * Constructor for PollutionPolygon.
-     * @param topLeftEasting  The easting value of the top left corner.
-     * @param topLeftNorthing The northing value of the top left corner.
      * @param sideLength      The side length of the square in meters.
-     * @param value           The pollution value this polygon represents.
-     * @param normalisedValue The normalized pollution value of this polygon relative to all other datapoints
+     * @param dataPoint       The dataPoint that this polygon represents
      */
-    public PollutionPolygon(int topLeftEasting, int topLeftNorthing, int sideLength, double value, double normalisedValue) {
-        this.topLeftEasting = topLeftEasting;
-        this.topLeftNorthing = topLeftNorthing;
+    public PollutionPolygon(int sideLength, DataPoint dataPoint, double normalisedValue) {
         this.sideLength = sideLength;
+        this.dataPoint = dataPoint;
         this.normalisedValue = normalisedValue;
-        this.value = value;
-        
+
+        // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
+        // We offset by 500m in both directions.
+        topLeftEasting = dataPoint.x() - 500;
+        topLeftNorthing = dataPoint.y() - 500;
+
         this.worldCoordinates = new ArrayList<>(4); // Pre-size for efficiency
         this.xPoints = new double[4];
         this.yPoints = new double[4];
@@ -56,20 +58,8 @@ public class PollutionPolygon {
         generateWorldCoordinates();
     }
 
-    public static PollutionPolygon createFromDataPoint(DataPoint dataPoint, int sideLength, double normalizedValue) {
-        // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
-        // We offset by 500m in both directions.
-        int topLeftEasting = dataPoint.x() - 500;
-        int topLeftNorthing = dataPoint.y() - 500;
-
-        return new PollutionPolygon(topLeftEasting, topLeftNorthing, sideLength, dataPoint.value(), normalizedValue);
-    }
-
-    /**
-     * @return The pollution value.
-     */
-    public double getValue() {
-        return value;
+    public DataPoint getDataPoint() {
+        return dataPoint;
     }
 
     /**

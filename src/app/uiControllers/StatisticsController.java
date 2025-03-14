@@ -20,7 +20,7 @@ public class StatisticsController {
     private Pollutant currentPollutant;
     
     public StatisticsController() {
-        updateDataSet(2018, Pollutant.NO2);
+
     }
 
     /**

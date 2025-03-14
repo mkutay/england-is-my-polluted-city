@@ -3,6 +3,7 @@ package pollutionLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import dataProcessing.DataPoint;
 import javafx.stage.Window;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -70,13 +71,13 @@ public class PollutionLayerEventHandler {
 
         // Find the clicked polygon if any:
         PollutionPolygon clickedPolygon = getPolygonAtScreenCoordinates(x, y, polygonManager);
-        Double pollutionValue = clickedPolygon == null ? null : clickedPolygon.getValue();
+        DataPoint dataPoint = clickedPolygon == null ? null : clickedPolygon.getDataPoint();
 
         Window window = mapView.getScene().getWindow();
         double width = window.getWidth();
         double height = window.getHeight();
 
         // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, pollutionValue);
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, dataPoint);
     }
 }
