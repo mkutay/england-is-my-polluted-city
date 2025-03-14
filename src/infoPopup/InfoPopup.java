@@ -5,6 +5,7 @@ import dataProcessing.Pollutant;
 import javafx.geometry.Insets;
 import javafx.scene.layout.VBox;
 import javafx.stage.Popup;
+import javafx.scene.control.Separator;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 
@@ -38,7 +39,8 @@ public class InfoPopup extends Popup {
         this.realtimeInfo = new RealtimeInfo(LABEL_STYLE, TITLE_STYLE);
         
         // Set up the content container:
-        VBox content = new VBox(10, locationInfo.getContent(), realtimeInfo.getContent());
+        Separator separator = new Separator();
+        VBox content = new VBox(10, locationInfo.getContent(), separator, realtimeInfo.getContent());
         content.setPadding(new Insets(12));
         content.setStyle(CONTENT_STYLE);
         content.setEffect(dropShadow);
