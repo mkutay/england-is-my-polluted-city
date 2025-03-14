@@ -159,7 +159,7 @@ public class SidePanelController {
         }
         
         // Set the center content to statistics panel:
-        rootPane.setCenter(statisticsController.getStatisticsPanel());
+        rootPane.setCenter(statisticsController.getStatisticsPane());
         mapShown = false;
     }
 
