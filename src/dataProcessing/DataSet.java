@@ -72,11 +72,14 @@ public class DataSet {
         return new ArrayList<>(data.values());
     }
 
-    public double getMaxPollutionValue(){
+    /**
+     * @return The maximum pollution value in this dataset.
+     */
+    public double getMaxPollutionValue() {
         return data.values().stream()
-                .mapToDouble(DataPoint::value)
-                .max()
-                .orElse(Double.NaN); // Return NaN if list is empty
+            .mapToDouble(DataPoint::value)
+            .max()
+            .orElse(Double.NaN); // Return NaN if list is empty.
     }
 
     /**

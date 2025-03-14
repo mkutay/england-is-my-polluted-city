@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dataProcessing.DataSet;
-import dataProcessing.Pollutant;
 
 /**
  * Creates and manages multiple LODs, and holds the original data.
@@ -31,9 +30,9 @@ public class LODManager {
      * Returns the suitable LOD based on current zoom level.
      * Estimates the number of visible data points and chooses the LOD that has an acceptable amount of visible points.
      * @param currentPixelScale the current distance in meters 1 pixel corresponds to in the current zoom level.
-     * @param mapWidth the width of the map UI element in pixels.
-     * @param mapHeight the height of the map UI element in pixels.
-     * @return the LOD index of the LOD for the current zoom level.
+     * @param mapWidth The width of the map UI element in pixels.
+     * @param mapHeight The height of the map UI element in pixels.
+     * @return The LOD index of the LOD for the current zoom level.
      */
     public int getLODIndex(double currentPixelScale, double mapWidth, double mapHeight) {
         double physicalMapArea = (mapWidth * mapHeight) / (currentPixelScale * currentPixelScale);

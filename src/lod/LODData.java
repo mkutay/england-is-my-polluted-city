@@ -58,24 +58,24 @@ public class LODData {
     }
 
     /**
-     * Averages all data points pollution values in a certain grid size from a certain easting and northing
-     * @param dataSet the DataSet of all points
-     * @param gridSize the size of the grid
-     * @param easting the easting of the larger grid
-     * @param northing the northing of the larger grid
-     * @return the average of all pollution values
+     * Averages all data points pollution values in a certain grid size from a certain easting and northing.
+     * @param dataSet The DataSet of all points.
+     * @param gridSize The size of the grid.
+     * @param easting The easting of the larger grid.
+     * @param northing The northing of the larger grid.
+     * @return The average of all pollution values.
      */
     private double getAverageValue(DataSet dataSet, int gridSize, int easting, int northing) {
         double value = 0; int i = 0;
-        for (int x = easting; x < easting + gridSize; x+=1000) {
-            for (int y = northing; y < northing + gridSize; y+=1000) {
+        for (int x = easting; x < easting + gridSize; x += 1000) {
+            for (int y = northing; y < northing + gridSize; y += 1000) {
                 DataPoint dataPoint = dataSet.getDataPoint(x, y);
                 if (dataPoint == null) continue;
                 value += dataPoint.value();
                 i++;
             }
         }
-        return value/i;
+        return value / i;
     }
 
     // Getters:

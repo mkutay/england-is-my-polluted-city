@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import colors.ColorScheme;
 import com.gluonhq.maps.MapPoint;
-import dataProcessing.DataPoint;
-import dataProcessing.Pollutant;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+import colors.ColorScheme;
+import dataProcessing.DataPoint;
 import utility.GeographicUtilities;
 
 /**

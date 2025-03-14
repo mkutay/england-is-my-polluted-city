@@ -1,22 +1,20 @@
 package app;
 
-import colors.ColorSchemeManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import dataProcessing.Pollutant;
 import javafx.geometry.Orientation;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.Separator;
 
-import app.uiControllers.StatisticsController;
-
 import java.io.IOException;
 
+import dataProcessing.Pollutant;
+import app.uiControllers.StatisticsController;
 import api.aqicn.AQICNAPI;
-import api.aqicn.AQICNData;
 import api.aqicn.AQIResponse;
+import colors.ColorSchemeManager;
 
 /**
  * The main App class as the entry point to the application. This class creates
@@ -25,7 +23,7 @@ import api.aqicn.AQIResponse;
  *
  * Refactor by Anas Ahmed
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
- * @version 3.0
+ * @version 3.1
  */
 public class App extends Application {
     public static final String APP_NAME = "UK Emissions Interactive Map";

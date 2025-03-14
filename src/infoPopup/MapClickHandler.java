@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import api.*;
 import api.aqicn.AQICNAPI;
 import api.aqicn.AQICNData;
 import api.postcode.PostcodeAPI;
