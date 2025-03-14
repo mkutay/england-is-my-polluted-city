@@ -27,7 +27,7 @@ public class PollutionPolygon {
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
 
-    private final double value; // Store the pollution value
+    private final DataPoint dataPoint; // Store the pollution datapoint
     private final double normalisedValue; // The normalised pollution value in range 0-1
 
     private final List<MapPoint> worldCoordinates; // The world coordinates of the polygon, stored in lat/lon.
@@ -43,7 +43,7 @@ public class PollutionPolygon {
      */
     public PollutionPolygon(int sideLength, DataPoint dataPoint, double normalisedValue) {
         this.sideLength = sideLength;
-        this.value = dataPoint.value();
+        this.dataPoint = dataPoint;
         this.normalisedValue = normalisedValue;
 
         // The easting and northing values given are the centroids of the grid, meaning we need to offset them.
@@ -58,11 +58,8 @@ public class PollutionPolygon {
         generateWorldCoordinates();
     }
 
-    /**
-     * @return The pollution value.
-     */
-    public double getValue() {
-        return value;
+    public DataPoint getDataPoint() {
+        return dataPoint;
     }
 
     /**

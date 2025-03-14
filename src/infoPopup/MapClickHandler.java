@@ -6,7 +6,10 @@ import java.util.Map;
 
 import api.PostcodeAPI;
 import api.PostcodeResult;
+import dataProcessing.DataPoint;
 import javafx.stage.Stage;
+
+import javax.xml.crypto.Data;
 
 /**
  * Handles the map click events and shows information popups.
@@ -31,11 +34,11 @@ public class MapClickHandler {
         this.primaryStage = primaryStage;
     }
     
-    public void onMapClicked(double latitude, double longitude, double screenX, double screenY, double width, double height, Double pollutionValue) {
+    public void onMapClicked(double latitude, double longitude, double screenX, double screenY, double width, double height, DataPoint dataPoint) {
         // Update the popup with the clicked location information:
         Map<String, String> addressDetails = getAddressFromCoordinates(latitude, longitude);
 
-        infoPopup.update(latitude, longitude, pollutionValue, addressDetails);
+        infoPopup.update(latitude, longitude, dataPoint, addressDetails);
         
         if (screenX + infoPopup.getWidth() > width) {
             screenX -= infoPopup.getWidth() + POPUP_OFFSET_X;

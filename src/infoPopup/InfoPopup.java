@@ -1,5 +1,6 @@
 package infoPopup;
 
+import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -29,6 +30,7 @@ public class InfoPopup extends Popup {
     private final TextFlow boroughFlow;
     private final TextFlow postcodeFlow;
     private final TextFlow countryFlow;
+    private final TextFlow gridcodeFlow;
 
 
     private final Label titleLabel;
@@ -37,12 +39,14 @@ public class InfoPopup extends Popup {
     private final Label boroughLabel;
     private final Label postcodeLabel;
     private final Label countryLabel;
+    private final Label gridcodeLabel;
 
     private final Label coordinatesInformation;
     private final Label pollutionInformation;
     private final Label boroughInformation;
     private final Label postcodeInformation;
     private final Label countryInformation;
+    private final Label gridcodeInformation;
 
     private String boroughDetails;
     private String countryDetails;
@@ -62,6 +66,7 @@ public class InfoPopup extends Popup {
         boroughFlow = new TextFlow();
         postcodeFlow = new TextFlow();
         countryFlow = new TextFlow();
+        gridcodeFlow = new TextFlow();
 
         //initialise Labels that will be displayed in BOLD (e.g Postal Code:, Country: )
         coordinatesLabel = new Label("Coordinates: ");
@@ -74,6 +79,8 @@ public class InfoPopup extends Popup {
         countryLabel.setStyle(LABEL_STYLE);
         postcodeLabel = new Label("Postal Code: ");
         postcodeLabel.setStyle(LABEL_STYLE);
+        gridcodeLabel = new Label("Gridcode : ");
+        gridcodeLabel.setStyle(LABEL_STYLE);
 
         //initialise the Labels to store information about the selected MapPoint
         coordinatesInformation = new Label();
@@ -81,6 +88,7 @@ public class InfoPopup extends Popup {
         boroughInformation = new Label();
         countryInformation = new Label();
         postcodeInformation = new Label();
+        gridcodeInformation = new Label();
 
         //Add the labels and their information to their respective TextFlows
         coordinatesFlow.getChildren().addAll(coordinatesLabel, coordinatesInformation);
@@ -88,8 +96,7 @@ public class InfoPopup extends Popup {
         boroughFlow.getChildren().addAll(boroughLabel, boroughInformation);
         countryFlow.getChildren().addAll(countryLabel, countryInformation);
         postcodeFlow.getChildren().addAll(postcodeLabel, postcodeInformation);
-
-
+        gridcodeFlow.getChildren().addAll(gridcodeLabel, gridcodeInformation);
 
 
         // Create drop shadow effect for the popup:
@@ -100,7 +107,7 @@ public class InfoPopup extends Popup {
         dropShadow.setOffsetY(2.0);
         
         // Set up the content container:
-        VBox content = new VBox(10, titleLabel, coordinatesFlow, pollutionFlow , boroughFlow, countryFlow, postcodeFlow);
+        VBox content = new VBox(10, titleLabel, coordinatesFlow, pollutionFlow , boroughFlow, countryFlow, postcodeFlow, gridcodeFlow);
         content.setPadding(new Insets(12));
         content.setStyle(CONTENT_STYLE);
         content.setEffect(dropShadow);
@@ -114,10 +121,10 @@ public class InfoPopup extends Popup {
      * Updates the popup with information about a location.
      * @param latitude The latitude of the location.
      * @param longitude The longitude of the location.
-     * @param pollutionValue The pollution value at the location, or null if unknown.
+     * @param dataPoint The pollution data point at the location, or null if unknown.
      * @param addressDetails A Map containing the address details of the queried point, or null if unknown.
      */
-    public void update(double latitude, double longitude, Double pollutionValue, Map<String, String> addressDetails) {
+    public void update(double latitude, double longitude, DataPoint dataPoint, Map<String, String> addressDetails) {
         // Format coordinate display with appropriate precision:
         coordinatesInformation.setText(String.format("%.6f, %.6f", latitude, longitude));
         if (addressDetails !=null){
@@ -126,11 +133,13 @@ public class InfoPopup extends Popup {
             postcodeDetails = addressDetails.get("postcode");
         }
 
-        // Set pollution information if available:
-        if (pollutionValue != null) {
-            pollutionInformation.setText(String.format("%.2f" + Pollutant.UNITS, pollutionValue)); //displays micrograms per meter cubed
+        // Set pollution and gridcode information if available:
+        if (dataPoint != null) {
+            pollutionInformation.setText(String.format("%.2f" + Pollutant.UNITS, dataPoint.value())); //displays micrograms per meter cubed
+            gridcodeInformation.setText(String.valueOf(dataPoint.gridCode()));
         } else {
             pollutionInformation.setText("Not available");
+            gridcodeInformation.setText("Not available");
         }
         
         // Set address information if available:
@@ -158,6 +167,7 @@ public class InfoPopup extends Popup {
         boroughFlow.setVisible(true);
         countryFlow.setVisible(true);
         postcodeFlow.setVisible(true);
+        gridcodeFlow.setVisible(true);
 
     }
 }
