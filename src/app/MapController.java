@@ -1,7 +1,10 @@
 package app;
 
+import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import dataProcessing.DataManager;
@@ -19,8 +22,12 @@ import utility.CustomMapView;
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  */
 public class MapController {
+    private final StackPane mapOverlay;
     private final CustomMapView mapView;
+
     private final MapClickHandler clickHandler;
+    private final ColorSchemeManager colorSchemeManager;
+    private final LegendPane legend;
 
     private PollutionLayer pollutionLayer;
     private boolean pollutionLayerInitialised = false;
@@ -29,9 +36,20 @@ public class MapController {
      * Constructor for MapController.
      * @param stage The current stage.
      */
-    public MapController(Stage stage) {
+    public MapController(Stage stage, ColorSchemeManager colorSchemeManager) {
+        this.colorSchemeManager = colorSchemeManager;
+
         mapView = new CustomMapView();
         clickHandler = new MapClickHandler(stage);
+
+        //Map overlay contains all map elements and is what is added to the root
+        mapOverlay = new StackPane();
+        mapOverlay.getStyleClass().add("map-overlay");
+
+        legend = new LegendPane();
+        StackPane.setAlignment(legend, Pos.TOP_RIGHT);// Position legend near the top right of map
+
+        mapOverlay.getChildren().addAll(mapView, legend); // Add elements to map overlay
 
         setupMapView();
     }
@@ -58,14 +76,15 @@ public class MapController {
      * @return The map view.
      * @throws PollutionLayerNotInitialisedException If pollution layer is not initialised.
      */
-    public CustomMapView getMapView() throws PollutionLayerNotInitialisedException {
-        if (pollutionLayerInitialised) return mapView;
+    public StackPane getMapOverlay() throws PollutionLayerNotInitialisedException {
+        if (pollutionLayerInitialised) return mapOverlay;
 
         throw new PollutionLayerNotInitialisedException("Map is not initialised. Call initialisePollutionLayer first.");
     }
 
     /**
      * Updates the map data set with the new year and pollutant.
+     * Updates the colour scheme data accordingly
      * @param year The year to update to.
      * @param pollutant The pollutant to update to.
      */
@@ -75,7 +94,8 @@ public class MapController {
         DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
 
-        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
+        colorSchemeManager.updateColorScheme();
+        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }

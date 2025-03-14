@@ -1,5 +1,6 @@
 package app;
 
+import colors.ColorScheme;
 import dataProcessing.Pollutant;
 import javafx.animation.*;
 import javafx.scene.control.Label;
@@ -43,19 +44,15 @@ public class LegendPane extends VBox {
         header.setOnMouseClicked(e -> toggle());
     }
 
-    public void updateLegend(Pollutant currentPollutant){
-        int[] bands = Pollutant.CONCENTRATION_BANDS.get(currentPollutant); //Get pollutant concentration data
+    public void updateLegend(ColorScheme colorScheme){
+        for (Color color : colorScheme.getColors()){
 
-        //Get the values of the concentration at each band lower boundary and upper boundary
-        int lowBandLower = 0, lowBandUpper = bands[2];
-        int moderateBandLower = lowBandUpper + 1, moderateBandUpper = bands[5];
-        int highBandLower = moderateBandUpper + 1, highBandUpper = bands[8];
-        int veryHighBand = bands[9];
+        }
 
-        String lowLabel = formatRange(lowBandLower, lowBandUpper);
-        String moderateLabel = formatRange(moderateBandLower, moderateBandUpper);
-        String highLabel = formatRange(highBandLower, highBandUpper);
-        String veryHighLabel = ">" + veryHighBand + " " + Pollutant.UNITS;
+//        String lowLabel = formatRange(lowBandLower, lowBandUpper);
+//        String moderateLabel = formatRange(moderateBandLower, moderateBandUpper);
+//        String highLabel = formatRange(highBandLower, highBandUpper);
+//        String veryHighLabel = ">" + veryHighBand + " " + Pollutant.UNITS;
     }
 
     /**

@@ -39,6 +39,8 @@ public enum Pollutant {
      * 10: Very High band
      * Data taken from https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm25#pollutant
      *
+     * TODO decide what to do with this - this can be useful as an extra thing to display data for, but may also be redundant
+     *
      * @param pollutionConcentration Pollution Concentration expressed as ug/m^3
      * @return the pollution band this pollution falls into
      */

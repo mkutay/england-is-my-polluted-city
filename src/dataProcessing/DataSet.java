@@ -14,10 +14,10 @@ import javafx.util.Pair;
  * of data points.
  * 
  * @author Michael Kölling and Mehmet Kutay Bozkurt
- * @version 2.0
+ * @version 2.1
  */
 public class DataSet {
-    private final String pollutant;
+    private final Pollutant pollutant;
     private final String year;
     private final String metric;
     private final String units;
@@ -28,8 +28,9 @@ public class DataSet {
     /**
      * Constructor for objects of class DataSet
      */
-    public DataSet(String pollutant, String year, String metric, String units) {
-        this.pollutant = pollutant;
+    public DataSet(String pollutantName, String year, String metric, String units) {
+        pollutantName = pollutantName.toUpperCase();
+        this.pollutant = Pollutant.valueOf(pollutantName);
         this.year = year;
         this.metric = metric;
         this.units = units;
@@ -40,7 +41,7 @@ public class DataSet {
     /**
      * Return the pollutant information for this dataset.
      */
-    public String getPollutant() {
+    public Pollutant getPollutant() {
         return pollutant;
     }
     

@@ -44,7 +44,7 @@ public class SidePanelController {
         this.mapController = mapController;
         this.selectorController = new PollutionSelectorController();
 
-        this.currentCenterContent = mapController.getMapView();
+        this.currentCenterContent = mapController.getMapOverlay();
 
         // Create side panel:
         sidePanel = createSidePanel();

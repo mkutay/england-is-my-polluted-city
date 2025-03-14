@@ -1,5 +1,6 @@
 package colors;
 
+import dataProcessing.Pollutant;
 import javafx.scene.paint.Color;
 
 /**
@@ -10,20 +11,25 @@ import javafx.scene.paint.Color;
  * @version 1.0
  */
 public class DefaultColorScheme extends ColorScheme {
-    @Override
-    public Color getColor(double normalisedValue) {
-        // Ensure value is within range:
-        normalisedValue = Math.min(1.0, Math.max(0.0, normalisedValue));
-        
-        // Green (low) to yellow (medium) to red (high) gradient
-        if (normalisedValue < 0.5) {
-            // Green to yellow (0.0 - 0.5)
-            double ratio = normalisedValue * 2;
-            return Color.color(ratio, 1.0, 0.0);
-        } else {
-            // Yellow to red (0.5 - 1.0)
-            double ratio = (normalisedValue - 0.5) * 2;
-            return Color.color(1.0, 1.0 - ratio, 0.0);
-        }
+    public DefaultColorScheme() {
+        super();
     }
+
+//    @Override
+//    public Color getColor(Pollutant pollutant, double pollutionValue) {
+//        double normalisedValue = Pollutant.normalisePollutionValue(pollutant, pollutionValue);
+//        // Ensure value is within range:
+//        normalisedValue = Math.min(1.0, Math.max(0.0, normalisedValue));
+//
+//        // Green (low) to yellow (medium) to red (high) gradient
+//        if (normalisedValue < 0.5) {
+//            // Green to yellow (0.0 - 0.5)
+//            double ratio = normalisedValue * 2;
+//            return Color.color(ratio, 1.0, 0.0);
+//        } else {
+//            // Yellow to red (0.5 - 1.0)
+//            double ratio = (normalisedValue - 0.5) * 2;
+//            return Color.color(1.0, 1.0 - ratio, 0.0);
+//        }
+//    }
 }

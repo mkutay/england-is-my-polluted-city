@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dataProcessing.DataSet;
+import dataProcessing.Pollutant;
 
 /**
  * Creates and manages multiple LODs, and holds the original data.
