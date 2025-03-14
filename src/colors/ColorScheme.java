@@ -2,6 +2,8 @@ package colors;
 
 import javafx.scene.paint.Color;
 
+import java.util.List;
+
 /**
  * Maps a normalised value from 0-1 to a range of colours
  * Subclasses can define different colour sets to use
@@ -10,14 +12,29 @@ import javafx.scene.paint.Color;
  * @version 1.0
  */
 public abstract class ColorScheme {
-    private Color[] colors = {Color.GREEN, Color.YELLOW, Color.RED, Color.rgb(128, 0, 128)};
+    protected List<Color> colors;
 
-    private Color interpolateColor(Color start, Color end, double fraction) {
-        int r = (int) (start.getRed() + fraction * (end.getRed() - start.getRed()));
-        int g = (int) (start.getGreen() + fraction * (end.getGreen() - start.getGreen()));
-        int b = (int) (start.getBlue() + fraction * (end.getBlue() - start.getBlue()));
+    /**
+     * Linearly interpolate from a to b with ratio t
+     */
+    private static double lerp(double a, double b, double t){
+        return a + t * (b - a);
+    }
+
+    /**
+     * Linearly interpolates between two colours
+     * @param start the start colour
+     * @param end the end colour
+     * @param ratio the percentage from the start to the end colour to interpolate by
+     * @return the linearly interpolated colour
+     */
+    private Color interpolateColor(Color start, Color end, double ratio) {
+        int r = (int) (lerp(start.getRed(), end.getRed(), ratio) * 255);
+        int g = (int) (lerp(start.getGreen(), end.getGreen(), ratio) * 255);
+        int b = (int) (lerp(start.getBlue(), end.getBlue(), ratio) * 255);
         return Color.rgb(r, g, b);
     }
+
 
     /**
      * Maps a value from 0-1 to a colour based off of the colours defined in the color scheme
@@ -25,21 +42,21 @@ public abstract class ColorScheme {
      * @return Color corresponding to the value.
      */
     public Color getColor(double normalisedValue){
-        //TODO finish
+        int numSegments = colors.size() - 1;
+        for (int i = 0; i < numSegments; i++) {
+            double lowerBound = (double) i / numSegments;
+            double upperBound = (double) (i + 1) / numSegments;
 
-        // Green (low) to yellow (medium) to red (high) gradient
-        if (normalisedValue < 0.5) {
-            // Green to yellow (0.0 - 0.5)
-            double ratio = normalisedValue * 2;
-            return Color.color(ratio, 1.0, 0.0);
-        } else {
-            // Yellow to red (0.5 - 1.0)
-            double ratio = (normalisedValue - 0.5) * 2;
-            return Color.color(1.0, 1.0 - ratio, 0.0);
+            if (normalisedValue >= lowerBound && normalisedValue <= upperBound) {
+                double ratio = (normalisedValue - lowerBound) / (upperBound - lowerBound);
+                return interpolateColor(colors.get(i), colors.get(i + 1), ratio);
+            }
         }
+
+        return colors.getLast(); //Fallback case
     }
 
-    public Color[] getColors() {
+    public List<Color> getColors() {
         return colors;
     }
 }

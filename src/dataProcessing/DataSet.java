@@ -17,7 +17,7 @@ import javafx.util.Pair;
  * @version 2.1
  */
 public class DataSet {
-    private final Pollutant pollutant;
+    private final String pollutant;
     private final String year;
     private final String metric;
     private final String units;
@@ -28,9 +28,8 @@ public class DataSet {
     /**
      * Constructor for objects of class DataSet
      */
-    public DataSet(String pollutantName, String year, String metric, String units) {
-        pollutantName = pollutantName.toUpperCase();
-        this.pollutant = Pollutant.valueOf(pollutantName);
+    public DataSet(String pollutant, String year, String metric, String units) {
+        this.pollutant = pollutant;
         this.year = year;
         this.metric = metric;
         this.units = units;
@@ -41,7 +40,7 @@ public class DataSet {
     /**
      * Return the pollutant information for this dataset.
      */
-    public Pollutant getPollutant() {
+    public String getPollutant() {
         return pollutant;
     }
     
@@ -71,6 +70,13 @@ public class DataSet {
      */
     public List<DataPoint> getData() {
         return new ArrayList<>(data.values());
+    }
+
+    public double getMaxPollutionValue(){
+        return data.values().stream()
+                .mapToDouble(DataPoint::value)
+                .max()
+                .orElse(Double.NaN); // Return NaN if list is empty
     }
 
     /**

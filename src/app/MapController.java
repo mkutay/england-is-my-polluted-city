@@ -3,6 +3,7 @@ package app;
 import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
+import dataProcessing.DataPoint;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -48,7 +49,6 @@ public class MapController {
 
         legend = new LegendPane();
         StackPane.setAlignment(legend, Pos.TOP_RIGHT);// Position legend near the top right of map
-
         mapOverlay.getChildren().addAll(mapView, legend); // Add elements to map overlay
 
         setupMapView();
@@ -94,9 +94,12 @@ public class MapController {
         DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
 
+        legend.updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
+
         colorSchemeManager.updateColorScheme();
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
+
     }
 }

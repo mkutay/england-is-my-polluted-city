@@ -1,9 +1,7 @@
 package pollutionLayer;
 
-import colors.ColorSchemeManager;
 import dataProcessing.DataPoint;
 import dataProcessing.DataSet;
-import dataProcessing.Pollutant;
 import lod.LODData;
 import lod.LODManager;
 import utility.CustomMapView;
@@ -23,7 +21,7 @@ public class PollutionPolygonManager {
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
-    private final static int NUMBER_OF_LODS = 4;
+    private final static int NUMBER_OF_LODS = 3;
     /**
      * Constructor.
      */

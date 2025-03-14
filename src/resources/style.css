@@ -29,7 +29,7 @@
 }
 
 .legend-pane {
-    -fx-max-width: 120px; /* Limit size to avoid large appearance */
+    -fx-min-width: 120px;
     -fx-max-height: 20px;
     -fx-background-color: #f4f4f4;
     -fx-border-color: #333;
