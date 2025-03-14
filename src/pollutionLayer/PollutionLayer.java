@@ -38,7 +38,7 @@ public class PollutionLayer extends MapLayer {
      * @param dataSet   The currently used dataset.
      * @param pollutant
      */
-    public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, ColorSchemeManager colorSchemeManager) {
+    public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, Pollutant pollutant, ColorSchemeManager colorSchemeManager) {
         this.mapView = mapView;
 
         pollutionPolygonManager = new PollutionPolygonManager(dataSet);

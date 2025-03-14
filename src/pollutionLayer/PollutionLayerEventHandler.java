@@ -79,6 +79,6 @@ public class PollutionLayerEventHandler {
         double height = window.getHeight();
 
         // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, pollutionValue, pollutant);
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, dataPoint.value(), pollutant);
     }
 }

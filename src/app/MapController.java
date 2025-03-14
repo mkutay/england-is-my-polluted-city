@@ -101,7 +101,7 @@ public class MapController {
 
         legend.updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
 
-        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, colorSchemeManager);
+        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }
