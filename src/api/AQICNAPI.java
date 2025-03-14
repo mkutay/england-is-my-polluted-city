@@ -20,7 +20,7 @@ public class AQICNAPI {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();
 
-    public AQIResponse getPollutionData(double lat, double lon) throws IOException, InterruptedException{
+    public static AQIResponse getPollutionData(double lat, double lon) throws IOException, InterruptedException{
         String url = AQICN_API_BASE_URL + "feed/geo:" + lat + ";" + lon + "/?token="+AQICN_API_KEY;
 
         HttpRequest request = HttpRequest.newBuilder()

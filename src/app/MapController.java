@@ -75,7 +75,7 @@ public class MapController {
         DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
 
-        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler);
+        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }

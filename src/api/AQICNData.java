@@ -23,6 +23,10 @@ public class AQICNData {
     public AQITimestamp getTimeData(){
         return time;
     }
+
+    public int getAqi(){
+        return aqi;
+    }
     @Override
     public String toString() {
         return "Data{" +
