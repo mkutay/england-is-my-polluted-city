@@ -3,6 +3,7 @@ package pollutionLayer;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 
+import dataProcessing.Pollutant;
 import dataProcessing.DataPoint;
 import javafx.stage.Window;
 import javafx.scene.input.MouseButton;
@@ -53,7 +54,7 @@ public class PollutionLayerEventHandler {
      * @param event The mouse event.
      * @author Mehmet Kutay Bozkurt
      */
-    public void handleMouseClick(PollutionPolygonManager polygonManager, MouseEvent event) {
+    public void handleMouseClick(PollutionPolygonManager polygonManager, Pollutant pollutant, MouseEvent event) {
         if (event.getButton() != MouseButton.SECONDARY) return; // Only handle right clicks.
 
         double x = event.getX();
@@ -78,6 +79,6 @@ public class PollutionLayerEventHandler {
         double height = window.getHeight();
 
         // Notify the listener:
-        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, dataPoint);
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, pollutionValue, pollutant);
     }
 }

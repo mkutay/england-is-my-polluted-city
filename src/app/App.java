@@ -1,5 +1,8 @@
 package app;
 
+import api.AQICNAPI;
+import api.AQICNData;
+import api.AQIResponse;
 import colors.ColorSchemeManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Separator;
 
 import app.uiControllers.StatisticsController;
+
+import java.io.IOException;
 
 /**
  * The main App class as the entry point to the application. This class creates
@@ -30,7 +35,7 @@ public class App extends Application {
     private ColorSchemeManager colorSchemeManager;
 
     @Override
-    public void start(Stage stage) throws PollutionLayerNotInitialisedException {
+    public void start(Stage stage) throws PollutionLayerNotInitialisedException, IOException, InterruptedException {
         stage.setTitle(APP_NAME);
 
         colorSchemeManager = new ColorSchemeManager();
@@ -51,6 +56,11 @@ public class App extends Application {
         root.setTop(uiController.getTopNav());
         root.setLeft(leftPane);
         root.setCenter(mapController.getMapOverlay());
+        AQICNAPI testres = new AQICNAPI();
+        AQIResponse test = testres.getPollutionData(51.395246,-0.40653443);
+        System.out.println("NO2: "+ test.getData().getPollutantValues().getNo2().getIAQIValue());
+
+        System.out.println("Last Updated: " + test.getData().getTimeData().getDateTimeString());
 
         Scene scene = new Scene(root, 900, 800);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
@@ -60,9 +70,12 @@ public class App extends Application {
         stage.centerOnScreen();
         stage.setMaximized(true);
         stage.show();
+
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
+
         launch(args);
     }
 }

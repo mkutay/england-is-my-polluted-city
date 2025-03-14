@@ -5,6 +5,7 @@ import com.gluonhq.maps.MapPoint;
 
 import colors.*;
 import dataProcessing.DataSet;
+import dataProcessing.Pollutant;
 import infoPopup.MapClickHandler;
 import utility.CustomMapView;
 
@@ -32,8 +33,10 @@ public class PollutionLayer extends MapLayer {
 
     /**
      * Initialises the PollutionLayer.
-     * @param mapView The map view to render the pollution layer on.
-     * @param dataSet The currently used dataset.
+     *
+     * @param mapView   The map view to render the pollution layer on.
+     * @param dataSet   The currently used dataset.
+     * @param pollutant
      */
     public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, ColorSchemeManager colorSchemeManager) {
         this.mapView = mapView;
@@ -48,7 +51,7 @@ public class PollutionLayer extends MapLayer {
         this.getChildren().add(canvas);
 
         // Add click event handler to the canvas. TODO refactor
-        canvas.setOnMouseClicked(e -> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, e));
+        canvas.setOnMouseClicked(e -> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, pollutant, e));
 
         pollutionPolygonManager.updatePollutionPolygons(mapView);
     }
