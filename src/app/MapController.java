@@ -1,5 +1,6 @@
 package app;
 
+import colors.ColorScheme;
 import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
@@ -60,7 +61,7 @@ public class MapController {
      * @param pollutant The pollutant to initialise with.
      */
     public void initialisePollutionLayer(int year, Pollutant pollutant) {
-        updateMapDataSet(year, pollutant);
+        updateMapDataSet(year, pollutant, colorSchemeManager.getColorScheme());
         pollutionLayerInitialised = true;
     }
 
@@ -89,18 +90,17 @@ public class MapController {
      * @param year The year to update to.
      * @param pollutant The pollutant to update to.
      */
-    public void updateMapDataSet(int year, Pollutant pollutant) {
+    public void updateMapDataSet(int year, Pollutant pollutant, ColorScheme colorScheme) {
         if (pollutionLayer != null) mapView.removeLayer(pollutionLayer);
+        colorSchemeManager.updateColorScheme(colorScheme);
 
         DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
 
         legend.updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
 
-        colorSchemeManager.updateColorScheme();
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
-
     }
 }
