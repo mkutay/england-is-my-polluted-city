@@ -1,5 +1,8 @@
 package statistics.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import statistics.back.StatisticsResult;
 import statistics.back.averagePollution.AveragePollutionResult;
 import statistics.back.pollutionExtremes.PollutionExtremesResult;
@@ -14,12 +17,36 @@ import statistics.ui.panels.*;
  * @version 1.0
  */
 public class StatisticsPanelFactory {
+    private Map<StatisticsResult, StatisticsPanel> statisticsCache; // Cache of statistics results to avoid creating duplicate panels.
+    private static StatisticsPanelFactory instance; // Singleton instance.
+
+    /**
+     * Constructor.
+     */
+    private StatisticsPanelFactory() {
+        statisticsCache = new HashMap<>();
+    }
+
+    /**
+     * @return The singleton instance of the factory.
+     */
+    public static StatisticsPanelFactory getInstance() {
+        if (instance == null) {
+            instance = new StatisticsPanelFactory();
+        }
+        return instance;
+    }
+
     /**
      * Create an appropriate panel for the given statistics result.
      * @param result The statistics result to display.
      * @return A panel configured to display the provided statistics result.
      */
-    public static StatisticsPanel createPanel(StatisticsResult result) {
+    public StatisticsPanel createPanel(StatisticsResult result) {
+        if (statisticsCache.get(result) != null) { // Check if the panel is already cached.
+            return statisticsCache.get(result);
+        }
+
         return switch (result) {
             case SimpleTrendsResult stResult -> new SimpleTrendsPanel(stResult);
             case AveragePollutionResult apResult -> new AveragePollutionPanel(apResult);

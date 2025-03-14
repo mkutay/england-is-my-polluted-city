@@ -25,6 +25,8 @@ import java.util.List;
  * @version 1.0
  */
 public class StatisticsController {
+    private final StatisticsPanelFactory statisticsPanelFactory;
+
     private BorderPane statisticsPane;
     private Button prevButton;
     private Button nextButton;
@@ -40,6 +42,7 @@ public class StatisticsController {
      */
     public StatisticsController() {
         statisticsPane = new BorderPane();
+        this.statisticsPanelFactory = StatisticsPanelFactory.getInstance();
         initialiseNavigationButtons();
     }
     
@@ -77,7 +80,7 @@ public class StatisticsController {
     private void showPreviousStatistic() {
         if (statisticsKeys != null && !statisticsKeys.isEmpty() && currentKeyIndex > 0) {
             currentKeyIndex--;
-            updateStatisticsDisplay(statisticsKeys.get(currentKeyIndex));
+            updateStatisticsDisplay();
             updateButtonStates();
         }
     }
@@ -88,13 +91,13 @@ public class StatisticsController {
     private void showNextStatistic() {
         if (statisticsKeys != null && !statisticsKeys.isEmpty() && currentKeyIndex < statisticsKeys.size() - 1) {
             currentKeyIndex++;
-            updateStatisticsDisplay(statisticsKeys.get(currentKeyIndex));
+            updateStatisticsDisplay();
             updateButtonStates();
         }
     }
     
     /**
-     * Updates the button states based on current position in statistics collection.
+     * Updates the button states and texts based on current position in statistics collection.
      */
     private void updateButtonStates() {
         if (statisticsKeys == null || statisticsKeys.isEmpty()) {
@@ -103,8 +106,18 @@ public class StatisticsController {
             prevButton.setText("Previous");
             nextButton.setText("Next");
         } else {
-            prevButton.setText("Previous (" + statisticsKeys.get(Math.max(currentKeyIndex - 1, 0)) + ")");
-            nextButton.setText("Next (" + statisticsKeys.get(Math.min(currentKeyIndex + 1, statisticsKeys.size())) + ")");
+            if (currentKeyIndex == 0) {
+                prevButton.setText("Previous");
+            } else {
+                prevButton.setText("Previous (" + statisticsKeys.get(currentKeyIndex - 1) + ")");
+            }
+
+            if (currentKeyIndex == statisticsKeys.size() - 1) {
+                nextButton.setText("Next");
+            } else {
+                nextButton.setText("Next (" + statisticsKeys.get(currentKeyIndex + 1) + ")");
+            }
+
             prevButton.setDisable(currentKeyIndex <= 0);
             nextButton.setDisable(currentKeyIndex >= statisticsKeys.size() - 1);
         }
@@ -113,11 +126,12 @@ public class StatisticsController {
     /**
      * Updates the displayed statistics based on current key.
      */
-    private void updateStatisticsDisplay(String key) {
+    private void updateStatisticsDisplay() {
+        String key = statisticsKeys.get(currentKeyIndex);
         if (key == null || statistics == null) return;
 
         StatisticsResult sr = statistics.get(key);
-        StatisticsPanel statisticsPanel = StatisticsPanelFactory.createPanel(sr);
+        StatisticsPanel statisticsPanel = statisticsPanelFactory.createPanel(sr);
         statisticsPane.setCenter(statisticsPanel);
     }
 
@@ -139,7 +153,7 @@ public class StatisticsController {
         // Convert the keyset to a list for indexed access.
         statisticsKeys = new ArrayList<>(statistics.keySet());
 
-        updateStatisticsDisplay(statisticsKeys.get(currentKeyIndex));
+        updateStatisticsDisplay();
 
         updateButtonStates();
     }
