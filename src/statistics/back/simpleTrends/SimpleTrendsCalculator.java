@@ -90,9 +90,6 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
             
             yearlyTotals.put(year, total);
             yearlyAverages.put(year, average);
-            
-            result.setYearlyTotal(year, total);
-            result.setYearlyAverage(year, average);
         }
         
         // Store complete sets for charting:

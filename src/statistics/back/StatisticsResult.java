@@ -1,7 +1,5 @@
 package statistics.back;
 
-import java.util.Map;
-
 import dataProcessing.Pollutant;
 
 /**
@@ -21,18 +19,6 @@ public interface StatisticsResult {
      * @return The description string.
      */
     String getDescription();
-    
-    /**
-     * Get a specific value by key.
-     * @param key The key for the desired value.
-     * @return The value, or null if not found.
-     */
-    Object getValue(String key);
-    
-    /**
-     * @return Map containing all key-value pairs.
-     */
-    Map<String, Object> getAllValues();
 
     /**
      * @return The pollutant associated with this result.

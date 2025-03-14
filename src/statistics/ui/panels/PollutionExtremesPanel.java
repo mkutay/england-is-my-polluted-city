@@ -9,12 +9,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.Pair;
 import statistics.back.pollutionExtremes.PollutionExtremesResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import api.PostcodeAPI;
 import api.PostcodeResponse;
@@ -37,10 +39,9 @@ public class PollutionExtremesPanel extends StatisticsPanel {
         super(result);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     protected void initialiseContent() {
-        // Display extremes
+        // Display extremes.
         DataPoint maxPoint = statisticsResult.getMaxPoint();
         if (maxPoint != null) {
             VBox maxPanel = createDataPointPanel("Maximum Pollution", maxPoint);
@@ -53,30 +54,33 @@ public class PollutionExtremesPanel extends StatisticsPanel {
             addToContent(minPanel);
         }
         
-        // Display hotspots if available
+        // Display hotspots if available.
         displayHotspots();
         
-        // Check for yearly max values for chart
-        Object yearlyMaxValuesObj = statisticsResult.getValue("yearlyMaxValues");
-        if (yearlyMaxValuesObj instanceof Map yearlyMaxValues && !yearlyMaxValues.isEmpty()) {
-            addSeparator();
-            addYearlyMaxChart(yearlyMaxValues);
-            
-            // Display the year with the highest value
-            Integer yearWithHighestValue = (Integer) statisticsResult.getValue("yearWithHighestValue");
-            Double highestOverallValue = (Double) statisticsResult.getValue("highestOverallValue");
-            
-            if (yearWithHighestValue != null && highestOverallValue != null) {
-                addKeyValueRow("Highest Year", yearWithHighestValue + " (" + formatDouble(highestOverallValue) + ")");
-            }
+        // Check for yearly max values for chart.
+        Map<Integer, DataPoint> yearToMaxPoint = statisticsResult.getYearToMaxPoints();
+
+        if (yearToMaxPoint == null || yearToMaxPoint.isEmpty()) return;
+
+        Map<Integer, Double> yearlyMaxValues = yearToMaxPoint.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().value()));
+
+        addSeparator();
+        addYearlyMaxChart(yearlyMaxValues);
+        
+        // Display the year with the highest value.
+        Pair<Integer, Double> highestOverallYear = statisticsResult.getHighestOverallYear();
+        
+        if (highestOverallYear != null) {
+            addKeyValueRow("Highest Year", highestOverallYear.getKey() + " (" + formatDouble(highestOverallYear.getValue()) + ")");
         }
     }
     
     /**
      * Create a panel for displaying a data point.
-     * @param title Title for the panel
-     * @param dataPoint The data point to display
-     * @return A configured panel
+     * @param title Title for the panel.
+     * @param dataPoint The data point to display.
+     * @return A configured panel.
      */
     private VBox createDataPointPanel(String title, DataPoint dataPoint) {
         VBox panel = new VBox(5);

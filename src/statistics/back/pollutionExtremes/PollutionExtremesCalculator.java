@@ -72,7 +72,6 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         );
         
         Map<Integer, DataPoint> yearToMaxPoint = new HashMap<>();
-        Map<Integer, Double> yearToMaxValue = new HashMap<>();
         
         for (int year = startYear; year <= endYear; year++) {
             DataSet dataSet = dataManager.getPollutantData(year, pollutant);
@@ -81,21 +80,18 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
             DataPoint maxPoint = findMaxDataPoint(dataPoints);
             if (maxPoint != null) {
                 yearToMaxPoint.put(year, maxPoint);
-                yearToMaxValue.put(year, maxPoint.value());
-                result.setYearlyMaxValue(year, maxPoint.value());
             }
         }
         
         result.setYearlyMaxPoints(yearToMaxPoint);
-        result.setYearlyMaxValues(yearToMaxValue);
         
         // Find year with highest value:
-        int yearWithHighestValue = yearToMaxValue.entrySet().stream()
-            .max(Map.Entry.comparingByValue())
+        int yearWithHighestValue = yearToMaxPoint.entrySet().stream()
+            .max(Map.Entry.comparingByValue(Comparator.comparingDouble(DataPoint::value)))
             .map(Map.Entry::getKey)
             .orElse(startYear);
         
-        result.setHighestOverallYear(yearWithHighestValue, yearToMaxValue.get(yearWithHighestValue));
+        result.setHighestOverallYear(yearWithHighestValue, yearToMaxPoint.get(yearWithHighestValue).value());
         
         return result;
     }

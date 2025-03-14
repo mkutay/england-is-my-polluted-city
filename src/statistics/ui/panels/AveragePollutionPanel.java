@@ -8,14 +8,13 @@ import statistics.back.averagePollution.AveragePollutionResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Specialised panel for displaying AveragePollution results.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 2.0
+ * @version 3.0
  */
 public class AveragePollutionPanel extends StatisticsPanel {
     protected AveragePollutionResult statisticsResult; // Re-casting.
@@ -36,28 +35,16 @@ public class AveragePollutionPanel extends StatisticsPanel {
         addKeyValueRow("Overall Median", formatDouble(statisticsResult.getMedian()));
         addKeyValueRow("Overall Standard Deviation", formatDouble(statisticsResult.getStandardDeviation()));
         
-        Map<String, Object> allValues = statisticsResult.getAllValues();
-        Map<Integer, Double> yearlyData = new HashMap<>();
+        Map<Integer, Double> yearlyData = statisticsResult.getYearlyMeans();
         
-        for (String key : allValues.keySet()) {
-            if (key.startsWith("mean_") && allValues.get(key) instanceof Double) {
-                try {
-                    int year = Integer.parseInt(key.substring(5));
-                    yearlyData.put(year, (Double) allValues.get(key));
-                } catch (NumberFormatException e) {
-                    // Skip invalid keys.
-                }
-            }
-        }
-        
-        if (yearlyData.isEmpty()) return;
+        if (yearlyData == null || yearlyData.isEmpty()) return;
 
         // If we have yearly data, show a chart:
         addSeparator();
         addYearlyDataChart(yearlyData);
         
         // Show overall trend if available
-        Double overallTrend = (Double) statisticsResult.getValue("overallTrend");
+        Double overallTrend = statisticsResult.getOverallTrend();
         if (overallTrend != null) {
             String trendDescription = overallTrend > 0.25 ? "increasing" : overallTrend < 0.25 ? "decreasing" : "stable";
             addKeyValueRow("Overall Trend", trendDescription + " (" + formatDouble(overallTrend) + ")");
