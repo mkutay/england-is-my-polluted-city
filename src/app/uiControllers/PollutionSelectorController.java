@@ -1,16 +1,19 @@
 package app.uiControllers;
 
+import colors.ColorScheme;
+import colors.ColorblindColorScheme;
+import colors.DefaultColorScheme;
 import dataProcessing.DataManager;
 import dataProcessing.Pollutant;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 /**
  * Controller for the pollutant and year selection dropdowns in the side panel.
@@ -23,7 +26,8 @@ public class PollutionSelectorController {
     private final DataManager dataManager;
     private final ComboBox<Pollutant> pollutantDropdown;
     private final ComboBox<Integer> yearDropdown;
-    private BiConsumer<Integer, Pollutant> onSelectionChangedCallback;
+    private final ComboBox<ColorScheme> colorDropdown;
+    private TriConsumer<Integer, Pollutant, ColorScheme> onSelectionChangedCallback;
 
     /**
      * Constructor for PollutionSelectorController.
@@ -32,7 +36,8 @@ public class PollutionSelectorController {
         this.dataManager = DataManager.getInstance();
         this.pollutantDropdown = new ComboBox<>();
         this.yearDropdown = new ComboBox<>();
-        
+        this.colorDropdown = new ComboBox<>();
+
         initialiseDropdowns();
     }
     
@@ -41,28 +46,50 @@ public class PollutionSelectorController {
      */
     private void initialiseDropdowns() {
         // Set up pollutant dropdown:
-        pollutantDropdown.getStyleClass().add("dropdown");
+        //pollutantDropdown.getStyleClass().add("dropdown");
         pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
         pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
-        pollutantDropdown.setPromptText("Select Pollutant");
-        pollutantDropdown.getSelectionModel().select(0);
-        
+        //pollutantDropdown.setPromptText("Select Pollutant");
+        pollutantDropdown.getSelectionModel().selectFirst();
+
+        // Modifies names of pollutant dropdown items
+        pollutantDropdown.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getDisplayName());
+            }
+        });
+        // Modifies name for selected item
+        pollutantDropdown.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Pollutant item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getDisplayName());
+            }
+        });
+
         // Set up year dropdown:
-        yearDropdown.getStyleClass().add("dropdown");
+        //yearDropdown.getStyleClass().add("dropdown");
         yearDropdown.setMaxWidth(Double.MAX_VALUE);
-        yearDropdown.setPromptText("Select Year");
-        
+        //yearDropdown.setPromptText("Select Year");
         // Update year dropdown with years available for initial pollutant.
         updateYearDropdown();
+
+        // Set up colour dropdown:
+        //colorDropdown.getStyleClass().add("dropdown");
+        colorDropdown.setMaxWidth(Double.MAX_VALUE);
+        //colorDropdown.setPromptText("Select Colour");
+        updateColorDropdown();
+
         
         // Set up listeners:
-
         pollutantDropdown.setOnAction(e -> {
             updateYearDropdown(); // Validate the year dropdown values when the pollutant changes.
             notifySelectionChanged();
         });
-        
         yearDropdown.setOnAction(e -> notifySelectionChanged());
+        colorDropdown.setOnAction(e -> notifySelectionChanged());
     }
     
     /**
@@ -82,18 +109,28 @@ public class PollutionSelectorController {
         if (currentYear != null && yearDropdown.getItems().contains(currentYear)) {
             yearDropdown.setValue(currentYear);
         } else {
-            yearDropdown.getSelectionModel().select(0);
+            yearDropdown.getSelectionModel().selectFirst();
         }
     }
-    
+
+    /**
+     * Populates the color scheme dropdown with available options.
+     */
+    private void updateColorDropdown() {
+        colorDropdown.getItems().clear();
+        colorDropdown.getItems().addAll(new DefaultColorScheme(), new ColorblindColorScheme());
+        colorDropdown.getSelectionModel().selectFirst();
+    }
+
     /**
      * Notify listeners that the selection has changed.
      */
     private void notifySelectionChanged() {
         if (onSelectionChangedCallback != null && 
             yearDropdown.getValue() != null && 
-            pollutantDropdown.getValue() != null) {
-            onSelectionChangedCallback.accept(yearDropdown.getValue(), pollutantDropdown.getValue());
+            pollutantDropdown.getValue() != null &&
+            colorDropdown.getValue() != null) {
+            onSelectionChangedCallback.accept(yearDropdown.getValue(), pollutantDropdown.getValue(), colorDropdown.getValue());
         }
     }
     
@@ -101,7 +138,7 @@ public class PollutionSelectorController {
      * Set a callback for when either selection changes.
      * @param callback BiConsumer that takes the selected year and pollutant
      */
-    public void setOnSelectionChanged(BiConsumer<Integer, Pollutant> callback) {
+    public void setOnSelectionChanged(TriConsumer<Integer, Pollutant, ColorScheme> callback) {
         this.onSelectionChangedCallback = callback;
         // Initial notification with current values.
         notifySelectionChanged();
@@ -113,7 +150,6 @@ public class PollutionSelectorController {
      */
     public VBox createPollutantSelector() {
         Label label = new Label("Pollutant:");
-        label.getStyleClass().add("dropdown-label");
         return new VBox(6, label, pollutantDropdown);
     }
     
@@ -123,10 +159,18 @@ public class PollutionSelectorController {
      */
     public VBox createYearSelector() {
         Label label = new Label("Year:");
-        label.getStyleClass().add("dropdown-label");
         return new VBox(6, label, yearDropdown);
     }
-    
+
+    /**
+     * Creates a VBox containing the color scheme selection dropdown and label.
+     * @return VBox with color scheme selector.
+     */
+    public VBox createColorSelector() {
+        Label label = new Label("Color Scheme:");
+        return new VBox(6, label, colorDropdown);
+    }
+
     /**
      * @return The selected year from the dropdown.
      */
@@ -140,4 +184,18 @@ public class PollutionSelectorController {
     public Pollutant getSelectedPollutant() {
         return pollutantDropdown.getValue();
     }
+
+    /**
+     * @return The selected colour theme from the dropdown.
+     */
+    public ColorScheme getSelectedColorScheme() { return colorDropdown.getValue();}
+
+    /**
+     * Functional interface to allow three parameters in a callback.
+     */
+    @FunctionalInterface
+    public interface TriConsumer<T, U, V> {
+        void accept(T t, U u, V v);
+    }
+
 }
