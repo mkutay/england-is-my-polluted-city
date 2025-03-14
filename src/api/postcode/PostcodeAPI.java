@@ -1,4 +1,4 @@
-package api;
+package api.postcode;
 
 import java.net.URI;
 import java.net.http.HttpClient;

@@ -1,4 +1,4 @@
-package api;
+package api.postcode;
 import java.util.List;
 
 /**

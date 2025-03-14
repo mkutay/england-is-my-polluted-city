@@ -1,8 +1,5 @@
 package app;
 
-import api.AQICNAPI;
-import api.AQICNData;
-import api.AQIResponse;
 import colors.ColorSchemeManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -16,6 +13,10 @@ import javafx.scene.control.Separator;
 import app.uiControllers.StatisticsController;
 
 import java.io.IOException;
+
+import api.aqicn.AQICNAPI;
+import api.aqicn.AQICNData;
+import api.aqicn.AQIResponse;
 
 /**
  * The main App class as the entry point to the application. This class creates
@@ -56,8 +57,7 @@ public class App extends Application {
         root.setTop(uiController.getTopNav());
         root.setLeft(leftPane);
         root.setCenter(mapController.getMapOverlay());
-        AQICNAPI testres = new AQICNAPI();
-        AQIResponse test = testres.getPollutionData(51.395246,-0.40653443);
+        AQIResponse test = AQICNAPI.getPollutionData(51.395246,-0.40653443);
         System.out.println("NO2: "+ test.getData().getPollutantValues().getNo2().getIAQIValue());
 
         System.out.println("Last Updated: " + test.getData().getTimeData().getDateTimeString());

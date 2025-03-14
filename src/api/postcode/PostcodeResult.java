@@ -1,4 +1,4 @@
-package api;
+package api.postcode;
 
 /**
  * Represents a postcode result from the postcodes.io API. This is used to display information
