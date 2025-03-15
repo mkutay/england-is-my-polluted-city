@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Manager class for statistics calculations.
@@ -116,6 +117,27 @@ public class StatisticsManager {
         }
         
         return results;
+    }
+
+    /**
+     * Asynchronously calculate statistics for a specific data set over a time.
+     * @param pollutant The pollutant to analyse.
+     * @param startYear The start year.
+     * @param endYear The end year to analyse.
+     * @return CompletableFuture.
+     */
+    public CompletableFuture<Map<String, StatisticsResult>> calculateStatisticsOverTimeAsync(Pollutant pollutant, int startYear, int endYear) {
+        return CompletableFuture.supplyAsync(() -> calculateStatisticsOverTime(pollutant, startYear, endYear));
+    }
+
+    /**
+     * Asynchronously calculate statistics for a specific data set information.
+     * @param pollutant The pollutant to analyse.
+     * @param year The year of data to analyse.
+     * @return CompletableFuture.
+     */
+    public CompletableFuture<Map<String, StatisticsResult>> calculateStatisticsAsync(Pollutant pollutant, int year) {
+        return CompletableFuture.supplyAsync(() -> calculateStatistics(pollutant, year));
     }
     
     /**
