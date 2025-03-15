@@ -39,6 +39,7 @@ public class NavigationBarController {
         // Help Menu:
         Menu helpMenu = new Menu("Help");
         MenuItem aboutItem = new MenuItem("About");
+        aboutItem.setOnAction(e -> AboutPageController.show());
         helpMenu.getItems().add(aboutItem);
         // TODO: Add "about" functionality
 
