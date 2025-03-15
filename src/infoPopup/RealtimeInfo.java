@@ -45,9 +45,9 @@ public class RealtimeInfo {
         liveUpdatedTimeFlow = new TextFlow();
 
         // Initialise Labels that will be displayed in BOLD (e.g Postal Code:, Country: )
-        liveAQILabel = new Label("Live AQI: ");
+        liveAQILabel = new Label("Live Composite AQI: ");
         liveAQILabel.setStyle(labelStyle);
-        livePollutantLabel = new Label("Live Pollution Level: ");
+        livePollutantLabel = new Label("Live Pollution Level (AQI): ");
         livePollutantLabel.setStyle(labelStyle);
         liveUpdatedTimeLabel = new Label("Last Updated: ");
         liveUpdatedTimeLabel.setStyle(labelStyle);
@@ -104,7 +104,7 @@ public class RealtimeInfo {
         }
 
         if (livePollutionDetails != null) {
-            livePollutantInformation.setText(livePollutionDetails+" µg/m³");
+            livePollutantInformation.setText(livePollutionDetails);
         } else {
             livePollutantInformation.setText("Not Available");
         }
