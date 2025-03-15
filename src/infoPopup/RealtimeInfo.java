@@ -104,7 +104,7 @@ public class RealtimeInfo {
         }
 
         if (livePollutionDetails != null) {
-            livePollutantInformation.setText(livePollutionDetails);
+            livePollutantInformation.setText(livePollutionDetails+" µg/m³");
         } else {
             livePollutantInformation.setText("Not Available");
         }

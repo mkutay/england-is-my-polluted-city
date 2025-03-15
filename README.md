@@ -16,6 +16,7 @@
 - [GeographicLib](https://github.com/geographiclib/geographiclib-java) - Used for geodesic distance calculation
 - [Postcodes.io](https://postcodes.io/) - API used to get location & address data from the specified longitude and latitude on the map
 - [GSON](https://github.com/google/gson) - A library by Google to convert between Json and Java Objects
+- [World Air Quality Index API](https://aqicn.org/api/) - An API to get real time Air Quality Index Updates from the World Air Quality Index Project
 
 ## Authors
 
