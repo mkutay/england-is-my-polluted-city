@@ -2,6 +2,7 @@ package lod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import dataProcessing.DataSet;
 
@@ -19,9 +20,22 @@ public class LODManager {
     public LODManager(DataSet dataSet, int numLODs) {
         System.out.println("Creating " + numLODs + " LODs");
         LODDataList = new ArrayList<>(numLODs);
+
+        // Create LODs asynchronously.
+        List<CompletableFuture<LODData>> futures = new ArrayList<>();
         for (int i = 0; i < numLODs; i++) {
-            LODData LOD = new LODData(i + 1, dataSet);
-            LODDataList.add(LOD);
+            final int finalIndex = i;
+            CompletableFuture<LODData> future = CompletableFuture.supplyAsync(() -> {
+                System.out.println("Creating LOD " + (finalIndex + 1) + "...");
+                return new LODData(finalIndex + 1, dataSet);
+            });
+            futures.add(future);
+        }
+        
+        // Wait for all LODs to complete and collect them.
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        for (CompletableFuture<LODData> future : futures) {
+            LODDataList.add(future.join());
         }
         System.out.println("Finished generating LODs");
     }
