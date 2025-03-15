@@ -7,10 +7,12 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.OptionalDouble;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -65,34 +67,61 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
             pollutant.getDisplayName() + " from " + startYear + " to " + endYear,
             pollutant
         );
-        
-        double[] yearlyAverages = new double[endYear - startYear + 1];
-        double meanOverall = 0.0;
-        double medianOverall = 0.0;
-        double standardDeviationOverall = 0.0;
 
-        Map<Integer, Double> yearlyMeans = new HashMap<>();
+        Map<Integer, Double> yearlyMeans = new ConcurrentHashMap<>();
+        Map<Integer, Double> yearlyMedians = new ConcurrentHashMap<>();
+        Map<Integer, Double> yearlyStandardDeviations = new ConcurrentHashMap<>();
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
         
+        // Asynchoronously calculate yearly means, medians, and standard deviations:
         for (int year = startYear; year <= endYear; year++) {
-            DataSet dataSet = dataManager.getPollutantData(year, pollutant);
-            List<DataPoint> dataPoints = dataSet.getData();
-            
-            double mean = calculateMean(dataPoints);
-            yearlyAverages[year - startYear] = mean;
-            yearlyMeans.put(year, mean);
-
-            meanOverall += mean;
-            medianOverall += calculateMedian(dataPoints);
-            standardDeviationOverall += calculateStandardDeviation(dataPoints, mean);
+            final int finalYear = year;
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                DataSet dataSet = dataManager.getPollutantData(finalYear, pollutant);
+                List<DataPoint> dataPoints = dataSet.getData();
+                
+                double mean = calculateMean(dataPoints);
+                yearlyMeans.put(finalYear, mean);
+                yearlyMedians.put(finalYear, calculateMedian(dataPoints));
+                yearlyStandardDeviations.put(finalYear, calculateStandardDeviation(dataPoints, mean));
+            });
+            futures.add(future);
         }
 
-        result.setMean(meanOverall / yearlyAverages.length);
-        result.setMedian(medianOverall / yearlyAverages.length);
-        result.setStandardDeviation(standardDeviationOverall / yearlyAverages.length);
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        double mean = yearlyMeans
+            .values()
+            .stream()
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(0.0) / yearlyMeans.size();
+
+        result.setMean(mean);
+
+        double median = yearlyMedians
+            .values()
+            .stream()
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(0.0) / yearlyMedians.size();
+
+        result.setMedian(median);
+
+        double standardDeviation = yearlyStandardDeviations
+            .values()
+            .stream()
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(0.0) / yearlyStandardDeviations.size();
+
+        result.setStandardDeviation(standardDeviation);
+
         result.setYearlyMeans(yearlyMeans);
         
         // Calculate trend:
-        double trend = yearlyAverages[yearlyAverages.length - 1] - yearlyAverages[0];
+        double trend = yearlyMeans.get(endYear) - yearlyMeans.get(startYear);
         result.setOverallTrend(trend);
         
         return result;
