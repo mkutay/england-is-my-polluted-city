@@ -21,7 +21,8 @@ import java.util.List;
 
 /**
  * Manages the side panel UI elements and coordinates between different view components.
- * 
+ *
+ * @author Mehmet Kutay Bozkurtband Chelsea Feliciano
  * @version 3.0
  */
 public class SidePanelController {
@@ -58,11 +59,89 @@ public class SidePanelController {
 
         this.mapContent = mapController.getMapOverlay();
 
-        sidePanel = createSidePanel();
-        sidePanel.getStyleClass().add("side-panel");
-        
-        // Set up event handlers
+        sidePanel = initialiseSidePanel();
         setupEventHandlers();
+    }
+
+    /**
+     * Initialises the side panel UI components.
+     */
+    private VBox initialiseSidePanel() {
+        VBox panel = new VBox();
+        panel.getStyleClass().add("side-panel");
+
+        panel.getChildren().addAll(
+                createAppLabel(),
+                createNavigationBar(),
+                createSelectionControls(),
+                createViewSwitchButtons()
+        );
+
+        return panel;
+    }
+
+    private HBox createAppLabel() {
+        HBox appLabel = new HBox();
+        appLabel.getStyleClass().add("app-label");
+
+        // Create the title label for the side panel:
+        Text appName = new Text(App.APP_NAME);
+        TextFlow appTitle = new TextFlow(appName);
+        appTitle.getStyleClass().add("app-title");
+
+        // App logo
+        Image img = new Image(getClass().getResourceAsStream("/resources/rainbow.png"));
+        ImageView icon = new ImageView(img);
+        icon.setFitWidth(50);
+        icon.setFitHeight(50);
+
+        appLabel.getChildren().addAll(icon, appTitle);
+        return appLabel;
+    }
+
+    /**
+     * Creates the navigation bar for the side panel.
+     */
+    private HBox createNavigationBar() {
+        HBox panelNav = new HBox();
+        homeLabel = new Label("Map View");
+        statsLabel = new Label("Statistics View");
+        Label signLabel = new Label(">");
+
+        panelNav.getChildren().addAll(homeLabel, signLabel, statsLabel);
+        panelNav.getStyleClass().add("side-panel-nav");
+
+        homeLabel.getStyleClass().add("nav-label");
+        statsLabel.getStyleClass().add("nav-label");
+
+        navigationLabels = Arrays.asList(homeLabel, statsLabel);
+        homeLabel.getStyleClass().add("active");
+
+        // Set up click handlers.
+        homeLabel.setOnMouseClicked(e -> switchView("home"));
+        statsLabel.setOnMouseClicked(e -> switchView("stats"));
+
+        return panelNav;
+    }
+
+    /**
+     * Creates selection controls for year, pollutant, and colour scheme.
+     */
+    private VBox createSelectionControls() {
+        VBox selectionControls = new VBox();
+
+        VBox pollutantDropdownBox = dataSelectionController.createPollutantSelector();
+        VBox yearDropdownBox = dataSelectionController.createYearSelector();
+        VBox colorDropdownBox = colorSchemeController.createColorSelector();
+
+        pollutantDropdownBox.getStyleClass().add("dropdown");
+        yearDropdownBox.getStyleClass().add("dropdown");
+        colorDropdownBox.getStyleClass().add("dropdown");
+
+        selectionControls.getChildren().addAll(pollutantDropdownBox, yearDropdownBox, colorDropdownBox);
+        selectionControls.getStyleClass().add("dropdown-box");
+
+        return selectionControls;
     }
 
     /**
@@ -75,7 +154,7 @@ public class SidePanelController {
             mapController.updateMapDataSet(year, pollutant, colorScheme);
             statisticsController.updateDataSet(year, pollutant);
         });
-        
+
         // Handle color scheme changes:
         colorSchemeController.setOnColorSchemeChanged(colorScheme -> {
             Integer year = dataSelectionController.getSelectedYear();
@@ -85,133 +164,43 @@ public class SidePanelController {
     }
 
     /**
-     * Creates the side panel with all UI components.
+     * Creates view switching buttons to the side panel.
      */
-    private VBox createSidePanel() {
-        VBox panel = new VBox();
-        panel.getStyleClass().add("side-panel");
-        
-        // Create the title label for the side panel:
-        Text appName = new Text(App.APP_NAME);
-        TextFlow appTitle = new TextFlow(appName);
-        appTitle.getStyleClass().add("app-title");
+    private VBox createViewSwitchButtons() {
+        VBox buttonContainer = new VBox();
 
-        // App logo
-        Image img = new Image(getClass().getResourceAsStream("/resources/rainbow.png"));
-        ImageView icon = new ImageView(img);
-        icon.setFitWidth(50);  // Resizes width
-        icon.setFitHeight(50); // Resizes height
-
-        HBox appLabel = new HBox();
-        appLabel.getChildren().addAll(icon, appTitle);
-        appLabel.getStyleClass().add("app-label");
-
-
-        // Create navigation bar:
-        HBox panelNav = createNavigationBar();
-
-        // Get data selection components:
-        VBox pollutantDropdownBox = dataSelectionController.createPollutantSelector();
-        VBox yearDropdownBox = dataSelectionController.createYearSelector();
-        VBox colorDropdownBox = colorSchemeController.createColorSelector();
-        
-        pollutantDropdownBox.getStyleClass().add("dropdown");
-        yearDropdownBox.getStyleClass().add("dropdown");
-        colorDropdownBox.getStyleClass().add("dropdown");
-
-        VBox selectionControls = new VBox();
-        selectionControls.getChildren().addAll(pollutantDropdownBox, yearDropdownBox, colorDropdownBox);
-        selectionControls.getStyleClass().add("dropdown-box");
-
-        // Add components to side panel:
-        panel.getChildren().addAll(appLabel, panelNav, selectionControls);
-
-        // Add view switch buttons:
-        addViewSwitchButtons(panel);
-
-        return panel;
-    }
-
-    /**
-     * Creates the navigation bar for the side panel.
-     */
-    private HBox createNavigationBar() {
-        HBox panelNav = new HBox();
-        homeLabel = new Label("Map View");
-        statsLabel = new Label("Statistics View");
-        Label signLabel = new Label(">");
-        
-        panelNav.getChildren().addAll(homeLabel, signLabel, statsLabel);
-        panelNav.getStyleClass().add("side-panel-nav");
-        
-        homeLabel.getStyleClass().add("nav-label");
-        statsLabel.getStyleClass().add("nav-label");
-        
-        navigationLabels = Arrays.asList(homeLabel, statsLabel);
-        homeLabel.getStyleClass().add("active");
-        
-        // Set up click handlers.
-        homeLabel.setOnMouseClicked(e -> switchToMapView());
-        statsLabel.setOnMouseClicked(e -> switchToStatisticsView());
-        
-        return panelNav;
-    }
-
-    /**
-     * Adds view switching buttons to the side panel.
-     * @param panel The side panel VBox to add buttons to.
-     */
-    private void addViewSwitchButtons(VBox panel) {
         viewStatisticsButton = new Button("View Pollutant Statistics");
         viewStatisticsButton.setMaxWidth(Double.MAX_VALUE);
-        viewStatisticsButton.setOnAction(e -> switchToStatisticsView());
+        viewStatisticsButton.setOnAction(e -> switchView("stats"));
         viewStatisticsButton.getStyleClass().add("view-stats");
 
         viewMapButton = new Button("Return to Map");
         viewMapButton.setMaxWidth(Double.MAX_VALUE);
-        viewMapButton.setOnAction(e -> switchToMapView());
+        viewMapButton.setOnAction(e -> switchView("home"));
         viewMapButton.getStyleClass().add("view-map");
 
-        // Initially show the statistics button
-        panel.getChildren().add(viewStatisticsButton);
+        buttonContainer.getChildren().add(viewStatisticsButton);
+        return buttonContainer;
     }
 
     /**
-     * Switches to statistics view.
+     * Switches between the map view and statistics view.
+     * @param viewType The view to switch to ("home" or "stats").
      */
-    private void switchToStatisticsView() {
-        updateNavigationLabels("stats");
-        
-        // Switch buttons:
-        sidePanel.getChildren().remove(viewStatisticsButton);
-        if (!sidePanel.getChildren().contains(viewMapButton)) {
-            sidePanel.getChildren().add(viewMapButton);
-        }
-        
-        // Save map content.
-        if (mapShown) {
-            mapContent = rootPane.getCenter();
-        }
+    private void switchView(String viewType) {
+        updateNavigationLabels(viewType);
 
-        rootPane.setCenter(statisticsController.getStatisticsPane());
-        mapShown = false;
-    }
-    
-    /**
-     * Switches to map view.
-     */
-    private void switchToMapView() {
-        updateNavigationLabels("home");
-        
-        // Switch buttons:
-        sidePanel.getChildren().remove(viewMapButton);
-        if (!sidePanel.getChildren().contains(viewStatisticsButton)) {
+        sidePanel.getChildren().removeAll(viewMapButton, viewStatisticsButton);
+        if ("home".equals(viewType)) {
+            rootPane.setCenter(mapContent);
             sidePanel.getChildren().add(viewStatisticsButton);
+            mapShown = true;
+        } else if ("stats".equals(viewType)) {
+            if (mapShown) mapContent = rootPane.getCenter();
+            rootPane.setCenter(statisticsController.getStatisticsPane());
+            sidePanel.getChildren().add(viewMapButton);
+            mapShown = false;
         }
-        
-        // Restore the map view.
-        rootPane.setCenter(mapContent);
-        mapShown = true;
     }
 
     /**
