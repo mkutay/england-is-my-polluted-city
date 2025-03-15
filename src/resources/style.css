@@ -30,7 +30,7 @@
     -fx-padding: 5 5 5 10;
 }
 .switch-label {
-    -fx-min-width: 300px;
+    -fx-min-width: 270px;
     -fx-font-size: 15px;
     -fx-background-color: gainsboro;
     -fx-padding: 10;

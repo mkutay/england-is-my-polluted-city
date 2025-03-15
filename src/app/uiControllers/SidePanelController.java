@@ -173,7 +173,7 @@ public class SidePanelController {
         switchLabel.getStyleClass().add("switch-label");
 
         switchLabel.setOnMouseClicked(e -> switchView());
-        switchButton.getChildren().addAll(switchLabel);
+        switchButton.getChildren().add(switchLabel);
         return switchButton;
     }
 

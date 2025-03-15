@@ -6,7 +6,6 @@ import javafx.scene.control.MenuBar;
 
 import app.uiControllers.NavigationBarController;
 import app.uiControllers.SidePanelController;
-import app.uiControllers.StatisticsController;
 
 /**
  * Manages all UI elements that are not a part of the map. e.g. the side panel.
