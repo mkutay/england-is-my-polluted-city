@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Manages the side panel UI elements and coordinates between different view components.
  *
- * @author Mehmet Kutay Bozkurtband Chelsea Feliciano
+ * @author Mehmet Kutay Bozkurt and Chelsea Feliciano
  * @version 3.0
  */
 public class SidePanelController {
@@ -36,13 +36,12 @@ public class SidePanelController {
     private final MapController mapController;
 
     // UI Navigation Elements:
-    private Button viewStatisticsButton;
-    private Button viewMapButton;
     private Node mapContent;
     private boolean mapShown = true;
 
     private Label homeLabel;
     private Label statsLabel;
+    private Label switchLabel;
     private List<Label> navigationLabels;
 
     /**
@@ -74,7 +73,7 @@ public class SidePanelController {
                 createAppLabel(),
                 createNavigationBar(),
                 createSelectionControls(),
-                createViewSwitchButtons()
+                createSwitchButton()
         );
 
         return panel;
@@ -118,8 +117,8 @@ public class SidePanelController {
         homeLabel.getStyleClass().add("active");
 
         // Set up click handlers.
-        homeLabel.setOnMouseClicked(e -> switchView("home"));
-        statsLabel.setOnMouseClicked(e -> switchView("stats"));
+        homeLabel.setOnMouseClicked(e -> switchView());
+        statsLabel.setOnMouseClicked(e -> switchView());
 
         return panelNav;
     }
@@ -164,42 +163,34 @@ public class SidePanelController {
     }
 
     /**
-     * Creates view switching buttons to the side panel.
+     * Creates view switching button to the side panel.
      */
-    private VBox createViewSwitchButtons() {
-        VBox buttonContainer = new VBox();
+    private HBox createSwitchButton() {
+        HBox switchButton = new HBox();
+        switchButton.getStyleClass().add("switch-button");
 
-        viewStatisticsButton = new Button("View Pollutant Statistics");
-        viewStatisticsButton.setMaxWidth(Double.MAX_VALUE);
-        viewStatisticsButton.setOnAction(e -> switchView("stats"));
-        viewStatisticsButton.getStyleClass().add("view-stats");
+        switchLabel = new Label("ⓘ View Pollutant Statistics");
+        switchLabel.getStyleClass().add("switch-label");
 
-        viewMapButton = new Button("Return to Map");
-        viewMapButton.setMaxWidth(Double.MAX_VALUE);
-        viewMapButton.setOnAction(e -> switchView("home"));
-        viewMapButton.getStyleClass().add("view-map");
-
-        buttonContainer.getChildren().add(viewStatisticsButton);
-        return buttonContainer;
+        switchLabel.setOnMouseClicked(e -> switchView());
+        switchButton.getChildren().addAll(switchLabel);
+        return switchButton;
     }
 
     /**
      * Switches between the map view and statistics view.
-     * @param viewType The view to switch to ("home" or "stats").
      */
-    private void switchView(String viewType) {
-        updateNavigationLabels(viewType);
+    private void switchView() {
+        updateNavigationLabels(mapShown ? "stats" : "home");
 
-        sidePanel.getChildren().removeAll(viewMapButton, viewStatisticsButton);
-        if ("home".equals(viewType)) {
-            rootPane.setCenter(mapContent);
-            sidePanel.getChildren().add(viewStatisticsButton);
-            mapShown = true;
-        } else if ("stats".equals(viewType)) {
-            if (mapShown) mapContent = rootPane.getCenter();
+        if (mapShown) {
             rootPane.setCenter(statisticsController.getStatisticsPane());
-            sidePanel.getChildren().add(viewMapButton);
+            switchLabel.setText("Return to Map");
             mapShown = false;
+        } else {
+            rootPane.setCenter(mapContent);
+            switchLabel.setText("ⓘ View Pollutant Statistics");
+            mapShown = true;
         }
     }
 
