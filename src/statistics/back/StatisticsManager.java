@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -71,23 +72,33 @@ public class StatisticsManager {
      * @return Map of calculator names to their results.
      */
     public Map<String, StatisticsResult> calculateStatistics(Pollutant pollutant, int year) {
+        Map<String, CompletableFuture<StatisticsResult>> futures = new HashMap<>();
         Map<String, StatisticsResult> results = new HashMap<>();
         
         for (StatisticsCalculator calculator : calculators) {
-            String key = makeKey(calculator.getStatisticsName(), year, pollutant);
+            final String key = makeKey(calculator.getStatisticsName(), year, pollutant);
             
-            // Check cache first:
-            if (resultCache.containsKey(key)) {
-                results.put(calculator.getStatisticsName(), resultCache.get(key));
-                continue;
-            }
-            
-            // Calculate and cache:
-            StatisticsResult result = calculator.calculateStatistics(pollutant, year);
-            resultCache.put(key, result);
-            results.put(calculator.getStatisticsName(), result);
+            CompletableFuture<StatisticsResult> future = CompletableFuture.supplyAsync(() -> {
+                // Check cache first:
+                if (resultCache.containsKey(key)) {
+                    return resultCache.get(key);
+                }
+                
+                // Calculate and cache:
+                StatisticsResult result = calculator.calculateStatistics(pollutant, year);
+                resultCache.put(key, result);
+                return result;
+            });
+
+            futures.put(calculator.getStatisticsName(), future);
         }
-        
+
+        CompletableFuture.allOf(futures.values().toArray(new CompletableFuture[0])).join();
+
+        for (Entry<String, CompletableFuture<StatisticsResult>> entry : futures.entrySet()) {
+            results.put(entry.getKey(), entry.getValue().join());
+        }
+
         return results;
     }
     
@@ -99,6 +110,10 @@ public class StatisticsManager {
      * @return Map of calculator names to their results.
      */
     public Map<String, StatisticsResult> calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
+        if (startYear == endYear) {
+            return calculateStatistics(pollutant, startYear);
+        }
+        
         Map<String, StatisticsResult> results = new HashMap<>();
         
         for (StatisticsCalculator calculator : calculators) {

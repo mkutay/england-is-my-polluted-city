@@ -7,9 +7,11 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Analyser for pollution trends over time.
@@ -36,7 +38,7 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
         
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Snapshot", 
-            "Basic statistics for " + dataSet.getPollutant() + " in " + dataSet.getYear(),
+            "Basic statistics for " + pollutant.getDisplayName() + " in " + year,
             pollutant
         );
         
@@ -67,30 +69,38 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
             pollutant
         );
         
-        Map<Integer, Double> yearlyAverages = new HashMap<>();
-        Map<Integer, Double> yearlyTotals = new HashMap<>();
+        Map<Integer, Double> yearlyAverages = new ConcurrentHashMap<>();
+        Map<Integer, Double> yearlyTotals = new ConcurrentHashMap<>();
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
         
         // Calculate yearly values for each year:
         for (int year = startYear; year <= endYear; year++) {
-            DataSet dataSet = dataManager.getPollutantData(year, pollutant);
-            List<DataPoint> dataPoints = dataSet.getData();
-            
-            // Calculate total and average for this year:
-            double total = dataPoints.stream()
-                .mapToDouble(DataPoint::value)
-                .filter(value -> value >= 0)
-                .sum();
-            
-            long count = dataPoints.stream()
-                .mapToDouble(DataPoint::value)
-                .filter(value -> value >= 0)
-                .count();
-            
-            double average = count > 0 ? total / count : 0;
-            
-            yearlyTotals.put(year, total);
-            yearlyAverages.put(year, average);
+            final int finalYear = year;
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                DataSet dataSet = dataManager.getPollutantData(finalYear, pollutant);
+                List<DataPoint> dataPoints = dataSet.getData();
+                
+                // Calculate total and average for this year:
+                double total = dataPoints.stream()
+                    .mapToDouble(DataPoint::value)
+                    .filter(value -> value >= 0)
+                    .sum();
+                
+                long count = dataPoints.stream()
+                    .mapToDouble(DataPoint::value)
+                    .filter(value -> value >= 0)
+                    .count();
+                
+                double average = count > 0 ? total / count : 0;
+                
+                yearlyTotals.put(finalYear, total);
+                yearlyAverages.put(finalYear, average);
+            });
+            futures.add(future);
         }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         
         // Store complete sets for charting:
         result.setYearlyAverages(yearlyAverages);

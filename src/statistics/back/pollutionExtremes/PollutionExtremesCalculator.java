@@ -7,10 +7,12 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +40,7 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots", 
             "Analysis of highest pollution areas for " + 
-            dataSet.getPollutant().toString() + " in " + dataSet.getYear(),
+            pollutant.getDisplayName() + " in " + year,
             pollutant
         );
         
@@ -71,17 +73,26 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
             pollutant
         );
         
-        Map<Integer, DataPoint> yearToMaxPoint = new HashMap<>();
+        Map<Integer, DataPoint> yearToMaxPoint = new ConcurrentHashMap<>();
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
         
+        // Calculate for each year in parallel:
         for (int year = startYear; year <= endYear; year++) {
-            DataSet dataSet = dataManager.getPollutantData(year, pollutant);
-            List<DataPoint> dataPoints = dataSet.getData();
-            
-            DataPoint maxPoint = findMaxDataPoint(dataPoints);
-            if (maxPoint != null) {
-                yearToMaxPoint.put(year, maxPoint);
-            }
+            final int finalYear = year;
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                DataSet dataSet = dataManager.getPollutantData(finalYear, pollutant);
+                List<DataPoint> dataPoints = dataSet.getData();
+                
+                DataPoint point = findMaxDataPoint(dataPoints);
+                if (point != null) {
+                    yearToMaxPoint.put(finalYear, point);
+                }
+            });
+            futures.add(future);
         }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         
         result.setYearlyMaxPoints(yearToMaxPoint);
         
