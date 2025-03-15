@@ -22,7 +22,7 @@ public class UIController {
     /**
      * Constructor for UIController.
      * @param mapController The current map controller.
-     * @param statisticsController The statistics controller.
+     * @param rootPane The main layout container for the UI
      */
     public UIController(MapController mapController, BorderPane rootPane) {
         this.navBarController = new NavigationBarController();

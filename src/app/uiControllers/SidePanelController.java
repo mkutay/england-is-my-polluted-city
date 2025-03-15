@@ -6,11 +6,15 @@ import dataProcessing.Pollutant;
 import app.App;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.Node;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -88,8 +92,20 @@ public class SidePanelController {
         panel.getStyleClass().add("side-panel");
         
         // Create the title label for the side panel:
-        Label applicationLabel = new Label(App.APP_NAME);
-        applicationLabel.getStyleClass().add("sidepanel-title");
+        Text appName = new Text(App.APP_NAME);
+        TextFlow appTitle = new TextFlow(appName);
+        appTitle.getStyleClass().add("app-title");
+
+        // App logo
+        Image img = new Image(getClass().getResourceAsStream("/resources/rainbow.png"));
+        ImageView icon = new ImageView(img);
+        icon.setFitWidth(50);  // Resizes width
+        icon.setFitHeight(50); // Resizes height
+
+        HBox appLabel = new HBox();
+        appLabel.getChildren().addAll(icon, appTitle);
+        appLabel.getStyleClass().add("app-label");
+
 
         // Create navigation bar:
         HBox panelNav = createNavigationBar();
@@ -108,7 +124,7 @@ public class SidePanelController {
         selectionControls.getStyleClass().add("dropdown-box");
 
         // Add components to side panel:
-        panel.getChildren().addAll(applicationLabel, panelNav, selectionControls);
+        panel.getChildren().addAll(appLabel, panelNav, selectionControls);
 
         // Add view switch buttons:
         addViewSwitchButtons(panel);

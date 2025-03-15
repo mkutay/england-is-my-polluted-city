@@ -57,7 +57,7 @@ public class App extends Application {
 
         stage.setScene(scene);
         stage.centerOnScreen();
-        stage.setMaximized(true);
+        stage.setMaximized(false);
         stage.show();
     }
 
