@@ -38,7 +38,7 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         PollutionExtremesResult result = new PollutionExtremesResult(
             "Pollution Hotspots", 
             "Analysis of highest pollution areas for " + 
-            dataSet.getPollutant().toString() + " in " + dataSet.getYear(),
+            pollutant.getDisplayName() + " in " + year,
             pollutant
         );
         

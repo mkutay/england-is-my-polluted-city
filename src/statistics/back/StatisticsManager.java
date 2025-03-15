@@ -99,6 +99,10 @@ public class StatisticsManager {
      * @return Map of calculator names to their results.
      */
     public Map<String, StatisticsResult> calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
+        if (startYear == endYear) {
+            return calculateStatistics(pollutant, startYear);
+        }
+        
         Map<String, StatisticsResult> results = new HashMap<>();
         
         for (StatisticsCalculator calculator : calculators) {

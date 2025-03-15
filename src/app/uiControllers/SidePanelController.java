@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -44,6 +43,9 @@ public class SidePanelController {
     private Label switchLabel;
     private List<Label> navigationLabels;
 
+    private VBox endYearDropdownBox;
+    private VBox colorDropdownBox;
+
     /**
      * Constructor for SidePanelController.
      * @param mapController The current map controller.
@@ -70,10 +72,10 @@ public class SidePanelController {
         panel.getStyleClass().add("side-panel");
 
         panel.getChildren().addAll(
-                createAppLabel(),
-                createNavigationBar(),
-                createSelectionControls(),
-                createSwitchButton()
+            createAppLabel(),
+            createNavigationBar(),
+            createSelectionControls(),
+            createSwitchButton()
         );
 
         return panel;
@@ -131,13 +133,19 @@ public class SidePanelController {
 
         VBox pollutantDropdownBox = dataSelectionController.createPollutantSelector();
         VBox yearDropdownBox = dataSelectionController.createYearSelector();
-        VBox colorDropdownBox = colorSchemeController.createColorSelector();
+        endYearDropdownBox = dataSelectionController.createEndYearSelector();
+        colorDropdownBox = colorSchemeController.createColorSelector();
 
         pollutantDropdownBox.getStyleClass().add("dropdown");
         yearDropdownBox.getStyleClass().add("dropdown");
+        endYearDropdownBox.getStyleClass().add("dropdown");
         colorDropdownBox.getStyleClass().add("dropdown");
+        
+        // Initially hide the end year dropdown since we start with map view.
+        endYearDropdownBox.setVisible(false);
+        endYearDropdownBox.setManaged(false);
 
-        selectionControls.getChildren().addAll(pollutantDropdownBox, yearDropdownBox, colorDropdownBox);
+        selectionControls.getChildren().addAll(pollutantDropdownBox, yearDropdownBox, endYearDropdownBox, colorDropdownBox);
         selectionControls.getStyleClass().add("dropdown-box");
 
         return selectionControls;
@@ -150,15 +158,29 @@ public class SidePanelController {
         // Handle data selection changes (year, pollutant):
         dataSelectionController.setOnSelectionChanged((year, pollutant) -> {
             ColorScheme colorScheme = colorSchemeController.getSelectedColorScheme();
+            
             mapController.updateMapDataSet(year, pollutant, colorScheme);
-            statisticsController.updateDataSet(year, pollutant);
+            
+            if (!mapShown) {
+                statisticsController.updateDataSet(year, pollutant);
+            }
+        });
+
+        // Handle year range selection changes for statistics:
+        dataSelectionController.setOnRangeSelectionChanged((startYear, endYear, pollutant) -> {
+            // Only update range statistics when in statistics view.
+            if (!mapShown) {
+                statisticsController.updateDataSetRange(startYear, endYear, pollutant);
+            }
         });
 
         // Handle color scheme changes:
         colorSchemeController.setOnColorSchemeChanged(colorScheme -> {
-            Integer year = dataSelectionController.getSelectedYear();
-            Pollutant pollutant = dataSelectionController.getSelectedPollutant();
-            mapController.updateMapDataSet(year, pollutant, colorScheme);
+            if (mapShown) {
+                Integer year = dataSelectionController.getSelectedYear();
+                Pollutant pollutant = dataSelectionController.getSelectedPollutant();
+                mapController.updateMapDataSet(year, pollutant, colorScheme);
+            }
         });
     }
 
@@ -184,12 +206,48 @@ public class SidePanelController {
         updateNavigationLabels(mapShown ? "stats" : "home");
 
         if (mapShown) {
+            // Switching to statistics view.
             rootPane.setCenter(statisticsController.getStatisticsPane());
             switchLabel.setText("Return to Map");
+            
+            // Show end year dropdown and change year label to "Start Year".
+            endYearDropdownBox.setVisible(true);
+            endYearDropdownBox.setManaged(true);
+            dataSelectionController.setYearLabelText("Start Year:");
+
+            colorDropdownBox.setVisible(false);
+            colorDropdownBox.setManaged(false);
+            
+            Integer startYear = dataSelectionController.getSelectedYear();
+            Integer endYear = dataSelectionController.getSelectedEndYear();
+            Pollutant pollutant = dataSelectionController.getSelectedPollutant();
+            
+            if (startYear != null && endYear != null && pollutant != null) {
+                statisticsController.updateDataSetRange(startYear, endYear, pollutant);
+            }
+            
             mapShown = false;
         } else {
+            // Switching to map view
             rootPane.setCenter(mapContent);
             switchLabel.setText("ⓘ View Pollutant Statistics");
+            
+            // Hide end year dropdown and change year label back to "Year".
+            endYearDropdownBox.setVisible(false);
+            endYearDropdownBox.setManaged(false);
+            dataSelectionController.setYearLabelText("Year:");
+
+            colorDropdownBox.setVisible(true);
+            colorDropdownBox.setManaged(true);
+            
+            Integer year = dataSelectionController.getSelectedYear();
+            Pollutant pollutant = dataSelectionController.getSelectedPollutant();
+            ColorScheme colorScheme = colorSchemeController.getSelectedColorScheme();
+            
+            if (year != null && pollutant != null && colorScheme != null) {
+                mapController.updateMapDataSet(year, pollutant, colorScheme);
+            }
+            
             mapShown = true;
         }
     }

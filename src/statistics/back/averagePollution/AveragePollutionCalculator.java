@@ -36,7 +36,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         AveragePollutionResult result = new AveragePollutionResult(
             "Average Pollution Levels", 
             "Statistical analysis of average pollution levels for " + 
-            dataSet.getPollutant() + " in " + dataSet.getYear(),
+            pollutant.getDisplayName() + " in " + year,
             pollutant
         );
         
@@ -62,7 +62,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         AveragePollutionResult result = new AveragePollutionResult(
             "Average Pollution Trends", 
             "Trend analysis of average pollution levels for " + 
-            pollutant + " from " + startYear + " to " + endYear,
+            pollutant.getDisplayName() + " from " + startYear + " to " + endYear,
             pollutant
         );
         

@@ -36,7 +36,7 @@ public class SimpleTrendsCalculator implements StatisticsCalculator {
         
         SimpleTrendsResult result = new SimpleTrendsResult(
             "Pollution Snapshot", 
-            "Basic statistics for " + dataSet.getPollutant() + " in " + dataSet.getYear(),
+            "Basic statistics for " + pollutant.getDisplayName() + " in " + year,
             pollutant
         );
         
