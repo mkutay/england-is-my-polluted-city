@@ -11,6 +11,10 @@ import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * A simple about page for our app
+ * @author Matthias Loong
+ */
 public class AboutPageController {
 
     public static void show() {
