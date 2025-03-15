@@ -14,10 +14,9 @@ import javafx.stage.Stage;
 public class AboutPageController {
 
     public static void show() {
-        System.out.println("Test");
         Stage aboutStage = new Stage();
         aboutStage.initModality(Modality.APPLICATION_MODAL);
-        aboutStage.setTitle("About App");
+        aboutStage.setTitle("About");
 
         //Create header of about page with a HBox
         HBox headerLabelBox = new HBox();
