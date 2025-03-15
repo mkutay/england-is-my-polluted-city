@@ -6,7 +6,6 @@ import javafx.scene.control.MenuBar;
 
 import app.uiControllers.NavigationBarController;
 import app.uiControllers.SidePanelController;
-import app.uiControllers.StatisticsController;
 
 /**
  * Manages all UI elements that are not a part of the map. e.g. the side panel.
@@ -22,11 +21,11 @@ public class UIController {
     /**
      * Constructor for UIController.
      * @param mapController The current map controller.
-     * @param statisticsController The statistics controller.
+     * @param rootPane The main layout container for the UI
      */
-    public UIController(MapController mapController, StatisticsController statisticsController, BorderPane rootPane) {
+    public UIController(MapController mapController, BorderPane rootPane) {
         this.navBarController = new NavigationBarController();
-        this.sidePanelController = new SidePanelController(mapController, statisticsController, rootPane);
+        this.sidePanelController = new SidePanelController(mapController, rootPane);
     }
 
     // Getters:

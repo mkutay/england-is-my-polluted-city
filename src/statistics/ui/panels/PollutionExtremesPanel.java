@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import api.PostcodeAPI;
-import api.PostcodeResponse;
+import api.postcode.PostcodeAPI;
+import api.postcode.PostcodeResponse;
 
 /**
  * Specialized panel for displaying Pollution Extremes results using JavaFX.

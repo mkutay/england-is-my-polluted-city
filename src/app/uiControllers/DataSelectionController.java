@@ -1,8 +1,5 @@
 package app.uiControllers;
 
-import colors.ColorScheme;
-import colors.ColorblindColorScheme;
-import colors.DefaultColorScheme;
 import dataProcessing.DataManager;
 import dataProcessing.Pollutant;
 
@@ -16,27 +13,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Controller for the pollutant and year selection dropdowns in the side panel.
+ * Controller for managing data selection (pollutant and year) via dropdowns.
  * 
- * Refactor and class by Mehmet Kutay Bozkurt.
+ * Refactor and class by Mehmet Kutay Bozkurt
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
- * @version 1.0
+ * @version 2.0
  */
-public class PollutionSelectorController {
+public class DataSelectionController {
     private final DataManager dataManager;
     private final ComboBox<Pollutant> pollutantDropdown;
     private final ComboBox<Integer> yearDropdown;
-    private final ComboBox<ColorScheme> colorDropdown; //todo move to separate class
-    private TriConsumer<Integer, Pollutant, ColorScheme> onSelectionChangedCallback;
+    private BiConsumer<Integer, Pollutant> onSelectionChangedCallback;
 
     /**
-     * Constructor for PollutionSelectorController.
+     * Constructor for DataSelectionController.
      */
-    public PollutionSelectorController() {
+    public DataSelectionController() {
         this.dataManager = DataManager.getInstance();
         this.pollutantDropdown = new ComboBox<>();
         this.yearDropdown = new ComboBox<>();
-        this.colorDropdown = new ComboBox<>();
 
         initialiseDropdowns();
     }
@@ -46,13 +41,11 @@ public class PollutionSelectorController {
      */
     private void initialiseDropdowns() {
         // Set up pollutant dropdown:
-        //pollutantDropdown.getStyleClass().add("dropdown");
         pollutantDropdown.getItems().addAll(Arrays.asList(Pollutant.values()));
         pollutantDropdown.setMaxWidth(Double.MAX_VALUE);
-        //pollutantDropdown.setPromptText("Select Pollutant");
         pollutantDropdown.getSelectionModel().selectFirst();
 
-        // Modifies names of pollutant dropdown items
+        // Modifies names of pollutant dropdown items to have their display name.
         pollutantDropdown.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
@@ -60,7 +53,8 @@ public class PollutionSelectorController {
                 setText(empty || item == null ? null : item.getDisplayName());
             }
         });
-        // Modifies name for selected item
+
+        // Modifies name for selected item:
         pollutantDropdown.setButtonCell(new ListCell<>() {
             @Override
             protected void updateItem(Pollutant item, boolean empty) {
@@ -70,18 +64,9 @@ public class PollutionSelectorController {
         });
 
         // Set up year dropdown:
-        //yearDropdown.getStyleClass().add("dropdown");
         yearDropdown.setMaxWidth(Double.MAX_VALUE);
-        //yearDropdown.setPromptText("Select Year");
         // Update year dropdown with years available for initial pollutant.
         updateYearDropdown();
-
-        // Set up colour dropdown:
-        //colorDropdown.getStyleClass().add("dropdown");
-        colorDropdown.setMaxWidth(Double.MAX_VALUE);
-        //colorDropdown.setPromptText("Select Colour");
-        updateColorDropdown();
-
         
         // Set up listeners:
         pollutantDropdown.setOnAction(e -> {
@@ -89,7 +74,6 @@ public class PollutionSelectorController {
             notifySelectionChanged();
         });
         yearDropdown.setOnAction(e -> notifySelectionChanged());
-        colorDropdown.setOnAction(e -> notifySelectionChanged());
     }
     
     /**
@@ -114,23 +98,13 @@ public class PollutionSelectorController {
     }
 
     /**
-     * Populates the color scheme dropdown with available options.
-     */
-    private void updateColorDropdown() {
-        colorDropdown.getItems().clear();
-        colorDropdown.getItems().addAll(new DefaultColorScheme(), new ColorblindColorScheme());
-        colorDropdown.getSelectionModel().selectFirst();
-    }
-
-    /**
      * Notify listeners that the selection has changed.
      */
     private void notifySelectionChanged() {
         if (onSelectionChangedCallback != null && 
             yearDropdown.getValue() != null && 
-            pollutantDropdown.getValue() != null &&
-            colorDropdown.getValue() != null) {
-            onSelectionChangedCallback.accept(yearDropdown.getValue(), pollutantDropdown.getValue(), colorDropdown.getValue());
+            pollutantDropdown.getValue() != null) {
+            onSelectionChangedCallback.accept(yearDropdown.getValue(), pollutantDropdown.getValue());
         }
     }
     
@@ -138,7 +112,7 @@ public class PollutionSelectorController {
      * Set a callback for when either selection changes.
      * @param callback BiConsumer that takes the selected year and pollutant
      */
-    public void setOnSelectionChanged(TriConsumer<Integer, Pollutant, ColorScheme> callback) {
+    public void setOnSelectionChanged(BiConsumer<Integer, Pollutant> callback) {
         this.onSelectionChangedCallback = callback;
         // Initial notification with current values.
         notifySelectionChanged();
@@ -163,15 +137,6 @@ public class PollutionSelectorController {
     }
 
     /**
-     * Creates a VBox containing the color scheme selection dropdown and label.
-     * @return VBox with color scheme selector.
-     */
-    public VBox createColorSelector() {
-        Label label = new Label("Color Scheme:");
-        return new VBox(6, label, colorDropdown);
-    }
-
-    /**
      * @return The selected year from the dropdown.
      */
     public Integer getSelectedYear() {
@@ -186,16 +151,10 @@ public class PollutionSelectorController {
     }
 
     /**
-     * @return The selected colour theme from the dropdown.
-     */
-    public ColorScheme getSelectedColorScheme() { return colorDropdown.getValue();}
-
-    /**
-     * Functional interface to allow three parameters in a callback.
+     * Functional interface for a callback with two parameters.
      */
     @FunctionalInterface
-    public interface TriConsumer<T, U, V> {
-        void accept(T t, U u, V v);
+    public interface BiConsumer<T, U> {
+        void accept(T t, U u);
     }
-
 }

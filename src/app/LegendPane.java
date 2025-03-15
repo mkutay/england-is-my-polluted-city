@@ -2,6 +2,7 @@ package app;
 
 import colors.ColorSchemeManager;
 import dataProcessing.Pollutant;
+
 import javafx.animation.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -13,8 +14,10 @@ import javafx.util.Duration;
 import java.util.List;
 
 /**
- * Adds a legend that displays the pollution level and its corresponding colour
+ * Adds a legend that displays the pollution level and its corresponding colour.
+ * 
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class LegendPane extends VBox {
     private final VBox content;
@@ -32,11 +35,11 @@ public class LegendPane extends VBox {
         header.getStyleClass().add("legend-header");
         getStyleClass().add("legend-pane");
 
-        // Content area (initially hidden)
+        // Content area (initially hidden).
         content = new VBox();
         content.getStyleClass().add("legend-content");
-        content.setVisible(false); // Start hidden
-        content.setManaged(false); // Prevent layout from affecting surrounding elements
+        content.setVisible(false); // Start hidden.
+        content.setManaged(false); // Prevent layout from affecting surrounding elements.
 
         setPrefWidth(USE_COMPUTED_SIZE);
         setMaxWidth(USE_PREF_SIZE);
@@ -44,7 +47,7 @@ public class LegendPane extends VBox {
         getChildren().addAll(header, content);
         getStyleClass().add("legend-pane");
 
-        // Toggle visibility when clicking the title
+        // Toggle visibility when clicking the title.
         header.setOnMouseClicked(e -> toggle());
     }
 
@@ -58,7 +61,7 @@ public class LegendPane extends VBox {
             double lowerBound = ((double) i / colors.size()) * maxPollutionValue;
             double upperBound = ((double) (i + 1) / colors.size()) * maxPollutionValue;
 
-            lowerBound =  (double) (int) (lowerBound * 10) / 10; //Round to 1dp
+            lowerBound =  (double) (int) (lowerBound * 10) / 10; // Round to 1 decimal place.
             upperBound =  (double) (int) (upperBound * 10) / 10;
 
             String label = lowerBound + "-" + upperBound + " " + Pollutant.UNITS;
@@ -89,21 +92,21 @@ public class LegendPane extends VBox {
             content.setVisible(true);
             content.setManaged(true);
 
-            // Expand animation
+            // Expand animation:
             Timeline expand = new Timeline(
-                    new KeyFrame(Duration.millis(200),
-                            new KeyValue(content.maxHeightProperty(), 100),
-                            new KeyValue(content.opacityProperty(), 1)
-                    )
+                new KeyFrame(Duration.millis(200),
+                    new KeyValue(content.maxHeightProperty(), 100),
+                    new KeyValue(content.opacityProperty(), 1)
+                )
             );
             expand.play();
         } else {
-            // Collapse animation
+            // Collapse animation:
             Timeline collapse = new Timeline(
-                    new KeyFrame(Duration.millis(200),
-                            new KeyValue(content.maxHeightProperty(), 0),
-                            new KeyValue(content.opacityProperty(), 0)
-                    )
+                new KeyFrame(Duration.millis(200),
+                    new KeyValue(content.maxHeightProperty(), 0),
+                    new KeyValue(content.opacityProperty(), 0)
+                )
             );
             collapse.setOnFinished(e -> {
                 content.setVisible(false);

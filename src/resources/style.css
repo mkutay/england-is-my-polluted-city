@@ -1,4 +1,4 @@
-/* styles for menu bar */
+/* top navigation bar - file, menu */
 .top-nav {
     -fx-padding: 5px;
 }
@@ -9,22 +9,39 @@
 
 /* styles for side panel */
 .side-panel {
-    -fx-background-color: ivory;
+    -fx-background-color: linear-gradient(to top right, white, cornsilk);
 }
 
 /* styles for title */
-.sidepanel-title {
-    -fx-padding: 15 20 15 20;
+.app-title {
+    -fx-max-width: 150px;
     -fx-font-weight: bold;
     -fx-font-size: 20px;
     -fx-text-fill: #333;
 }
+.app-label {
+    -fx-padding: 15 20 15 20;
+    -fx-spacing: 25px;
+}
+
 .side-panel-nav {
     -fx-font-size: 15px;
     -fx-background-color: gainsboro;
-    -fx-padding: 10px;
+    -fx-padding: 5 5 5 10;
+}
+.switch-label {
+    -fx-min-width: 270px;
+    -fx-font-size: 15px;
+    -fx-background-color: gainsboro;
+    -fx-padding: 10;
+    -fx-alignment: center;
+}
+.switch-label:hover {
+    -fx-cursor: hand;
+    -fx-opacity: 0.9;
 }
 
+/*side panel navigation */
 .nav-label {
     -fx-padding: 0 10 0 10;
     -fx-text-fill: black;
@@ -38,7 +55,7 @@
 
 /* Active state styling */
 .nav-label.active {
-    -fx-text-fill: rgba(0,0,0,0.5);
+    -fx-text-fill: rgba(0,0,0,0.8);
     -fx-underline: true;
     -fx-font-weight: bold;
 }

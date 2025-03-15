@@ -5,6 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
@@ -19,13 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Handles all statistics UI elements and changes in the panel.
+ * Handles the statistics display and navigation between different statistics panels.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 1.0
+ * @version 2.0
  */
 public class StatisticsController {
     private final StatisticsPanelFactory statisticsPanelFactory;
+    private final StatisticsManager statisticsManager;
 
     private BorderPane statisticsPane;
     private Button prevButton;
@@ -38,11 +40,13 @@ public class StatisticsController {
     private int currentKeyIndex;
 
     /**
-     * Constructor.
+     * Constructor for StatisticsController.
      */
     public StatisticsController() {
         statisticsPane = new BorderPane();
         this.statisticsPanelFactory = StatisticsPanelFactory.getInstance();
+        this.statisticsManager = StatisticsManager.getInstance();
+        
         initialiseNavigationButtons();
     }
     
@@ -60,17 +64,17 @@ public class StatisticsController {
         
         HBox buttonBar = new HBox();
         buttonBar.setPadding(buttonBarPadding);
-        buttonBar.setAlignment(Pos.CENTER_LEFT);
+        buttonBar.setAlignment(Pos.CENTER);
+        buttonBar.setSpacing(20);
         
         // Create spacer to push buttons apart:
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         
-        // Add buttons with spacer between them.
         buttonBar.getChildren().addAll(prevButton, spacer, nextButton);
         statisticsPane.setBottom(buttonBar);
         
-        // Initially disable buttons until we have statistics.
+        // Initially disable buttons until we have statistics:
         updateButtonStates();
     }
     
@@ -97,7 +101,7 @@ public class StatisticsController {
     }
     
     /**
-     * Updates the button states and texts based on current position in statistics collection.
+     * Updates the button states and labels based on current position in statistics collection.
      */
     private void updateButtonStates() {
         if (statisticsKeys == null || statisticsKeys.isEmpty()) {
@@ -105,21 +109,25 @@ public class StatisticsController {
             nextButton.setDisable(true);
             prevButton.setText("Previous");
             nextButton.setText("Next");
+            return;
+        }
+        
+        // Update previous button:
+        if (currentKeyIndex == 0) {
+            prevButton.setText("Previous");
+            prevButton.setDisable(true);
         } else {
-            if (currentKeyIndex == 0) {
-                prevButton.setText("Previous");
-            } else {
-                prevButton.setText("Previous (" + statisticsKeys.get(currentKeyIndex - 1) + ")");
-            }
+            prevButton.setText("Previous: " + statisticsKeys.get(currentKeyIndex - 1));
+            prevButton.setDisable(false);
+        }
 
-            if (currentKeyIndex == statisticsKeys.size() - 1) {
-                nextButton.setText("Next");
-            } else {
-                nextButton.setText("Next (" + statisticsKeys.get(currentKeyIndex + 1) + ")");
-            }
-
-            prevButton.setDisable(currentKeyIndex <= 0);
-            nextButton.setDisable(currentKeyIndex >= statisticsKeys.size() - 1);
+        // Update next button:
+        if (currentKeyIndex == statisticsKeys.size() - 1) {
+            nextButton.setText("Next");
+            nextButton.setDisable(true);
+        } else {
+            nextButton.setText("Next: " + statisticsKeys.get(currentKeyIndex + 1));
+            nextButton.setDisable(false);
         }
     }
     
@@ -127,9 +135,12 @@ public class StatisticsController {
      * Updates the displayed statistics based on current key.
      */
     private void updateStatisticsDisplay() {
+        if (statisticsKeys == null || statisticsKeys.isEmpty()) {
+            statisticsPane.setCenter(new Label("No statistics available"));
+            return;
+        }
+        
         String key = statisticsKeys.get(currentKeyIndex);
-        if (key == null || statistics == null) return;
-
         StatisticsResult sr = statistics.get(key);
         StatisticsPanel statisticsPanel = statisticsPanelFactory.createPanel(sr);
         statisticsPane.setCenter(statisticsPanel);
@@ -142,24 +153,22 @@ public class StatisticsController {
      */
     public void updateDataSet(Integer year, Pollutant pollutant) {
         // Only update if the selection has actually changed:
-        if (year.equals(currentYear) && pollutant.equals(currentPollutant)) return;
+        if (currentYear != null && currentYear.equals(year) && currentPollutant != null && currentPollutant.equals(pollutant)) {
+            return;
+        }
         
         currentYear = year;
         currentPollutant = pollutant;
         
-        StatisticsManager statisticsManager = StatisticsManager.getInstance();
         statistics = statisticsManager.calculateStatistics(pollutant, year);
-        
-        // Convert the keyset to a list for indexed access.
         statisticsKeys = new ArrayList<>(statistics.keySet());
-
+        
         updateStatisticsDisplay();
-
         updateButtonStates();
     }
 
     /**
-     * @return The statistics panel for displaying purposes.
+     * @return The statistics panel for displaying
      */
     public BorderPane getStatisticsPane() {
         return statisticsPane;

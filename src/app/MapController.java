@@ -30,6 +30,10 @@ public class MapController {
     private final ColorSchemeManager colorSchemeManager;
     private final LegendPane legend;
 
+    private int currentYear;
+    private Pollutant currentPollutant;
+    private ColorScheme currentColourScheme;
+
     private PollutionLayer pollutionLayer;
     private PollutionPolygonSelector pollutionPolygonSelector;
     private boolean pollutionLayerInitialised = false;
@@ -93,6 +97,16 @@ public class MapController {
      * @param pollutant The pollutant to update to.
      */
     public void updateMapDataSet(int year, Pollutant pollutant, ColorScheme colorScheme) {
+        System.out.println("Updating map data set to year: " + year + ", pollutant: " + pollutant + ", color scheme: " + colorScheme);
+
+        if (year == currentYear && pollutant == currentPollutant && colorScheme.toString().equals(currentColourScheme.toString())) {
+            return; // No need to update if the data is the same.
+        }
+
+        currentYear = year;
+        currentPollutant = pollutant;
+        currentColourScheme = colorScheme;
+
         if (pollutionLayer != null) mapView.removeLayer(pollutionLayer);
         colorSchemeManager.updateColorScheme(colorScheme);
 
@@ -101,7 +115,7 @@ public class MapController {
 
         legend.updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
 
-        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, colorSchemeManager);
+        pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }
