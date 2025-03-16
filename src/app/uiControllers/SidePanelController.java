@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import utility.ImageUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +64,7 @@ public class SidePanelController {
         this.dataSelectionController = new DataSelectionController();
         this.colorSchemeController = new ColorSchemeController();
         this.pollutionThresholdController = new PollutionThresholdController();
+
         this.mapContent = mapController.getMapOverlay();
 
         sidePanel = initialiseSidePanel();
@@ -97,10 +99,7 @@ public class SidePanelController {
         appTitle.getStyleClass().add("app-title");
 
         // App logo
-        Image img = new Image(getClass().getResourceAsStream("/resources/icons/rainbow.png"));
-        ImageView icon = new ImageView(img);
-        icon.setFitWidth(50);
-        icon.setFitHeight(50);
+        ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
 
         appLabel.getChildren().addAll(icon, appTitle);
         return appLabel;
@@ -177,7 +176,6 @@ public class SidePanelController {
 
         return sliderContainer;
     }
-
     /**
      * Sets up event handlers for data selection and color scheme changes.
      */

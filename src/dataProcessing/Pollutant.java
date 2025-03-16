@@ -69,7 +69,7 @@ public enum Pollutant {
      */
     public String getDisplayName() {
         return switch (this) {
-            case NO2 -> "NO2";
+            case NO2 -> "NO\u2082";
             case PM2_5 -> "PM2.5";
             case PM10 -> "PM10";
         };
