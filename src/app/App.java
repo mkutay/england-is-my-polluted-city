@@ -1,5 +1,6 @@
 package app;
 
+import app.uiControllers.WelcomePageController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -29,6 +30,9 @@ public class App extends Application {
         stage.centerOnScreen();
         stage.setMaximized(false);
         stage.show();
+
+        //Show welcome page on launch
+        new WelcomePageController().show();
     }
 
     public static void main(String[] args) {
