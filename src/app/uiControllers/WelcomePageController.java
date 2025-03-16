@@ -30,6 +30,10 @@ public class WelcomePageController {
     private static final Button nextButton = new Button("Next");
     private static int currentPage = 0; // Store current page index
 
+    private static final int MAX_WIDTH = 1000;
+    private static final int MAX_HEIGHT = 800;
+
+
     static {
         initialiseMenu();
     }
@@ -91,7 +95,7 @@ public class WelcomePageController {
 
         //Button Layout
         HBox buttonBox = new HBox(10, prevButton, nextButton, closeButton);
-        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+        buttonBox.setAlignment(Pos.BOTTOM_CENTER);
 
         //Content Layout
         VBox contentBox = new VBox(10, header, imageView, descriptionText, buttonBox);
@@ -104,14 +108,11 @@ public class WelcomePageController {
         imageView.fitWidthProperty().bind(contentBox.widthProperty().multiply(0.8));
         imageView.setPreserveRatio(true);
 
-
-        //contentBox.setStyle("-fx-padding: 20;");
-
         BorderPane root = new BorderPane();
         root.setCenter(contentBox);
 
         //Create the scene and set it on the stage
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, MAX_WIDTH, MAX_HEIGHT);
         stage.setScene(scene);
         stage.show();
 
@@ -131,11 +132,8 @@ public class WelcomePageController {
         Image image = new Image(imagePath);
         imageView.setImage(image);
 
-        //Scale image down 60%
-        double scaleFactor = 0.6;
-        double newWidth = image.getWidth() * scaleFactor;
-        double newHeight = image.getHeight() * scaleFactor;
-        imageView.setFitWidth(newWidth);
+        //Scale image width down, preserving aspect ratio
+        double newHeight = image.getHeight() * 0.6;
         imageView.setFitHeight(newHeight);
         imageView.setPreserveRatio(true); // Keep aspect ratio
         stage.sizeToScene();
