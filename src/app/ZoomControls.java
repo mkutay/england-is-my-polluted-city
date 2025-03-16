@@ -66,6 +66,7 @@ public class ZoomControls extends VBox {
         double newZoom = mapView.getZoom() + zoomChange;
         newZoom = Math.max(5, Math.min(newZoom, 20)); // Ensure zoom stays within limits
         mapView.setZoom(newZoom);
+        mapView.dirtyRefresh();
     }
 
     /**
