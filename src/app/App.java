@@ -32,7 +32,7 @@ public class App extends Application {
         stage.show();
 
         //Show welcome page on launch
-        new WelcomePageController().show();
+        WelcomePageController.show();
     }
 
     public static void main(String[] args) {

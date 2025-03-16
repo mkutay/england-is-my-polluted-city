@@ -19,18 +19,22 @@ import java.util.*;
  * @author Matthias Loong
  */
 public class WelcomePageController {
-    //Store path to images and descriptions in a linkedhashmap (for easy iteration). Image path serves as a key.
-    private static Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
+    //Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key.
+    private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static List<String> imagePaths;
     private static Stage stage;
-    private static ImageView imageView;
-    private static Text descriptionText;
-    private static Button prevButton;
-    private static Button nextButton;
+
+    private static final ImageView imageView = new ImageView();
+    private static final Text descriptionText = new Text();
+    private static final Button prevButton = new Button("Previous");
+    private static final Button nextButton = new Button("Next");
     private static int currentPage = 0; // Store current page index
 
+    static {
+        initialiseMenu();
+    }
 
-    public WelcomePageController(){
+    private static void initialiseMenu(){
         // Some string formatting
         String firstPage = """
                 Welcome to the UK Emissions Interactive Map! This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
@@ -58,7 +62,6 @@ public class WelcomePageController {
 
         // Store ordered image paths
         imagePaths = new ArrayList<>(tutorialPicDescMap.keySet());
-
     }
 
 
@@ -72,18 +75,13 @@ public class WelcomePageController {
         header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
 
         // Image View (Dynamically Resized)
-        imageView = new ImageView();
         loadImage(imagePaths.get(currentPage)); // Load first image
 
         //Text tutorial
-        descriptionText = new Text();
-        descriptionText.setWrappingWidth(900);
         descriptionText.setStyle("-fx-font-size: 14px;");
         updateDescription();
 
         // Buttons
-        prevButton = new Button("Previous");
-        nextButton = new Button("Next");
         Button closeButton = new Button("Close");
 
         prevButton.setDisable(true); // Initially disabled
@@ -98,7 +96,16 @@ public class WelcomePageController {
         //Content Layout
         VBox contentBox = new VBox(10, header, imageView, descriptionText, buttonBox);
         contentBox.setAlignment(Pos.CENTER);
-        contentBox.setStyle("-fx-padding: 20;");
+        contentBox.setFillWidth(true);
+
+        //wrapping of text for screen
+        descriptionText.wrappingWidthProperty().bind(contentBox.widthProperty().subtract(10));
+
+        imageView.fitWidthProperty().bind(contentBox.widthProperty().multiply(0.8));
+        imageView.setPreserveRatio(true);
+
+
+        //contentBox.setStyle("-fx-padding: 20;");
 
         BorderPane root = new BorderPane();
         root.setCenter(contentBox);
@@ -121,7 +128,7 @@ public class WelcomePageController {
     }
 
     private static void loadImage(String imagePath) {
-        Image image = new Image(WelcomePageController.class.getResourceAsStream(imagePath));
+        Image image = new Image(imagePath);
         imageView.setImage(image);
 
         //Scale image down 60%
