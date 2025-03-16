@@ -76,12 +76,12 @@
 }
 .zoom-button:hover {
     -fx-cursor: hand;
-    -fx-opacity: 0.8;
+    -fx-opacity: 0.85;
 }
 
 .legend-header {
-    -fx-padding: 0 0 0 8px;    /* left padding */
-    -fx-spacing: 12px;         /* spacing between titleLabel and titleIcon */
+    -fx-padding: 0 0 0 8;       /* Set left padding only */
+    -fx-spacing: 16px;         /* spacing between titleLabel and titleIcon */
     -fx-cursor: hand;
 }
 
@@ -100,13 +100,6 @@
 .legend-title {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: rgba(0,0,0,0.8);
-}
-
-/* hamburger icon */
-.legend-title-icon {
-    -fx-font-size: 14px;
-    -fx-padding: 2,0,0,0;
     -fx-text-fill: rgba(0,0,0,0.8);
 }
 

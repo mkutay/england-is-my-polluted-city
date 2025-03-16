@@ -5,12 +5,16 @@ import dataProcessing.Pollutant;
 
 import javafx.animation.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import utility.ImageUtils;
 
+import javafx.geometry.Insets;
 import java.util.List;
 
 /**
@@ -26,14 +30,15 @@ public class LegendPane extends VBox {
     public LegendPane() {
         HBox header = new HBox();
         Label titleLabel = new Label("Legend");
-        Label titleIcon = new Label("☰");
+        ImageView icon = ImageUtils.createImage("/resources/icons/hamburger.png", 18);
+        HBox.setMargin(icon, new Insets(2.5,0,0,0));
+        Tooltip.install(header, new Tooltip("Click to expand"));
 
+        header.getChildren().addAll(icon, titleLabel);
         titleLabel.getStyleClass().add("legend-title");
-        titleIcon.getStyleClass().add("legend-title-icon");
-
-        header.getChildren().addAll(titleIcon, titleLabel);
         header.getStyleClass().add("legend-header");
         getStyleClass().add("legend-pane");
+
 
         // Content area (initially hidden).
         content = new VBox();
