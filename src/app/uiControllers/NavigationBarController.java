@@ -43,7 +43,7 @@ public class NavigationBarController {
         aboutItem.setOnAction(e -> AboutPageController.show());
         //Add Tutorial Page
         MenuItem tutorialItem = new MenuItem("Tutorial");
-        //tutorialItem.setOnAction();
+        tutorialItem.setOnAction(e -> new WelcomePageController().show());
         //TODO: Add Welcome Page
         helpMenu.getItems().addAll(aboutItem, tutorialItem);
 
