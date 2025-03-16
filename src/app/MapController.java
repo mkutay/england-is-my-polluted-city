@@ -6,7 +6,7 @@ import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import dataProcessing.DataManager;
@@ -24,42 +24,41 @@ import utility.CustomMapView;
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
  */
 public class MapController {
-    private final StackPane mapOverlay;
     private final CustomMapView mapView;
-
     private final MapClickHandler clickHandler;
     private final ColorSchemeManager colorSchemeManager;
-    private final LegendPane legend;
+    private final MapOverlay mapOverlay;
 
     private int currentYear;
     private Pollutant currentPollutant;
     private ColorScheme currentColourScheme;
-
     private PollutionLayer pollutionLayer;
-    private PollutionPolygonSelector pollutionPolygonSelector;
+    //private PollutionPolygonSelector pollutionPolygonSelector;
     private boolean pollutionLayerInitialised = false;
 
     /**
      * Constructor for MapController.
      * @param stage The current stage.
      */
-    public MapController(Stage stage, ColorSchemeManager colorSchemeManager) {
+    public MapController(Stage stage, ColorSchemeManager colorSchemeManager, MapOverlay mapOverlay) {
         this.colorSchemeManager = colorSchemeManager;
+        this.mapOverlay = mapOverlay;
+        this.mapView = mapOverlay.getMapView();
 
-        mapView = new CustomMapView();
         clickHandler = new MapClickHandler(stage);
-
-        //Map overlay contains all map elements and is what is added to the root
-        mapOverlay = new StackPane();
-        mapOverlay.getStyleClass().add("map-overlay");
-
-        legend = new LegendPane();
-        StackPane.setAlignment(legend, Pos.BOTTOM_RIGHT);// Position legend near the top right of map
-        mapOverlay.getChildren().addAll(mapView, legend); // Add elements to map overlay
 
         //pollutionPolygonSelector = new PollutionPolygonSelector(mapView, mapOverlay);
 
-        setupMapView();
+        setupMapView(); // Opens mapView in London
+    }
+
+    /**
+     * Sets the initial position of the MapView onto London, and initialises the default zoom.
+     */
+    private void setupMapView() {
+        MapPoint startLoc = new MapPoint(51.508045, -0.128217); // London coordinates.
+        mapView.setCenter(startLoc); // Instantly centers the map
+        mapView.setZoom(10);
     }
 
     /**
@@ -73,20 +72,11 @@ public class MapController {
     }
 
     /**
-     * Sets the initial position of the MapView onto London, and initialises the default zoom.
-     */
-    private void setupMapView() {
-        MapPoint startLoc = new MapPoint(51.508045, -0.128217); // London coordinates.
-        mapView.setCenter(startLoc); // Instantly centers the map
-        mapView.setZoom(10);
-    }
-
-    /**
      * @return The map view.
      * @throws PollutionLayerNotInitialisedException If pollution layer is not initialised.
      */
-    public StackPane getMapOverlay() throws PollutionLayerNotInitialisedException {
-        if (pollutionLayerInitialised) return mapOverlay;
+    public AnchorPane getMapOverlay() throws PollutionLayerNotInitialisedException {
+        if (pollutionLayerInitialised) return mapOverlay.getOverlayPane();
 
         throw new PollutionLayerNotInitialisedException("Map is not initialised. Call initialisePollutionLayer first.");
     }
@@ -114,7 +104,7 @@ public class MapController {
         DataManager dataManager = DataManager.getInstance();
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
 
-        legend.updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
+        mapOverlay.getLegend().updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
 
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
