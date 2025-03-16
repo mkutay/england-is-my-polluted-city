@@ -3,6 +3,11 @@ package app;
 import javafx.scene.layout.AnchorPane;
 import utility.CustomMapView;
 
+/**
+ * Manages the map overlay, including the map view, legend, and zoom controls.
+ * Ensures correct positioning of UI elements.
+ * @author Chelsea Feliciano
+ */
 public class MapOverlay {
     private final AnchorPane overlayPane;
     private final LegendPane legend;
@@ -23,8 +28,8 @@ public class MapOverlay {
         AnchorPane.setRightAnchor(mapView, 0.0);
 
         // Positioning inside MapOverlay
-        AnchorPane.setBottomAnchor(legend, 0.0);
-        AnchorPane.setRightAnchor(legend, 0.0);
+        AnchorPane.setBottomAnchor(legend, 20.0);
+        AnchorPane.setRightAnchor(legend, 20.0);
 
         AnchorPane.setTopAnchor(zoomControls, 20.0);
         AnchorPane.setRightAnchor(zoomControls, 20.0);

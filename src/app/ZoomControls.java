@@ -2,6 +2,7 @@ package app;
 
 import com.gluonhq.maps.MapPoint;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -46,6 +47,11 @@ public class ZoomControls extends VBox {
         zoomInButton.getStyleClass().add("zoom-button");
         zoomOutButton.getStyleClass().add("zoom-button");
         fullScreenButton.getStyleClass().add("zoom-button");
+
+        // Set tooltips (hover text)
+        Tooltip.install(zoomInButton, new Tooltip("Zoom In"));
+        Tooltip.install(zoomOutButton, new Tooltip("Zoom Out"));
+        Tooltip.install(fullScreenButton, new Tooltip("Fullscreen Mode"));
 
         // Create ImageViews for icons
         ImageView zoomIn = ImageUtils.createImage("/resources/icons/add.png", 20);

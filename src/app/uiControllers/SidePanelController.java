@@ -4,13 +4,14 @@ import app.MapController;
 import colors.ColorScheme;
 import dataProcessing.Pollutant;
 import app.App;
+import utility.ImageUtils;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.image.Image;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -18,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import utility.ImageUtils;
 
 import java.util.Arrays;
 import java.util.List;
