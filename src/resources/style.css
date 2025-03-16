@@ -76,6 +76,7 @@
 }
 .zoom-button:hover {
     -fx-cursor: hand;
+    -fx-opacity: 0.8;
 }
 
 .legend-header {
