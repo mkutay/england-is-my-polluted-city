@@ -47,12 +47,10 @@
     -fx-text-fill: black;
     -fx-cursor: hand;
 }
-
 .nav-label:hover {
     -fx-text-fill: rgba(0,0,0,0.5);/* Change color on hover */
     -fx-underline: true;  /* Add underline on hover */
 }
-
 /* Active state styling */
 .nav-label.active {
     -fx-text-fill: rgba(0,0,0,0.8);
@@ -67,20 +65,13 @@
 .dropdown {
     -fx-padding: 10px;
 }
-.view-stats {
-    -fx-background-color: gainsboro;
-    -fx-pref-width: 170px;
-    -fx-cursor: hand;
-    -fx-font-size: 15px;
-    -fx-padding: 10px;
-}
 
-.view-map {
-    -fx-background-color: gainsboro;
-    -fx-pref-width: 170px;
+.zoom-button {
+    -fx-background-color: #f4f4f4;
+    -fx-padding: 5px;
+}
+.zoom-button:hover {
     -fx-cursor: hand;
-    -fx-font-size: 15px;
-    -fx-padding: 10px;
 }
 
 .legend-header {
@@ -90,8 +81,8 @@
 }
 
 .legend-pane {
-    -fx-max-width: 170px; /* Limit size to avoid large appearance */
-    -fx-max-height: 20px;
+    -fx-pref-width: 165px; /* Limit size to avoid large appearance */
+    -fx-pref-height: 20px;
     -fx-background-color: #f4f4f4;
     -fx-border-color: #333;
     -fx-border-width: 1.5px;
