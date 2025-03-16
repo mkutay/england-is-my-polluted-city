@@ -1,5 +1,6 @@
 package app;
 
+import com.gluonhq.maps.MapPoint;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -65,7 +66,11 @@ public class ZoomControls extends VBox {
     private void zoomMap(double zoomChange) {
         double newZoom = mapView.getZoom() + zoomChange;
         newZoom = Math.max(5, Math.min(newZoom, 20)); // Ensure zoom stays within limits
+
+        MapPoint point = mapView.getMapPosition(mapView.getWidth()/2, mapView.getHeight()/2);
         mapView.setZoom(newZoom);
+        mapView.setCenter(point);
+
         mapView.dirtyRefresh();
     }
 
