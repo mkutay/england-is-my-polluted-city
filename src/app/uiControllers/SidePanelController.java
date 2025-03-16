@@ -5,7 +5,11 @@ import colors.ColorScheme;
 import dataProcessing.Pollutant;
 import app.App;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringExpression;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -153,9 +157,23 @@ public class SidePanelController {
         return selectionControls;
     }
 
+    /**
+     * Creates container for the threshold slider, along with label
+     */
     private VBox createPollutionThresholdSlider() {
         VBox sliderContainer = new VBox();
-        sliderContainer.getChildren().add(pollutionThresholdController.getThresholdSlider());
+        sliderContainer.setAlignment(Pos.CENTER);
+
+        Label sliderLabel = new Label();
+        Slider slider = pollutionThresholdController.getThresholdSlider();
+
+        StringExpression labelText = Bindings.format("Pollution threshold - %.0f%%", slider.valueProperty().multiply(100));
+        sliderLabel.textProperty().bind(labelText);
+
+        slider.getStyleClass().add("thresholdSlider");
+        sliderLabel.getStyleClass().add("thresholdSliderLabel");
+
+        sliderContainer.getChildren().addAll(sliderLabel, slider);
 
         return sliderContainer;
     }
@@ -190,6 +208,10 @@ public class SidePanelController {
                 Pollutant pollutant = dataSelectionController.getSelectedPollutant();
                 mapController.updateMapDataSet(year, pollutant, colorScheme);
             }
+        });
+
+        pollutionThresholdController.getThresholdSlider().valueProperty().addListener((_, _, newValue) -> {
+            mapController.updatePollutionThreshold(newValue.doubleValue());
         });
     }
 

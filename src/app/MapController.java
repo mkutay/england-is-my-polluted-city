@@ -1,5 +1,6 @@
 package app;
 
+import app.uiControllers.PollutionPolygonSelector;
 import colors.ColorScheme;
 import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
@@ -118,5 +119,9 @@ public class MapController {
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant, colorSchemeManager);
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
+    }
+
+    public void updatePollutionThreshold(double thresholdPercentage){
+        pollutionLayer.setVisiblePolygonThreshold(thresholdPercentage);
     }
 }

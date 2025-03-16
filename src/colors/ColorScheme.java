@@ -59,4 +59,11 @@ public abstract class ColorScheme {
     public List<Color> getColors() {
         return colors;
     }
+
+    /**
+      * @return the colour representing no colour value
+     */
+    public Color getNullColour() {
+        return Color.rgb(100, 100, 100); //Default value
+    }
 }

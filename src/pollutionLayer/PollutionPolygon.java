@@ -97,12 +97,18 @@ public class PollutionPolygon {
     /**
      * Generate the colour of the polygon
      * @param colorScheme The ColourScheme to use to generate the colour
-     * @param opacity The opacity of the colour
-     * @return the colour of this polygon based on the ColourScheme and opacity
+     * @return the colour of this polygon based on the ColourScheme
      */
-    public Color getColor(ColorScheme colorScheme, double opacity) {
-        opacity = Math.min(Math.max(0.0, opacity), 1.0); // Sanitise to be in range 0 - 1.
+    public Color getColor(ColorScheme colorScheme) {
         Color color = colorScheme.getColor(normalisedValue);
+        return color;
+    }
+
+    /**
+     * Applies opacity to a colour and returns the colour with the opacity
+     */
+    public Color applyOpacity(Color color, double opacity) {
+        opacity = Math.min(Math.max(0.0, opacity), 1.0); // Sanitise to be in range 0 - 1.
         return Color.rgb( //apply opacity
                 (int) (color.getRed() * 255),
                 (int) (color.getGreen() * 255),
@@ -112,13 +118,24 @@ public class PollutionPolygon {
     }
 
     /**
-     * Draw the polygon to the canvas.
+     * Draw the polygon to the canvas from a given colour scheme
      * @param gc The graphics context to draw the polygon onto.
      * @param colorScheme The ColourScheme to generate the colour for
      * @param opacity The opacity of the polygon
      */
-    public void draw(GraphicsContext gc, ColorScheme colorScheme, double opacity) {
-        Color color = getColor(colorScheme, opacity);
+    public void drawFromColourScheme(GraphicsContext gc, ColorScheme colorScheme, double opacity) {
+        Color color = getColor(colorScheme);
+        draw(gc, color, opacity);
+    }
+
+    /**
+     * Draw the polygon to the canvas.
+     * @param gc The graphics context to draw the polygon onto.
+     * @param color the colour of the polygon
+     * @param opacity The opacity of the polygon
+     */
+    public void draw(GraphicsContext gc, Color color, double opacity) {
+        color = applyOpacity(color, opacity);
         gc.setFill(color);
         gc.fillPolygon(xPoints, yPoints, 4);
     }

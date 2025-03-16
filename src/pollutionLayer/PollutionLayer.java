@@ -4,6 +4,7 @@ import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 
 import colors.*;
+import dataProcessing.DataPoint;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import infoPopup.MapClickHandler;
@@ -31,12 +32,16 @@ public class PollutionLayer extends MapLayer {
     private double polygonOpacity = 0.7;
     private final ColorSchemeManager colorSchemeManager;
 
+    private double pollutionThresholdPercentage = 0; //Stores maximum percentage value relative to max pollution value that polygons can be displayed
+    private final double maxPollutionValue; //Stores the maximum pollution value of all polygons currently displayed
+
+
     /**
      * Initialises the PollutionLayer.
      *
      * @param mapView   The map view to render the pollution layer on.
      * @param dataSet   The currently used dataset.
-     * @param pollutant
+     * @param pollutant The currently used pollutant
      */
     public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, Pollutant pollutant, ColorSchemeManager colorSchemeManager) {
         this.mapView = mapView;
@@ -45,6 +50,8 @@ public class PollutionLayer extends MapLayer {
         pollutionLayerEventHandler = new PollutionLayerEventHandler(clickHandler, mapView);
 
         this.colorSchemeManager = colorSchemeManager;
+
+        maxPollutionValue = dataSet.getData().stream().map(DataPoint::value).max(Double::compareTo).orElse(0.0);
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
@@ -80,12 +87,22 @@ public class PollutionLayer extends MapLayer {
             MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst();
             Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude());
 
+            if (polygonTopLeftScreen == null){
+                continue; // Edge case when switching to statistics panel
+            }
+
             if (!mapView.isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), iconSize)) {
-                continue;
+                continue; //Skip if not on screen
             }
 
             polygon.updatePoints(this);
-            polygon.draw(gc, colorSchemeManager.getColorScheme(), polygonOpacity);
+
+            if (polygon.getDataPoint().value() <= pollutionThresholdPercentage * maxPollutionValue){
+                polygon.draw(gc, colorSchemeManager.getColorScheme().getNullColour(), polygonOpacity);
+            } else {
+                polygon.drawFromColourScheme(gc, colorSchemeManager.getColorScheme(), polygonOpacity);
+            }
+
         }
     }
 
@@ -97,5 +114,10 @@ public class PollutionLayer extends MapLayer {
      */
     public Point2D getScreenPoint(double latitude, double longitude) {
         return getMapPoint(latitude, longitude);
+    }
+
+    public void setVisiblePolygonThreshold(double thresholdPercentage) {
+        pollutionThresholdPercentage = thresholdPercentage;
+        renderPolygons(); //Re-draw
     }
 }

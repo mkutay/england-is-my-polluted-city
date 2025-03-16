@@ -134,3 +134,12 @@
     -fx-stroke: #333; /* Add a border around the circle */
     -fx-stroke-width: 0.5px;
 }
+
+.thresholdSlider {
+    -fx-padding: 0 20px 20px 20px; /* padding around everywhere but top */
+}
+
+.thresholdSliderLabel {
+    -fx-font-size: 16px;
+    -fx-padding: 0 20px 5px 20px;
+}
