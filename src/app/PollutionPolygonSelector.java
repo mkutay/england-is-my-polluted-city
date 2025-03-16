@@ -7,8 +7,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import utility.CustomMapView;
 
+/**
+ * Selection system for polygons
+ *
+ * TODO finish implementing or discard
+ *
+ * @author Anas Ahmed
+ */
 public class PollutionPolygonSelector {
-    //TODO finish - heavy WIP
     private final CustomMapView mapView;
 
     private final Canvas canvas;
@@ -58,7 +64,6 @@ public class PollutionPolygonSelector {
     private void updateMousePosition(MouseEvent event) {
         currentMouseX = event.getX();
         currentMouseY = event.getY();
-
         redrawSelection();
 
     }

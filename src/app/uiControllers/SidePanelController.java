@@ -32,6 +32,7 @@ public class SidePanelController {
     private final DataSelectionController dataSelectionController;
     private final ColorSchemeController colorSchemeController;
     private final StatisticsController statisticsController;
+    private final PollutionThresholdController pollutionThresholdController;
     private final MapController mapController;
 
     // UI Navigation Elements:
@@ -57,7 +58,7 @@ public class SidePanelController {
         this.statisticsController = new StatisticsController();
         this.dataSelectionController = new DataSelectionController();
         this.colorSchemeController = new ColorSchemeController();
-
+        this.pollutionThresholdController = new PollutionThresholdController();
         this.mapContent = mapController.getMapOverlay();
 
         sidePanel = initialiseSidePanel();
@@ -75,6 +76,7 @@ public class SidePanelController {
             createAppLabel(),
             createNavigationBar(),
             createSelectionControls(),
+            createPollutionThresholdSlider(),
             createSwitchButton()
         );
 
@@ -91,7 +93,7 @@ public class SidePanelController {
         appTitle.getStyleClass().add("app-title");
 
         // App logo
-        Image img = new Image(getClass().getResourceAsStream("/resources/rainbow.png"));
+        Image img = new Image(getClass().getResourceAsStream("/resources/icons/rainbow.png"));
         ImageView icon = new ImageView(img);
         icon.setFitWidth(50);
         icon.setFitHeight(50);
@@ -149,6 +151,13 @@ public class SidePanelController {
         selectionControls.getStyleClass().add("dropdown-box");
 
         return selectionControls;
+    }
+
+    private VBox createPollutionThresholdSlider() {
+        VBox sliderContainer = new VBox();
+        sliderContainer.getChildren().add(pollutionThresholdController.getThresholdSlider());
+
+        return sliderContainer;
     }
 
     /**
