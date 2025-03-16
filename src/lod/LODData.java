@@ -48,7 +48,10 @@ public class LODData {
             for (int y = minNorthing; y < maxNorthing; y += gridSize) {
                 DataPoint point = dataSet.getDataPoint(x, y);
                 if (point == null) continue;
+                if (point.value() < 0) continue;
+
                 double value = getAverageValue(dataSet, gridSize, x, y);
+
                 DataPoint updatedPoint = new DataPoint(point.gridCode(), point.x(), point.y(), value);
                 data.add(updatedPoint);
             }
@@ -71,11 +74,13 @@ public class LODData {
             for (int y = northing; y < northing + gridSize; y += 1000) {
                 DataPoint dataPoint = dataSet.getDataPoint(x, y);
                 if (dataPoint == null) continue;
+                if (dataPoint.value() < 0) continue;
                 value += dataPoint.value();
                 i++;
             }
         }
-        return value / i;
+
+        return value/i;
     }
 
     // Getters:
