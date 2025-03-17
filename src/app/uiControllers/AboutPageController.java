@@ -4,12 +4,20 @@ import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import utility.ImageUtils;
+
+import javafx.scene.control.Hyperlink;
+import java.awt.Desktop;
+import java.net.URI;
+import javafx.scene.text.TextFlow;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.Text;
+
+import static app.App.APP_NAME;
 
 /**
  * A simple about page for the application.
@@ -26,7 +34,7 @@ public class AboutPageController {
 
         // Create header of about page with a HBox.
         HBox headerLabelBox = new HBox();
-        Label headerLabel = new Label("UK Emissions Interactive Map");
+        Label headerLabel = new Label(APP_NAME);
         headerLabel.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 15 0 0 15;");
 
         // App logo.
@@ -39,7 +47,7 @@ public class AboutPageController {
         Separator separator = new Separator();
 
         // Credits text:
-        Text creditsText = getText();
+        TextFlow creditsText = getText();
         creditsText.setStyle("-fx-font-size: 14px; -fx-padding: 10");
 
         Button closeButton = new Button("Close");
@@ -55,25 +63,39 @@ public class AboutPageController {
         aboutStage.show();
     }
 
-    private static Text getText() {
-        String credits = """
-                The project makes use of the following external libraries and APIs:
-                
-                - Gluon Maps (https://github.com/gluonhq/maps) - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps
-                
-                - OSGB by DST (https://github.com/dstl/osgb]) - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude
-                
-                - GeographicLib (https://github.com/geographiclib/geographiclib-java) - Used for geodesic distance calculation
-                
-                - Postcodes.io (https://postcodes.io/) - API used to get location & address data from the specified longitude and latitude on the map
-                
-                - World Air Quality Index API (https://aqicn.org/api/) - An API to get real time Air Quality Index Updates from the World Air Quality Index Project
-                
-                - GSON (https://github.com/google/gson) - A library by Google to convert between Json and Java Objects
-                """;
+    private static TextFlow getText() {
+        TextFlow textFlow = new TextFlow();
+        textFlow.setTextAlignment(TextAlignment.LEFT);
 
+        textFlow.getChildren().addAll(
+                new Text("The project makes use of the following external libraries and APIs:\n\n"),
+                createHyperlink("Gluon Maps", "https://github.com/gluonhq/maps"),
+                new Text(" - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps\n\n"),
+                createHyperlink("OSGB by DST", "https://github.com/dstl/osgb"),
+                new Text(" - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude\n\n"),
+                createHyperlink("GeographicLib", "https://github.com/geographiclib/geographiclib-java"),
+                new Text(" - Used for geodesic distance calculation\n\n"),
+                createHyperlink("Postcodes.io", "https://postcodes.io/"),
+                new Text(" - API used to get location & address data from the specified longitude and latitude on the map\n\n"),
+                createHyperlink("World Air Quality Index API", "https://aqicn.org/api/"),
+                new Text(" - An API to get real-time Air Quality Index Updates from the World Air Quality Index Project\n\n"),
+                createHyperlink("GSON", "https://github.com/google/gson"),
+                new Text(" - A library by Google to convert between JSON and Java Objects\n")
+        );
 
-        // Resources
-        return new Text(credits);
+        return textFlow;
+    }
+
+    // Helper method to create clickable links
+    private static Hyperlink createHyperlink(String text, String url) {
+        Hyperlink hyperlink = new Hyperlink(text);
+        hyperlink.setOnAction(event -> {
+            try {
+                Desktop.getDesktop().browse(new URI(url));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        return hyperlink;
     }
 }
