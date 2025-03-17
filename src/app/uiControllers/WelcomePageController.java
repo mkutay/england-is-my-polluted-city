@@ -75,6 +75,9 @@ public class WelcomePageController {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Tutorial");
 
+        // Reset currentPage when reopening
+        currentPage = 0;
+
         // Header
         Text header = new Text("Welcome to the UK Emissions Map!");
         header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold;");
