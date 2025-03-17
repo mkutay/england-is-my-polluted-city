@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 
+import java.util.Objects;
+
 /**
  * A class that stores all the information about the live air quality readings.
  * This class is used to display the live air quality readings in the info popup
@@ -91,23 +93,11 @@ public class RealtimeInfo {
         String liveAQIDetails = realtimeDataDetails.aqiValue();
         String livePollutionDetails = realtimeDataDetails.pollutantValues().get(pollutant);
 
-        if (liveUpdatedTimeDetails != null) {
-            liveUpdatedTimeInformation.setText(liveUpdatedTimeDetails);
-        } else {
-            liveUpdatedTimeInformation.setText("Not Available");
-        }
+        liveUpdatedTimeInformation.setText(Objects.requireNonNullElse(liveUpdatedTimeDetails, "Not Available"));
 
-        if (liveAQIDetails != null) {
-            liveAQIInformation.setText(liveAQIDetails);
-        } else {
-            liveAQIInformation.setText("Not Available");
-        }
+        liveAQIInformation.setText(Objects.requireNonNullElse(liveAQIDetails, "Not Available"));
 
-        if (livePollutionDetails != null) {
-            livePollutantInformation.setText(livePollutionDetails);
-        } else {
-            livePollutantInformation.setText("Not Available");
-        }
+        livePollutantInformation.setText(Objects.requireNonNullElse(livePollutionDetails, "Not Available"));
     }
 
     /**
