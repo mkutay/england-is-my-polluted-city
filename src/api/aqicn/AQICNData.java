@@ -1,8 +1,7 @@
 package api.aqicn;
 
 /**
- * Represents a response from the Air Quality Index API. This is used to display
- * information on real-time air quality updates.
+ * Represents a response from the Air Quality Index API. This is used to display information on real-time air quality updates.
  * 
  * @author Matthias Loong
  * @version 1.0

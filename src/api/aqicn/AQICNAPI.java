@@ -9,21 +9,27 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
- * Class to manage API Calls to AQICN to get real-time data values.
- * Additional specific information can be get from https://api.waqi.info/feed/geo:51.508045;-0.128217/?token=9cb6e336b29393762ddc877abb3e43a60b805a5c
- * Get All stations in bound: https://api.waqi.info/map/bounds?token=9cb6e336b29393762ddc877abb3e43a60b805a5c&latlng=60.853691,-0.888372,49.866441,-6.392085
- * Get all stations from United Kingdom: https://api.waqi.info/search/?keyword='United Kingdom'&token=9cb6e336b29393762ddc877abb3e43a60b805a5c
- * https://api.waqi.info/search/?keyword=United%20Kingdom&token=9cb6e336b29393762ddc877abb3e43a60b805a5c
- * 
- * Adapted from code written by Kutay
+ * Class to manage API Calls to AQICN to get real-time data values on Air Quality Index from https://waqi.info/.
+ *
+ * The following URL will give an example of the API response. https://api.waqi.info/feed/geo:51.508045;-0.128217/?token=9cb6e336b29393762ddc877abb3e43a60b805a5c
+ *
+ * As the API call converts the Json Response from Json to Java Objects using Gson, the method of retrieving data would be as follows:
+ * Call getPollutionData() => getData() (AQICNResponse.java) => getPollutantValue() (AQICNData.java) => getNo2() (AQIPollutantData.java) => getIAQIValue() (PollutantValue.java)
+ *
+ * Hierarchy of AQI API Call Classes (1 is first so on and so forth)
+ * 1. AQICNAPI.java
+ * 2. AQICNResponse.java
+ * 3. AQICNData.java
+ * 4. AQIPollutantData.java , AQITimestamp.java
+ * 5. AQIPollutantValue.java
+ *
  * @author Matthias Loong
  * @version 1.0
  */
 public class AQICNAPI {
     private static final String AQICN_API_BASE_URL = "https://api.waqi.info/";
-    // API key is hardcoded for this project specifically to avoid fiddling with environment variables.
+    // API key is hardcoded for this project specifically to avoid fiddling with environment variables and ease of use by the marker.
     private static final String AQICN_API_KEY = "9cb6e336b29393762ddc877abb3e43a60b805a5c";
-    
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();
 

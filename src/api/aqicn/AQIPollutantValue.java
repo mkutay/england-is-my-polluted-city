@@ -1,7 +1,7 @@
 package api.aqicn;
 
 /**
- * Represents the "v" field nested under "iaqi" pollutant values.
+ * Represents the "v" field nested under "iaqi" (Individual AQI) pollutant values.
  * 
  * @author Matthias Loong
  * @version 1.0
