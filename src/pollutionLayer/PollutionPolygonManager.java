@@ -17,11 +17,13 @@ import java.util.List;
  * @version 2.0
  */
 public class PollutionPolygonManager {
+    private final static int NUMBER_OF_LODS = 3;
+
     private final List<PollutionPolygon> polygons;
 
     private final LODManager lodManager;
     private int currentLODIndex = -1;
-    private final static int NUMBER_OF_LODS = 3;
+
     /**
      * Constructor.
      */
@@ -35,9 +37,9 @@ public class PollutionPolygonManager {
      * @param lodData the LOD data to use to generate the polygons.
      */
     private void generatePollutionPolygons(LODData lodData) {
-        polygons.clear(); // Reset polygons
+        polygons.clear(); // Reset polygons.
 
-        // Find min/max values for color mapping
+        // Find min/max values for color mapping.
         double minValue = Double.POSITIVE_INFINITY;
         double maxValue = Double.NEGATIVE_INFINITY;
         for (DataPoint dataPoint : lodData.getData()) {
@@ -50,7 +52,7 @@ public class PollutionPolygonManager {
         for (DataPoint dataPoint : lodData.getData()) {
             if (dataPoint.value() == -1) continue; // Do not generate polygons for missing values.
 
-            // Normalise the pollution value for colour interpolation
+            // Normalise the pollution value for colour interpolation.
             double normalisedValue = (dataPoint.value() - minValue) / (maxValue - minValue);
 
             int sideLength = 1000 * lodManager.getLODData(currentLODIndex).getLevelOfDetail();

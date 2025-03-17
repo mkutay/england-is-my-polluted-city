@@ -74,13 +74,13 @@ public class PollutionLayerEventHandler {
         PollutionPolygon clickedPolygon = getPolygonAtScreenCoordinates(x, y, polygonManager);
         DataPoint dataPoint = clickedPolygon == null ? null : clickedPolygon.getDataPoint();
 
+        if (dataPoint == null) return;
+
         Window window = mapView.getScene().getWindow();
         double width = window.getWidth();
         double height = window.getHeight();
 
         // Notify the listener:
-        if (dataPoint != null) {
-            clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, dataPoint.value(), pollutant);
-        }
+        clickHandler.onMapClicked(mapPoint.getLatitude(), mapPoint.getLongitude(), mouseX, mouseY, width, height, dataPoint.value(), pollutant);
     }
 }

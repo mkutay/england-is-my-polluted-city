@@ -80,7 +80,7 @@ public class LODData {
             }
         }
 
-        return value/i;
+        return value / i;
     }
 
     // Getters:

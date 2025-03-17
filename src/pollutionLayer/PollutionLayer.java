@@ -32,16 +32,17 @@ public class PollutionLayer extends MapLayer {
     private double polygonOpacity = 0.7;
     private final ColorSchemeManager colorSchemeManager;
 
-    private double pollutionThresholdPercentage = 0; //Stores maximum percentage value relative to max pollution value that polygons can be displayed
-    private final double maxPollutionValue; //Stores the maximum pollution value of all polygons currently displayed
+    private double pollutionThresholdPercentage = 0; // Maximum percentage value relative to max pollution value that polygons can be displayed.
+    private final double maxPollutionValue; // Maximum pollution value of all polygons currently displayed.
 
 
     /**
      * Initialises the PollutionLayer.
-     *
-     * @param mapView   The map view to render the pollution layer on.
-     * @param dataSet   The currently used dataset.
-     * @param pollutant The currently used pollutant
+     * @param mapView The map view to render the pollution layer on.
+     * @param dataSet The currently used dataset.
+     * @param clickHandler The click handler for the map on info popups.
+     * @param pollutant The currently used pollutant.
+     * @param colorSchemeManager The color scheme manager to use for rendering the colours.
      */
     public PollutionLayer(CustomMapView mapView, DataSet dataSet, MapClickHandler clickHandler, Pollutant pollutant, ColorSchemeManager colorSchemeManager) {
         this.mapView = mapView;
@@ -88,11 +89,11 @@ public class PollutionLayer extends MapLayer {
             Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude());
 
             if (polygonTopLeftScreen == null){
-                continue; // Edge case when switching to statistics panel
+                continue; // Edge case when switching to statistics panel.
             }
 
             if (!mapView.isPointOnScreen(polygonTopLeftScreen.getX(), polygonTopLeftScreen.getY(), iconSize)) {
-                continue; //Skip if not on screen
+                continue; // Skip if not on screen.
             }
 
             polygon.updatePoints(this);
@@ -116,8 +117,12 @@ public class PollutionLayer extends MapLayer {
         return getMapPoint(latitude, longitude);
     }
 
+    /**
+     * Sets the threshold percentage for pollution visibility and re-draws layer.
+     * @param thresholdPercentage The threshold percentage.
+     */
     public void setVisiblePolygonThreshold(double thresholdPercentage) {
         pollutionThresholdPercentage = thresholdPercentage;
-        renderPolygons(); //Re-draw
+        renderPolygons(); // Re-draw.
     }
 }

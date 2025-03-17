@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import java.util.List;
 
 /**
- * Maps a normalised value from 0-1 to a range of colours
- * Subclasses can define different colour sets to use
+ * Maps a normalised value from 0 - 1 to a range of colours.
+ * Subclasses can define different colour sets to use.
  *
  * @author Mehmet Kutay Bozkurt and Anas Ahmed
  * @version 1.0
@@ -15,9 +15,9 @@ public abstract class ColorScheme {
     protected List<Color> colors;
 
     /**
-     * Linearly interpolate from a to b with ratio t
+     * Linearly interpolate from a to b with ratio t.
      */
-    private static double lerp(double a, double b, double t){
+    private static double lerp(double a, double b, double t) {
         return a + t * (b - a);
     }
 
@@ -37,9 +37,9 @@ public abstract class ColorScheme {
 
 
     /**
-     * Maps a value from 0-1 to a colour based off of the colours defined in the color scheme
-     * @param normalisedValue Normalised pollution value from 0-1
-     * @return Color corresponding to the value.
+     * Maps a value from 0 to 1 to a colour based off of the colours defined in the color scheme.
+     * @param normalisedValue Normalised pollution value from 0 to 1.
+     * @return Color corresponding to the value..
      */
     public Color getColor(double normalisedValue){
         int numSegments = colors.size() - 1;
@@ -53,17 +53,20 @@ public abstract class ColorScheme {
             }
         }
 
-        return colors.getLast(); //Fallback case
+        return colors.getLast(); // Fallback case.
     }
 
+    /**
+     * @return The list of colours in the scheme.
+     */
     public List<Color> getColors() {
         return colors;
     }
 
     /**
-      * @return the colour representing no colour value
+      * @return The colour representing no colour value.
      */
     public Color getNullColour() {
-        return Color.rgb(100, 100, 100); //Default value
+        return Color.rgb(100, 100, 100); // Default value.
     }
 }

@@ -1,7 +1,6 @@
 package app.uiControllers;
 import javafx.scene.Scene;
 import javafx.scene.control.Separator;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,8 +12,10 @@ import javafx.stage.Stage;
 import utility.ImageUtils;
 
 /**
- * A simple about page for our app
+ * A simple about page for the application.
+ * 
  * @author Matthias Loong
+ * @version 1.0
  */
 public class AboutPageController {
 
@@ -23,20 +24,21 @@ public class AboutPageController {
         aboutStage.initModality(Modality.APPLICATION_MODAL);
         aboutStage.setTitle("About");
 
-        //Create header of about page with a HBox
+        // Create header of about page with a HBox.
         HBox headerLabelBox = new HBox();
         Label headerLabel = new Label("UK Emissions Interactive Map");
         headerLabel.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 15 0 0 15;");
-        //App logo
+
+        // App logo.
         ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
         headerLabelBox.getChildren().addAll(icon, headerLabel);
 
-        //Authors of app
+        // Authors of app.
         Label authorsLabel = new Label("Created with Love by: Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, Chelsea Feliciano");
-        //Separator line to separate Header + authors from credits text
+        // Separator line to separate Header + authors from credits text.
         Separator separator = new Separator();
 
-        //Credits text
+        // Credits text:
         Text creditsText = getText();
         creditsText.setStyle("-fx-font-size: 14px; -fx-padding: 10");
 
@@ -47,7 +49,6 @@ public class AboutPageController {
 
         VBox layout = new VBox(10, headerLabelBox, authorsLabel, separator, creditsText, buttonBox);
         layout.setStyle("-fx-padding: 20;");
-
 
         aboutStage.setScene(new Scene(layout));
         aboutStage.sizeToScene();

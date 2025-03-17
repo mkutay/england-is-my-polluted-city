@@ -75,11 +75,12 @@ public class DataPicker {
      * Get a list of available years for a specific pollutant.
      * @param pollutant The pollutant to check for available years.
      * @return An array of available years.
-     * @author Mehmet Kutay Bozkurt
      * @apiNote The returned list is arbitrary and may not be sorted.
+     * @author Mehmet Kutay Bozkurt
      */
     public List<Integer> getAvailableYears(Pollutant pollutant) {
         String pollutantPattern = pollutantPatterns.getProperty(pollutant.toString());
+
         if (pollutantPattern == null) {
             throw new IllegalArgumentException("Pollutant pattern does not exist for pollutant: " + pollutant);
         }

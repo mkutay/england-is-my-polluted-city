@@ -38,19 +38,13 @@ public class NavigationBarController {
 
         // Help Menu:
         Menu helpMenu = new Menu("Help");
-        //Add About Page
+        // Add About Page
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> AboutPageController.show());
-        //Add Tutorial Page
+        // Add Tutorial Page:
         MenuItem tutorialItem = new MenuItem("Tutorial");
-        tutorialItem.setOnAction(e -> new WelcomePageController().show());
-        //TODO: Add Welcome Page
+        tutorialItem.setOnAction(e -> WelcomePageController.show());
         helpMenu.getItems().addAll(aboutItem, tutorialItem);
-
-
-
-
-
 
         topNavBar.getMenus().addAll(fileMenu, helpMenu);
         return topNavBar;

@@ -5,17 +5,16 @@ import javafx.scene.image.ImageView;
 
 /**
  * Utility class for creating JavaFX ImageView instances.
- *
- * This class provides methods to load images from classpath resources
+ * This class provides methods to load images from classpath resources.
  * If an image is not found, a warning is logged, and an empty ImageView is returned.
  *
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class ImageUtils {
     /**
-     * Loads an image from the given classpath resource path and returns an ImageView
+     * Loads an image from the given classpath resource path and returns an ImageView.
      * If the image is not found, an empty ImageView is returned.
-     *
      * @param resourcePath The classpath-relative path to the image (e.g., "/icons/rainbow.png").
      * @return An ImageView containing the image or an empty ImageView if not found.
      */
@@ -34,7 +33,6 @@ public class ImageUtils {
     /**
      * Loads an image from the specified classpath resource path and resizes it to fit the given dimensions.
      * The aspect ratio is preserved. If the image is not found, returns an empty ImageView.
-     *
      * @param resourcePath The classpath-relative path to the image
      * @param width The desired width of the ImageView.
      * @param height The desired height of the ImageView.
@@ -51,7 +49,7 @@ public class ImageUtils {
         Image img = new Image(resource.toExternalForm());
         ImageView imgView = new ImageView(img);
 
-        // Keep aspect ratio
+        // Keep aspect ratio.
         imgView.setPreserveRatio(true);
         if (width > height) {
             imgView.setFitWidth(width);
@@ -65,7 +63,6 @@ public class ImageUtils {
     /**
      * Loads an image from the specified classpath resource path and resizes it to a square.
      * The aspect ratio is preserved. If the image is not found, returns an empty ImageView.
-     *
      * @param resourcePath The classpath-relative path to the image.
      * @param side The desired size (both width and height).
      * @return An ImageView containing the resized image or an empty ImageView if not found.

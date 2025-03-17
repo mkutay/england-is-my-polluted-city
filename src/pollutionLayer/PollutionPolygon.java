@@ -17,7 +17,7 @@ import utility.GeographicUtilities;
  * Class used for rendering a single pollution "value" on the map. These values are represented
  * as polygons on the map, with the color of the polygon representing the pollution scale.
  * This polygon is, in reality, a close approximation of a square. The polygon has an area of 1 km^2.
- * We use these approximate squares to account for curvature of the earth, making a seamless grid mapped onto the earth
+ * We use these approximate squares to account for curvature of the earth, making a seamless grid mapped onto the earth.
  *
  * @author Anas Ahmed
  * @version 2.0
@@ -27,8 +27,8 @@ public class PollutionPolygon {
     private final int topLeftNorthing; // The northing value of the top left corner.
     private final int sideLength; // The side length of the square in meters.
 
-    private final DataPoint dataPoint; // Store the pollution datapoint
-    private final double normalisedValue; // The normalised pollution value in range 0-1
+    private final DataPoint dataPoint; // Store the pollution datapoint.
+    private final double normalisedValue; // The normalised pollution value in range 0-1.
 
     private final List<MapPoint> worldCoordinates; // The world coordinates of the polygon, stored in lat/lon.
 
@@ -38,8 +38,9 @@ public class PollutionPolygon {
 
     /**
      * Constructor for PollutionPolygon.
-     * @param sideLength      The side length of the square in meters.
-     * @param dataPoint       The dataPoint that this polygon represents
+     * @param sideLength The side length of the square in meters.
+     * @param dataPoint The dataPoint that this polygon represents.
+     * @param normalisedValue The normalised pollution value in range 0-1.
      */
     public PollutionPolygon(int sideLength, DataPoint dataPoint, double normalisedValue) {
         this.sideLength = sideLength;
@@ -51,7 +52,7 @@ public class PollutionPolygon {
         topLeftEasting = dataPoint.x() - 500;
         topLeftNorthing = dataPoint.y() - 500;
 
-        this.worldCoordinates = new ArrayList<>(4); // Pre-size for efficiency
+        this.worldCoordinates = new ArrayList<>(4); // Pre-size for efficiency.
         this.xPoints = new double[4];
         this.yPoints = new double[4];
 
@@ -105,23 +106,23 @@ public class PollutionPolygon {
     }
 
     /**
-     * Applies opacity to a colour and returns the colour with the opacity
+     * Applies opacity to a colour and returns the colour with the opacity.
      */
     public Color applyOpacity(Color color, double opacity) {
         opacity = Math.min(Math.max(0.0, opacity), 1.0); // Sanitise to be in range 0 - 1.
-        return Color.rgb( //apply opacity
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255),
-                opacity
+        return Color.rgb( // Apply opacity.
+            (int) (color.getRed() * 255),
+            (int) (color.getGreen() * 255),
+            (int) (color.getBlue() * 255),
+            opacity
         );
     }
 
     /**
-     * Draw the polygon to the canvas from a given colour scheme
+     * Draw the polygon to the canvas from a given colour scheme.
      * @param gc The graphics context to draw the polygon onto.
-     * @param colorScheme The ColourScheme to generate the colour for
-     * @param opacity The opacity of the polygon
+     * @param colorScheme The ColourScheme to generate the colour for.
+     * @param opacity The opacity of the polygon.
      */
     public void drawFromColourScheme(GraphicsContext gc, ColorScheme colorScheme, double opacity) {
         Color color = getColor(colorScheme);
@@ -131,8 +132,8 @@ public class PollutionPolygon {
     /**
      * Draw the polygon to the canvas.
      * @param gc The graphics context to draw the polygon onto.
-     * @param color the colour of the polygon
-     * @param opacity The opacity of the polygon
+     * @param color the colour of the polygon.
+     * @param opacity The opacity of the polygon.
      */
     public void draw(GraphicsContext gc, Color color, double opacity) {
         color = applyOpacity(color, opacity);
@@ -144,7 +145,6 @@ public class PollutionPolygon {
      * Checks if the given point is inside this polygon.
      * This method is taken from this StackOverflow answer:
      * https://stackoverflow.com/a/2922778/28383027 on 2025-03-09.
-     *
      * @param x The x coordinate in screen space.
      * @param y The y coordinate in screen space.
      * @return True if the point is inside the polygon, false otherwise.

@@ -37,6 +37,7 @@ public class LODManager {
         for (CompletableFuture<LODData> future : futures) {
             LODDataList.add(future.join());
         }
+        
         System.out.println("Finished generating LODs");
     }
 

@@ -3,9 +3,10 @@ package app.uiControllers;
 import javafx.scene.control.Slider;
 
 /**
- * Handles the slider for the pollution threshold
+ * Handles the slider for the pollution threshold.
  *
  * @author Anas Ahmed
+ * @version 1.0
  */
 public class PollutionThresholdController {
     private final Slider thresholdSlider;

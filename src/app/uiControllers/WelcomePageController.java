@@ -17,9 +17,10 @@ import java.util.*;
  * The welcome page for the project. Will be shown on launch or by clicking "Tutorial" in the navigation bar
  *
  * @author Matthias Loong
+ * @version 1.0
  */
 public class WelcomePageController {
-    //Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key.
+    // Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key.
     private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static List<String> imagePaths;
     private static Stage stage;
@@ -81,7 +82,7 @@ public class WelcomePageController {
         // Image View (Dynamically Resized)
         loadImage(imagePaths.get(currentPage)); // Load first image
 
-        //Text tutorial
+        // Text tutorial
         descriptionText.setStyle("-fx-font-size: 14px;");
         updateDescription();
 
@@ -93,16 +94,16 @@ public class WelcomePageController {
         nextButton.setOnAction(e -> navigate(1));
         closeButton.setOnAction(e -> stage.close());
 
-        //Button Layout
+        // Button Layout
         HBox buttonBox = new HBox(10, prevButton, nextButton, closeButton);
         buttonBox.setAlignment(Pos.BOTTOM_CENTER);
 
-        //Content Layout
+        // Content Layout
         VBox contentBox = new VBox(10, header, imageView, descriptionText, buttonBox);
         contentBox.setAlignment(Pos.CENTER);
         contentBox.setFillWidth(true);
 
-        //wrapping of text for screen
+        // Wrapping of text for screen
         descriptionText.wrappingWidthProperty().bind(contentBox.widthProperty().subtract(10));
 
         imageView.fitWidthProperty().bind(contentBox.widthProperty().multiply(0.8));
@@ -111,7 +112,7 @@ public class WelcomePageController {
         BorderPane root = new BorderPane();
         root.setCenter(contentBox);
 
-        //Create the scene and set it on the stage
+        // Create the scene and set it on the stage
         Scene scene = new Scene(root, MAX_WIDTH, MAX_HEIGHT);
         stage.setScene(scene);
         stage.show();

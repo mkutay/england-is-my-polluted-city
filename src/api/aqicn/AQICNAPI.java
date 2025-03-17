@@ -12,8 +12,9 @@ import java.net.http.HttpResponse;
  * Class to manage API Calls to AQICN to get real-time data values.
  * Additional specific information can be get from https://api.waqi.info/feed/geo:51.508045;-0.128217/?token=9cb6e336b29393762ddc877abb3e43a60b805a5c
  * Get All stations in bound: https://api.waqi.info/map/bounds?token=9cb6e336b29393762ddc877abb3e43a60b805a5c&latlng=60.853691,-0.888372,49.866441,-6.392085
- * Get all stations from United Kingdom https://api.waqi.info/search/?keyword='United Kingdom'&token=9cb6e336b29393762ddc877abb3e43a60b805a5c
+ * Get all stations from United Kingdom: https://api.waqi.info/search/?keyword='United Kingdom'&token=9cb6e336b29393762ddc877abb3e43a60b805a5c
  * https://api.waqi.info/search/?keyword=United%20Kingdom&token=9cb6e336b29393762ddc877abb3e43a60b805a5c
+ * 
  * Adapted from code written by Kutay
  * @author Matthias Loong
  * @version 1.0

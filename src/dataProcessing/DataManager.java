@@ -15,7 +15,7 @@ import javafx.util.Pair;
  * @version 1.0
  */
 public class DataManager {
-    private static DataManager instance; // Singleton instance
+    private static DataManager instance; // Singleton instance.
     
     // Cache for loaded datasets, key format as a pair: pollutant, year.
     private final Map<Pair<Pollutant, Integer>, DataSet> dataCache;
@@ -73,7 +73,7 @@ public class DataManager {
     }
     
     /**
-     * Asynchronously load pollutant data for a specific year and pollutant.
+     * Asynchronously load pollutant data for a specific year and pollutant by supplying a CompletableFuture.
      * @param year The year requested as an integer.
      * @param pollutant The requested pollutant.
      * @return A CompletableFuture that will complete with the loaded DataSet.

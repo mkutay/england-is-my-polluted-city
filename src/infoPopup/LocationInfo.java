@@ -1,5 +1,6 @@
 package infoPopup;
 
+import dataProcessing.Pollutant;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
@@ -7,7 +8,6 @@ import javafx.scene.text.TextFlow;
 /**
  * A class that stores all the information about the location for the info popup.
  * 
- * Refactor and class by Mehmet Kutay Bozkurt
  * @author Mehmet Kutay Bozkurt
  * @version 1.0
  */
@@ -97,7 +97,7 @@ public class LocationInfo {
 
         // Set pollution value information if available:
         if (pollutionValue != null) {
-            pollutionInformation.setText(String.format("%.2f µg/m³", pollutionValue)); // Displays microgram per meter cubed.
+            pollutionInformation.setText(String.format("%.2f %s", pollutionValue, Pollutant.UNITS)); // Displays microgram per meter cubed.
         } else {
             pollutionInformation.setText("Not Available");
         }

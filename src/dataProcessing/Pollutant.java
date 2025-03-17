@@ -20,9 +20,9 @@ public enum Pollutant {
      * 9: Very High band
      */
     public final static Map<Pollutant, int[]> CONCENTRATION_BANDS = Map.of(
-        NO2, new int[]{ 68, 135, 201, 268, 335, 401, 468, 535, 601 },
-        PM2_5, new int[]{ 11, 24, 36, 42, 48, 54, 59, 65, 71 },
-        PM10, new int[]{ 17, 34, 51, 59, 67, 76, 84, 92, 101 }
+        NO2, new int[] { 68, 135, 201, 268, 335, 401, 468, 535, 601 },
+        PM2_5, new int[] { 11, 24, 36, 42, 48, 54, 59, 65, 71 },
+        PM10, new int[] { 17, 34, 51, 59, 67, 76, 84, 92, 101 }
     );
 
     /**

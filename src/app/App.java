@@ -31,7 +31,7 @@ public class App extends Application {
         stage.setMaximized(false);
         stage.show();
 
-        //Show welcome page on launch
+        // Show welcome page on launch.
         WelcomePageController.show();
     }
 
