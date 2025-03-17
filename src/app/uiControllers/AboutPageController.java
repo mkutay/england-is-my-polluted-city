@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import utility.ImageUtils;
 
 /**
  * A simple about page for our app
@@ -25,12 +26,9 @@ public class AboutPageController {
         //Create header of about page with a HBox
         HBox headerLabelBox = new HBox();
         Label headerLabel = new Label("UK Emissions Interactive Map");
-        headerLabel.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 0 0 0 20;");
+        headerLabel.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 15 0 0 15;");
         //App logo
-        Image img = new Image(AboutPageController.class.getResourceAsStream("/resources/rainbow.png"));
-        ImageView icon = new ImageView(img);
-        icon.setFitWidth(50);
-        icon.setFitHeight(50);
+        ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
         headerLabelBox.getChildren().addAll(icon, headerLabel);
 
         //Authors of app
