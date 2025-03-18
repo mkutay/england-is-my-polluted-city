@@ -1,4 +1,4 @@
-package app;
+package app.uiViews;
 
 import colors.ColorSchemeManager;
 import dataProcessing.Pollutant;

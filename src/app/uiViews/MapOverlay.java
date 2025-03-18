@@ -1,4 +1,4 @@
-package app;
+package app.uiViews;
 
 import javafx.scene.layout.AnchorPane;
 import utility.CustomMapView;

@@ -1,6 +1,5 @@
 package app.uiControllers;
 
-import app.MapController;
 import colors.ColorScheme;
 import dataProcessing.Pollutant;
 import app.App;

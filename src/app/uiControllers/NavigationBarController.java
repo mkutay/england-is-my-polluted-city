@@ -1,5 +1,6 @@
 package app.uiControllers;
 
+import app.App;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -13,12 +14,14 @@ import javafx.scene.control.MenuItem;
  */
 public class NavigationBarController {
     private final MenuBar menuBar;
+    private final App app;
 
     /**
      * Constructor for NavigationBarController.
      * Creates and initializes the top navigation bar.
      */
-    public NavigationBarController() {
+    public NavigationBarController(App app) {
+        this.app = app;
         menuBar = createTopNavBar();
         menuBar.getStyleClass().add("top-nav");
     }
@@ -43,7 +46,7 @@ public class NavigationBarController {
         aboutItem.setOnAction(e -> AboutPageController.show());
         // Add Tutorial Page:
         MenuItem tutorialItem = new MenuItem("Tutorial");
-        tutorialItem.setOnAction(e -> WelcomePageController.show());
+        tutorialItem.setOnAction(e -> app.showWelcomePage());
         helpMenu.getItems().addAll(aboutItem, tutorialItem);
 
         topNavBar.getMenus().addAll(fileMenu, helpMenu);

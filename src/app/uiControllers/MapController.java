@@ -1,11 +1,11 @@
-package app;
+package app.uiControllers;
 
-import app.uiControllers.PollutionPolygonSelector;
+import app.PollutionLayerNotInitialisedException;
+import app.uiViews.MapOverlay;
 import colors.ColorScheme;
 import colors.ColorSchemeManager;
 import com.gluonhq.maps.MapPoint;
 
-import javafx.geometry.Pos;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 

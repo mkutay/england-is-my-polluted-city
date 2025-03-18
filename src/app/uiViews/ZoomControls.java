@@ -1,4 +1,4 @@
-package app;
+package app.uiViews;
 
 import com.gluonhq.maps.MapPoint;
 import javafx.scene.control.Label;
