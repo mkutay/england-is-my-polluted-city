@@ -41,7 +41,7 @@ public class NavigationBarController {
 
         // Help Menu:
         Menu helpMenu = new Menu("Help");
-        // Add About Page
+        // Add About Page:
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> AboutPageController.show());
         // Add Tutorial Page:

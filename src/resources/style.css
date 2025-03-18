@@ -80,7 +80,7 @@
 }
 
 .legend-header {
-    -fx-padding: 0 0 0 8;       /* Set left padding only */
+    -fx-padding: 0 0 0 8;      /* Set left padding only */
     -fx-spacing: 16px;         /* spacing between titleLabel and titleIcon */
     -fx-cursor: hand;
 }
@@ -112,18 +112,19 @@
     -fx-border-radius: 3px;
 }
 
+/* Spacing between each legend item */
 .legend-item {
     -fx-padding: 3px;
 }
 
-/* Styles for the color indicator in the legend */
+/* Legend circle color */
 .legend-circle {
     -fx-stroke: #333; /* Add a border around the circle */
     -fx-stroke-width: 0.5px;
 }
 
 .thresholdSlider {
-    -fx-padding: 0 20px 20px 20px; /* padding around everywhere but top */
+    -fx-padding: 0 20 20 20; /* padding around everywhere but top */
 }
 
 .thresholdSliderLabel {

@@ -27,24 +27,24 @@ public class WelcomePage extends BorderPane {
     public WelcomePage() {
 
         // Header
-        Label header = new Label("Welcome to the UK Emissions Map!");
-        header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-padding: 30 0 0 0;");
-        BorderPane.setAlignment(header, Pos.CENTER);
+        Label title = new Label("Welcome to the UK Emissions Map!");
+        title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-padding: 30 0 0 0;");
+
+        VBox header = new VBox(title, imageView);
+        header.setAlignment(Pos.CENTER); // Center image & text
+
+        // Text
+        TextFlow textFlow = new TextFlow(descriptionText);
+        textFlow.setStyle("-fx-padding: 0 60 0 60;");
+        textFlow.setTextAlignment(TextAlignment.CENTER);
 
         // Buttons
         HBox buttonBox = new HBox(10, prevButton, nextButton, closeButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setStyle("-fx-padding: 10 0 20 0;");
-
-        TextFlow textFlow = new TextFlow(descriptionText);
-        textFlow.setStyle("-fx-padding: 0 60 0 60;");
-        textFlow.setTextAlignment(TextAlignment.CENTER);
-
-        VBox vBox = new VBox(imageView, textFlow);
-        vBox.setAlignment(Pos.CENTER); // Center image & text
-
+        
         setTop(header);
-        setCenter(vBox);
+        setCenter(textFlow);
         setBottom(buttonBox);
 
         imageView.fitWidthProperty().bind(widthProperty().multiply(0.8));
