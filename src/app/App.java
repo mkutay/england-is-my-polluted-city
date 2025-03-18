@@ -18,24 +18,33 @@ import java.io.IOException;
  */
 public class App extends Application {
     public static final String APP_NAME = "UK Emissions Interactive Map";
+    private WelcomePageController welcomePageController;
 
+    public static void main(String[] args) {
+        launch(args);
+    }
     @Override
     public void start(Stage stage) throws PollutionLayerNotInitialisedException, IOException, InterruptedException {
         stage.setTitle(APP_NAME);
 
-        MainLayoutHandler layoutHandler = new MainLayoutHandler(stage);
+        MainLayoutHandler layoutHandler = new MainLayoutHandler(stage, this);
         Scene scene = layoutHandler.createScene();
 
         stage.setScene(scene);
         stage.centerOnScreen();
-        stage.setMaximized(false);
         stage.show();
 
-        // Show welcome page on launch.
-        WelcomePageController.show();
+        showWelcomePage(); // Show tutorial on launch
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    /**
+     * Displays the welcome tutorial window.
+     * Ensures only one instance is created and reused.
+     */
+    public void showWelcomePage() {
+        if (welcomePageController == null) {
+            welcomePageController = new WelcomePageController();
+        }
+        welcomePageController.show();
     }
 }
