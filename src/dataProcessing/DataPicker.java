@@ -43,7 +43,7 @@ public class DataPicker {
      * @return The loaded DataSet object containing all pollution data for the specified pollutant and year.
      * @author Matthias Loong
      */
-    public DataSet getPollutantData(int year, Pollutant pollutant) {
+    public DataSet getPollutantData(int year, Pollutant pollutant) throws IllegalArgumentException {
         String pollutantPattern = pollutantPatterns.getProperty(pollutant.toString());
         if (pollutantPattern == null) {
             throw new IllegalArgumentException("Pollutant pattern does not exist for pollutant: " + pollutant);
@@ -52,9 +52,12 @@ public class DataPicker {
         System.out.println("Pollutant loaded: " + pollutant);
         System.out.println("Pollutant pattern: " + pollutantPattern);
 
+        if (!getAvailableYears(pollutant).contains(year)) {
+            throw new IllegalArgumentException("Year " + year + " is not available for pollutant " + pollutant);
+        }
+
         String pollutantCSVFilename = String.format(pollutantPattern, year);
         DataLoader loader = new DataLoader();
-        //TODO: Write exception for a null return
         DataSet dataSet = loader.loadDataFile(USER_DIR + "/" + DATA_FOLDER + pollutant + "/" + pollutantCSVFilename);
         return dataSet;
     }
