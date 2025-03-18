@@ -54,8 +54,8 @@ public class DataPicker {
 
         String pollutantCSVFilename = String.format(pollutantPattern, year);
         DataLoader loader = new DataLoader();
+        //TODO: Write exception for a null return
         DataSet dataSet = loader.loadDataFile(USER_DIR + "/" + DATA_FOLDER + pollutant + "/" + pollutantCSVFilename);
-
         return dataSet;
     }
     
