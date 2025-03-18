@@ -47,7 +47,11 @@ public class DataManager {
      * @param pollutant The requested pollutant.
      * @return The DataSet for the specified pollutant and year.
      */
-    public DataSet getPollutantData(int year, Pollutant pollutant) {
+    public DataSet getPollutantData(int year, Pollutant pollutant) throws IllegalArgumentException {
+        if (!getAvailableYears(pollutant).contains(year)) {
+            throw new IllegalArgumentException("Year " + year + " is not available for pollutant " + pollutant);
+        }
+        
         Pair<Pollutant, Integer> cacheKey = new Pair<>(pollutant, year);
         
         // Return cached data if available:

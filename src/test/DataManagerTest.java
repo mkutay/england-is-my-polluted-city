@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
  */
 class DataManagerTest {
     private DataManager dataManager;
-    
+
     private static final int TEST_YEAR = 2020;
     private static final Pollutant TEST_POLLUTANT = Pollutant.NO2;
 
@@ -93,6 +93,11 @@ class DataManagerTest {
         
         assertTrue(dataManager.isDataCached(TEST_POLLUTANT, TEST_YEAR), "NO2 data should be cached.");
         assertTrue(dataManager.isDataCached(anotherPollutant, TEST_YEAR), "PM10 data should be cached.");
+    }
+
+    @Test
+    public void testInvalidYear() {
+        assertThrows(IllegalArgumentException.class, () -> dataManager.getPollutantData(0, TEST_POLLUTANT), "Should throw exception for invalid year.");
     }
 
     /**
