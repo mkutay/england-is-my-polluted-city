@@ -91,4 +91,11 @@ public class DataManager {
     public boolean isDataCached(Pollutant pollutant, int year) {
         return dataCache.containsKey(new Pair<>(pollutant, year));
     }
+
+    /**
+     * Clear the data cache. This method is primarily intended for testing purposes.
+     */
+    public void clearCache() {
+        dataCache.clear();
+    }
 }
