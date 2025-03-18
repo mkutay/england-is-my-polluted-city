@@ -58,8 +58,8 @@ public class InfoPopup extends Popup {
      * @param addressDetails A Map containing the address details of the queried point, or null if unknown.
      * @param pollutant The pollutant type.
      */
-    public void update(double latitude, double longitude, Double pollutionValue, ShownLocationData addressDetails, ShownRealtimeData realtimeDataDetails, Pollutant pollutant) {
-        locationInfo.update(latitude, longitude, pollutionValue, addressDetails);
+    public void update(double latitude, double longitude, int gridCode, Double pollutionValue, ShownLocationData addressDetails, ShownRealtimeData realtimeDataDetails, Pollutant pollutant) {
+        locationInfo.update(latitude, longitude, gridCode, pollutionValue, addressDetails);
         realtimeInfo.update(realtimeDataDetails, pollutant);
     }
 }

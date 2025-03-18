@@ -1,6 +1,10 @@
 package infoPopup;
 
+import com.gluonhq.maps.MapPoint;
+
 import dataProcessing.Pollutant;
+import utility.GeographicUtilities;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
@@ -17,6 +21,8 @@ public class LocationInfo {
     private final Label titleLabel;
 
     // TextFlows:
+    private final TextFlow gridCodeFlow;
+    private final TextFlow eastingNorthingFlow;
     private final TextFlow coordinatesFlow;
     private final TextFlow pollutionFlow;
     private final TextFlow boroughFlow;
@@ -24,6 +30,8 @@ public class LocationInfo {
     private final TextFlow postcodeFlow;
 
     // Labels:
+    private final Label gridCodeLabel;
+    private final Label eastingNorthingLabel;
     private final Label coordinatesLabel;
     private final Label pollutionLabel;
     private final Label boroughLabel;
@@ -31,6 +39,8 @@ public class LocationInfo {
     private final Label countryLabel;
 
     // Information Labels:
+    private final Label gridCodeInformation;
+    private final Label eastingNorthingInformation;
     private final Label coordinatesInformation;
     private final Label pollutionInformation;
     private final Label boroughInformation;
@@ -41,6 +51,8 @@ public class LocationInfo {
      * Constructor -- Creates a new location info popup.
      */
     public LocationInfo(String labelStyle, String titleStyle) {
+        gridCodeFlow = new TextFlow();
+        eastingNorthingFlow = new TextFlow();
         coordinatesFlow = new TextFlow();
         pollutionFlow = new TextFlow();
         boroughFlow = new TextFlow();
@@ -49,6 +61,10 @@ public class LocationInfo {
 
         titleLabel = new Label("Location Information");
         titleLabel.setStyle(titleStyle);
+        gridCodeLabel = new Label("Grid Code: ");
+        gridCodeLabel.setStyle(labelStyle);
+        eastingNorthingLabel = new Label("Easting / Northing: ");
+        eastingNorthingLabel.setStyle(labelStyle);
         coordinatesLabel = new Label("Coordinates: ");
         coordinatesLabel.setStyle(labelStyle);
         pollutionLabel = new Label("Pollution Level: ");
@@ -60,19 +76,23 @@ public class LocationInfo {
         postcodeLabel = new Label("Postal Code: ");
         postcodeLabel.setStyle(labelStyle);
 
+        gridCodeInformation = new Label();
+        eastingNorthingInformation = new Label();
         coordinatesInformation = new Label();
         pollutionInformation = new Label();
         boroughInformation = new Label();
         countryInformation = new Label();
         postcodeInformation = new Label();
 
+        gridCodeFlow.getChildren().addAll(gridCodeLabel, gridCodeInformation);
+        eastingNorthingFlow.getChildren().addAll(eastingNorthingLabel, eastingNorthingInformation);
         coordinatesFlow.getChildren().addAll(coordinatesLabel, coordinatesInformation);
         pollutionFlow.getChildren().addAll(pollutionLabel, pollutionInformation);
         boroughFlow.getChildren().addAll(boroughLabel, boroughInformation);
         countryFlow.getChildren().addAll(countryLabel, countryInformation);
         postcodeFlow.getChildren().addAll(postcodeLabel, postcodeInformation);
 
-        content = new VBox(10, titleLabel, coordinatesFlow, pollutionFlow, boroughFlow, countryFlow, postcodeFlow);
+        content = new VBox(10, titleLabel, gridCodeFlow, eastingNorthingFlow, coordinatesFlow, pollutionFlow, boroughFlow, countryFlow, postcodeFlow);
     }
 
     /**
@@ -82,7 +102,12 @@ public class LocationInfo {
      * @param pollutionValue The pollution value at the location, or null if unknown.
      * @param addressDetails A Map containing the address details of the queried point, or null if unknown.
      */
-    public void update(double latitude, double longitude, Double pollutionValue, ShownLocationData addressDetails) {
+    public void update(double latitude, double longitude, int gridCode, Double pollutionValue, ShownLocationData addressDetails) {
+        gridCodeInformation.setText("" + gridCode);
+
+        int[] eastingNorthing = GeographicUtilities.convertLatLonToEastingNorthing(new MapPoint(latitude, longitude));
+        eastingNorthingInformation.setText(String.format("%d / %d", eastingNorthing[0], eastingNorthing[1]));
+
         // Format coordinate display with appropriate precision:
         coordinatesInformation.setText(String.format("%.6f, %.6f", latitude, longitude));
 

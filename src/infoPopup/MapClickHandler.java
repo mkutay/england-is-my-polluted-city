@@ -38,12 +38,12 @@ public class MapClickHandler {
      * Called when the map is clicked with the given information.
      * Updates the information popup and shows it.
      */
-    public void onMapClicked(double latitude, double longitude, double screenX, double screenY, double width, double height, Double pollutionValue, Pollutant pollutant) {
+    public void onMapClicked(double latitude, double longitude, int gridCode, double screenX, double screenY, double width, double height, Double pollutionValue, Pollutant pollutant) {
         // Update the popup with the clicked location information:
         ShownLocationData addressDetails = getAddressFromCoordinates(latitude, longitude);
         ShownRealtimeData realtimeDataDetails = getRealtimeData(latitude, longitude);
 
-        infoPopup.update(latitude, longitude, pollutionValue, addressDetails, realtimeDataDetails, pollutant);
+        infoPopup.update(latitude, longitude, gridCode, pollutionValue, addressDetails, realtimeDataDetails, pollutant);
         
         if (screenX + infoPopup.getWidth() > width) {
             screenX -= infoPopup.getWidth() + POPUP_OFFSET_X;
