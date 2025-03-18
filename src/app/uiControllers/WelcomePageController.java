@@ -2,8 +2,8 @@ package app.uiControllers;
 
 import app.uiViews.WelcomePage;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 import java.util.*;
 
 /**
@@ -21,7 +21,7 @@ public class WelcomePageController {
     private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static final List<String> imagePaths = new ArrayList<>();
 
-    private static final int MAX_WIDTH = 1000;
+    private static final int MAX_WIDTH = 900;
     private static final int MAX_HEIGHT = 800;
 
     static {
@@ -33,7 +33,7 @@ public class WelcomePageController {
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Tutorial");
-        stage.setScene(new Scene(welcomePage, MAX_WIDTH, MAX_HEIGHT));
+        stage.setScene(new Scene(welcomePage));
 
         welcomePage.getPrevButton().setOnAction(e -> navigate(-1));
         welcomePage.getNextButton().setOnAction(e -> navigate(1));
@@ -45,7 +45,9 @@ public class WelcomePageController {
     private static void initialiseMenu(){
         // Some string formatting
         String firstPage = """
-                Welcome to the UK Emissions Interactive Map! This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
+                Welcome to the UK Emissions Interactive Map!
+                This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
+                
                 This is a short tutorial on how to use the app effectively.
                 To start, you can use your mouse to drag around the map and use your mousewheel or trackpad to zoom in or out by scrolling.
                 Clicking on the "Legend" box will reveal the pollution values for the colours represented on the map.

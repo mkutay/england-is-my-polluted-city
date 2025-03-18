@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 /**
  * UI Component for the Welcome Page.
@@ -23,22 +25,30 @@ public class WelcomePage extends BorderPane {
     private Button closeButton = new Button("Close");
 
     public WelcomePage() {
+
         // Header
         Label header = new Label("Welcome to the UK Emissions Map!");
-        header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-padding: 10px;");
+        header.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-padding: 30 0 0 0;");
+        BorderPane.setAlignment(header, Pos.CENTER);
 
+        // Buttons
         HBox buttonBox = new HBox(10, prevButton, nextButton, closeButton);
-        buttonBox.setAlignment(Pos.BOTTOM_CENTER);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setStyle("-fx-padding: 10 0 20 0;");
 
-        VBox contentBox = new VBox(10, header, imageView, descriptionText, buttonBox);
-        contentBox.setAlignment(Pos.CENTER);
-        contentBox.setFillWidth(true);
+        TextFlow textFlow = new TextFlow(descriptionText);
+        textFlow.setStyle("-fx-padding: 0 60 0 60;");
+        textFlow.setTextAlignment(TextAlignment.CENTER);
 
-        descriptionText.wrappingWidthProperty().bind(contentBox.widthProperty().subtract(10));
-        imageView.fitWidthProperty().bind(contentBox.widthProperty().multiply(0.8));
+        VBox vBox = new VBox(imageView, textFlow);
+        vBox.setAlignment(Pos.CENTER); // Center image & text
+
+        setTop(header);
+        setCenter(vBox);
+        setBottom(buttonBox);
+
+        imageView.fitWidthProperty().bind(widthProperty().multiply(0.8));
         imageView.setPreserveRatio(true);
-
-        this.setCenter(contentBox);
     }
 
     public void updateContent(String imagePath, String description, boolean isFirst, boolean isLast) {
