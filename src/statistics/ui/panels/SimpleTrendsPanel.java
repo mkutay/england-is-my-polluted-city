@@ -24,8 +24,9 @@ public class SimpleTrendsPanel extends StatisticsPanel {
      * @param result The SimpleTrendsResult to display.
      */
     public SimpleTrendsPanel(SimpleTrendsResult result) {
-        this.statisticsResult = result;
         super(result);
+        this.statisticsResult = result;
+        initialiseContent();
     }
     
     @Override

@@ -207,7 +207,7 @@ public class SidePanelController {
             }
         });
 
-        pollutionThresholdController.getThresholdSlider().valueProperty().addListener((_, _, newValue) -> {
+        pollutionThresholdController.getThresholdSlider().valueProperty().addListener((e1, e2, newValue) -> {
             mapController.updatePollutionThreshold(newValue.doubleValue());
         });
     }

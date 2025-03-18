@@ -24,8 +24,9 @@ public class AveragePollutionPanel extends StatisticsPanel {
      * @param result The AveragePollutionResult to display.
      */
     public AveragePollutionPanel(AveragePollutionResult result) {
-        this.statisticsResult = result;
         super(result);
+        this.statisticsResult = result;
+        initialiseContent();
     }
     
     @Override

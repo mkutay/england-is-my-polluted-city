@@ -48,9 +48,6 @@ public abstract class StatisticsPanel extends BorderPane {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         setCenter(scrollPane);
-        
-        // Initialize the content
-        initialiseContent();
     }
     
     /**

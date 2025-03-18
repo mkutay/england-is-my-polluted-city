@@ -12,9 +12,8 @@ import java.io.IOException;
  * a JavaFX application that can display a map of UK with pollution data.
  * It centres the map on London.
  *
- * Refactor by Anas Ahmed
  * @author Anas Ahmed, Mehmet Kutay Bozkurt, Matthias Loong, and Chelsea Feliciano
- * @version 3.1
+ * @version 6.0
  */
 public class App extends Application {
     public static final String APP_NAME = "UK Emissions Interactive Map";
