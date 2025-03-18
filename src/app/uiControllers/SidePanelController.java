@@ -50,6 +50,7 @@ public class SidePanelController {
 
     private VBox endYearDropdownBox;
     private VBox colorDropdownBox;
+    private VBox sliderContainer;
 
     /**
      * Constructor for SidePanelController.
@@ -159,7 +160,7 @@ public class SidePanelController {
      * Creates container for the threshold slider, along with label
      */
     private VBox createPollutionThresholdSlider() {
-        VBox sliderContainer = new VBox();
+        sliderContainer = new VBox();
         sliderContainer.setAlignment(Pos.CENTER);
 
         Label sliderLabel = new Label();
@@ -245,6 +246,9 @@ public class SidePanelController {
 
             colorDropdownBox.setVisible(false);
             colorDropdownBox.setManaged(false);
+
+            sliderContainer.setVisible(false);
+            sliderContainer.setManaged(false);
             
             Integer startYear = dataSelectionController.getSelectedYear();
             Integer endYear = dataSelectionController.getSelectedEndYear();
@@ -267,6 +271,9 @@ public class SidePanelController {
 
             colorDropdownBox.setVisible(true);
             colorDropdownBox.setManaged(true);
+
+            sliderContainer.setVisible(true);
+            sliderContainer.setManaged(true);
             
             Integer year = dataSelectionController.getSelectedYear();
             Pollutant pollutant = dataSelectionController.getSelectedPollutant();
