@@ -1,5 +1,9 @@
 package app;
 
+import app.uiControllers.MapController;
+import app.uiControllers.NavigationBarController;
+import app.uiControllers.SidePanelController;
+import app.uiViews.MapOverlay;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Separator;
@@ -7,8 +11,6 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 import dataProcessing.Pollutant;
 import colors.ColorSchemeManager;
@@ -30,24 +32,26 @@ import utility.CustomMapView;
  */
 public class MainLayoutHandler {
     private final BorderPane root;
-    private final UIController uiController;
+    private final NavigationBarController navBarController;
+    private final SidePanelController sidePanelController;
     private final MapController mapController;
     private final ColorSchemeManager colorSchemeManager;
     private final MapOverlay mapOverlay;
 
-    public MainLayoutHandler(Stage stage) throws PollutionLayerNotInitialisedException, IOException, InterruptedException {
-        this.colorSchemeManager = new ColorSchemeManager();
+    public MainLayoutHandler(Stage stage, App app) throws PollutionLayerNotInitialisedException {
+        // Setup UI controller
+        this.root = new BorderPane();
 
         CustomMapView mapView = new CustomMapView();
         this.mapOverlay = new MapOverlay(mapView);
+        this.colorSchemeManager = new ColorSchemeManager();
         this.mapController = new MapController(stage, colorSchemeManager, mapOverlay);
 
         // Initialise map with default values
         mapController.initialisePollutionLayer(2018, Pollutant.NO2);
 
-        // Setup UI controller
-        this.root = new BorderPane();
-        this.uiController = new UIController(mapController, root);
+        this.navBarController = new NavigationBarController(app);
+        this.sidePanelController = new SidePanelController(mapController, root);
 
         setupLayout();
     }
@@ -56,9 +60,9 @@ public class MainLayoutHandler {
         Separator verticalSeparator = new Separator(Orientation.VERTICAL);
 
         HBox leftPane = new HBox();
-        leftPane.getChildren().addAll(uiController.getSidePanel(), verticalSeparator);
+        leftPane.getChildren().addAll(sidePanelController.getSidePanel(), verticalSeparator);
 
-        root.setTop(uiController.getTopNav());
+        root.setTop(navBarController.getMenuBar());
         root.setLeft(leftPane);
         root.setCenter(mapOverlay.getOverlayPane());
     }
