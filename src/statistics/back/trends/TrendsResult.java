@@ -24,6 +24,8 @@ public class TrendsResult implements StatisticsResult {
     private Double trendIntercept; // Y-intercept of the trend line.
     private Double percentChange; // Percent change from start to end.
     private Map<Integer, Double> yearlyMeans; // Yearly mean values.
+    private Map<Integer, Double> yearlyMedians; // Yearly median values.
+    private Map<Integer, Double> yearlyStandardDeviations; // Yearly standard deviations.
     
     /**
      * Constructor.
@@ -77,6 +79,22 @@ public class TrendsResult implements StatisticsResult {
     public void setYearlyMeans(Map<Integer, Double> yearlyMeans) {
         this.yearlyMeans = yearlyMeans;
     }
+
+    /**
+     * Set the yearly medians.
+     * @param yearlyMedians A map of year to median value.
+     */
+    public void setYearlyMedians(Map<Integer, Double> yearlyMedians) {
+        this.yearlyMedians = yearlyMedians;
+    }
+
+    /**
+     * Set the yearly standard deviations.
+     * @param yearlyStandardDeviations A map of year to standard deviation value.
+     */
+    public void setYearlyStandardDeviations(Map<Integer, Double> yearlyStandardDeviations) {
+        this.yearlyStandardDeviations = yearlyStandardDeviations;
+    }
     
     /**
      * Set the percent change from start to end.
@@ -94,6 +112,8 @@ public class TrendsResult implements StatisticsResult {
     public Double getTrendIntercept() { return trendIntercept; }
     public Double getPercentChange() { return percentChange; }
     public Map<Integer, Double> getYearlyMeans() { return yearlyMeans; }
+    public Map<Integer, Double> getYearlyMedians() { return yearlyMedians; }
+    public Map<Integer, Double> getYearlyStandardDeviations() { return yearlyStandardDeviations; }
     
     @Override
     public String getTitle() {

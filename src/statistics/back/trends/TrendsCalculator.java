@@ -26,34 +26,6 @@ public class TrendsCalculator implements StatisticsCalculator {
     }
     
     @Override
-    public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
-        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
-        
-        TrendsResult result = new TrendsResult(
-            "Average Pollution Levels", 
-            "Statistical analysis of average pollution levels for " + 
-            pollutant.getDisplayName() + " in " + year,
-            pollutant
-        );
-        
-        List<DataPoint> dataPoints = dataSet.getData();
-        
-        // Calculate mean:
-        double mean = calculateMean(dataPoints);
-        result.setMean(mean);
-        
-        // Calculate median:
-        double median = calculateMedian(dataPoints);
-        result.setMedian(median);
-        
-        // Calculate standard deviation:
-        double standardDeviation = calculateStandardDeviation(dataPoints, mean);
-        result.setStandardDeviation(standardDeviation);
-        
-        return result;
-    }
-    
-    @Override
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
         TrendsResult result = new TrendsResult(
             "Average Pollution Trends", 
@@ -90,7 +62,7 @@ public class TrendsCalculator implements StatisticsCalculator {
             .stream()
             .mapToDouble(Double::doubleValue)
             .average()
-            .orElse(0.0) / yearlyMeans.size();
+            .orElse(0.0);
 
         result.setMean(mean);
 
@@ -99,7 +71,7 @@ public class TrendsCalculator implements StatisticsCalculator {
             .stream()
             .mapToDouble(Double::doubleValue)
             .average()
-            .orElse(0.0) / yearlyMedians.size();
+            .orElse(0.0);
 
         result.setMedian(median);
 
@@ -108,11 +80,13 @@ public class TrendsCalculator implements StatisticsCalculator {
             .stream()
             .mapToDouble(Double::doubleValue)
             .average()
-            .orElse(0.0) / yearlyStandardDeviations.size();
+            .orElse(0.0);
 
         result.setStandardDeviation(standardDeviation);
 
         result.setYearlyMeans(yearlyMeans);
+        result.setYearlyMedians(yearlyMedians);
+        result.setYearlyStandardDeviations(yearlyStandardDeviations);
 
         double[] trendCoefficients = calculateLinearTrend(yearlyMeans, startYear, endYear);
         result.setTrendCoefficients(trendCoefficients[0], trendCoefficients[1]);

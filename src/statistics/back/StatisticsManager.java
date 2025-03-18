@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -64,43 +63,6 @@ public class StatisticsManager {
     }
     
     /**
-     * Calculate statistics for a specific data set information.
-     * @param pollutant The pollutant to analyse.
-     * @param year The year of data to analyse.
-     * @return Map of calculator names to their results.
-     */
-    public Map<String, StatisticsResult> calculateStatistics(Pollutant pollutant, int year) {
-        Map<String, CompletableFuture<StatisticsResult>> futures = new HashMap<>();
-        Map<String, StatisticsResult> results = new HashMap<>();
-        
-        for (StatisticsCalculator calculator : calculators) {
-            final String key = makeKey(calculator.getStatisticsName(), year, pollutant);
-            
-            CompletableFuture<StatisticsResult> future = CompletableFuture.supplyAsync(() -> {
-                // Check cache first:
-                if (resultCache.containsKey(key)) {
-                    return resultCache.get(key);
-                }
-                
-                // Calculate and cache:
-                StatisticsResult result = calculator.calculateStatistics(pollutant, year);
-                resultCache.put(key, result);
-                return result;
-            });
-
-            futures.put(calculator.getStatisticsName(), future);
-        }
-
-        CompletableFuture.allOf(futures.values().toArray(new CompletableFuture[0])).join();
-
-        for (Entry<String, CompletableFuture<StatisticsResult>> entry : futures.entrySet()) {
-            results.put(entry.getKey(), entry.getValue().join());
-        }
-
-        return results;
-    }
-    
-    /**
      * Calculate time-series statistics for a pollutant across multiple years.
      * @param pollutant The pollutant to analyse.
      * @param startYear The first year to include.
@@ -108,10 +70,6 @@ public class StatisticsManager {
      * @return Map of calculator names to their results.
      */
     public Map<String, StatisticsResult> calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
-        if (startYear == endYear) {
-            return calculateStatistics(pollutant, startYear);
-        }
-        
         Map<String, StatisticsResult> results = new HashMap<>();
         
         for (StatisticsCalculator calculator : calculators) {
@@ -141,23 +99,6 @@ public class StatisticsManager {
      */
     public CompletableFuture<Map<String, StatisticsResult>> calculateStatisticsOverTimeAsync(Pollutant pollutant, int startYear, int endYear) {
         return CompletableFuture.supplyAsync(() -> calculateStatisticsOverTime(pollutant, startYear, endYear));
-    }
-
-    /**
-     * Asynchronously calculate statistics for a specific data set information.
-     * @param pollutant The pollutant to analyse.
-     * @param year The year of data to analyse.
-     * @return CompletableFuture.
-     */
-    public CompletableFuture<Map<String, StatisticsResult>> calculateStatisticsAsync(Pollutant pollutant, int year) {
-        return CompletableFuture.supplyAsync(() -> calculateStatistics(pollutant, year));
-    }
-    
-    /**
-     * Create a cache key for a specific calculation.
-     */
-    private String makeKey(String calculatorName, int year, Pollutant pollutant) {
-        return calculatorName + "_" + pollutant + "_" + year;
     }
     
     /**

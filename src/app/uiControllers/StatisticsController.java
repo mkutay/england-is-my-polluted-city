@@ -139,30 +139,6 @@ public class StatisticsController {
     }
 
     /**
-     * Updates the statistics dataset with the specified year and pollutant.
-     * @param year The year to show statistics for.
-     * @param pollutant The pollutant to show statistics for.
-     */
-    public void updateDataSet(Integer year, Pollutant pollutant) {
-        if (year == null || pollutant == null) return;
-
-        // Only update if the selection has actually changed.
-        if (currentYear != null && currentYear.equals(year) && 
-            currentPollutant != null && currentPollutant.equals(pollutant) &&
-            statistics != null) {
-            return;
-        }
-        
-        currentYear = year;
-        currentEndYear = year; // For consistency when switching views.
-        currentPollutant = pollutant;
-        
-        statistics = statisticsManager.calculateStatistics(pollutant, year);
-        statisticsKeys = new ArrayList<>(statistics.keySet());
-        updateStatisticsDisplay();
-    }
-
-    /**
      * Updates the statistics for a range of years.
      */
     public void updateDataSetRange(Integer startYear, Integer endYear, Pollutant pollutant) {

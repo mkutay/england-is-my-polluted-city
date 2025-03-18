@@ -11,14 +11,6 @@ import dataProcessing.Pollutant;
  */
 public interface StatisticsCalculator {
     /**
-     * Calculate statistics based on pollutant and a year.
-     * @param pollutant The pollutant to analyse.
-     * @param year The year to analyse.
-     * @return A StatisticsResult containing the calculation results.
-     */
-    StatisticsResult calculateStatistics(Pollutant pollutant, int year);
-    
-    /**
      * Calculate statistics for a pollutant across multiple years.
      * @param pollutant The pollutant to analyse.
      * @param startYear The first year to include in the analysis.

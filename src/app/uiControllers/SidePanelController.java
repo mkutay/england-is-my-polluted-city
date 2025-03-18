@@ -187,7 +187,7 @@ public class SidePanelController {
             mapController.updateMapDataSet(year, pollutant, colorScheme);
             
             if (!mapShown) {
-                statisticsController.updateDataSet(year, pollutant);
+                statisticsController.updateDataSetRange(year, year, pollutant);
             }
         });
 

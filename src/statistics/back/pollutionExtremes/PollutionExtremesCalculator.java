@@ -23,46 +23,12 @@ import java.util.stream.Collectors;
  */
 public class PollutionExtremesCalculator implements StatisticsCalculator {
     private final DataManager dataManager; // Data manager instance.
-    private static final int TOP_HOTSPOTS_COUNT = 5; // Number of top hotspots to find.
-    private static final int PERCENTILE = 90; // Percentile to calculate.
     
     /**
      * Constructor.
      */
     public PollutionExtremesCalculator() {
         this.dataManager = DataManager.getInstance();
-    }
-    
-    @Override
-    public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
-        DataSet dataSet = dataManager.getPollutantData(year, pollutant);
-        
-        PollutionExtremesResult result = new PollutionExtremesResult(
-            "Pollution Hotspots", 
-            "Analysis of highest pollution areas for " + 
-            pollutant.getDisplayName() + " in " + year,
-            pollutant
-        );
-        
-        List<DataPoint> dataPoints = dataSet.getData();
-        
-        // Find maximum value:
-        DataPoint maxPoint = findMaxDataPoint(dataPoints);
-        result.setMaxPoint(maxPoint);
-        
-        // Find minimum value:
-        DataPoint minPoint = findMinDataPoint(dataPoints);
-        result.setMinPoint(minPoint);
-        
-        // Find top hotspots:
-        List<DataPoint> topHotspots = findTopHotspots(dataPoints, TOP_HOTSPOTS_COUNT);
-        result.setTopHotspots(topHotspots);
-        
-        // Get according to some percentile:
-        double percentileValue = calculatePercentile(dataPoints, PERCENTILE);
-        result.setPercentile(percentileValue, PERCENTILE);
-        
-        return result;
     }
     
     @Override
@@ -74,6 +40,8 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         );
         
         Map<Integer, DataPoint> yearToMaxPoint = new ConcurrentHashMap<>();
+        Map<Integer, DataPoint> yearToMinPoint = new ConcurrentHashMap<>();
+        Map<Integer, DataPoint> yearToMedianPoint = new ConcurrentHashMap<>();
 
         List<CompletableFuture<Void>> futures = new ArrayList<>();
         
@@ -84,9 +52,19 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
                 DataSet dataSet = dataManager.getPollutantData(finalYear, pollutant);
                 List<DataPoint> dataPoints = dataSet.getData();
                 
-                DataPoint point = findMaxDataPoint(dataPoints);
-                if (point != null) {
-                    yearToMaxPoint.put(finalYear, point);
+                DataPoint maxPoint = findMaxDataPoint(dataPoints);
+                if (maxPoint != null) {
+                    yearToMaxPoint.put(finalYear, maxPoint);
+                }
+
+                DataPoint minPoint = findMinDataPoint(dataPoints);
+                if (minPoint != null) {
+                    yearToMinPoint.put(finalYear, minPoint);
+                }
+
+                DataPoint medianPoint = findMedianDataPoint(dataPoints);
+                if (medianPoint != null) {
+                    yearToMedianPoint.put(finalYear, medianPoint);
                 }
             });
             futures.add(future);
@@ -95,14 +73,33 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         
         result.setYearlyMaxPoints(yearToMaxPoint);
+        result.setYearlyMinPoints(yearToMinPoint);
+        result.setYearlyMedianPoints(yearToMedianPoint);
         
-        // Find year with highest value:
         int yearWithHighestValue = yearToMaxPoint.entrySet().stream()
             .max(Map.Entry.comparingByValue(Comparator.comparingDouble(DataPoint::value)))
             .map(Map.Entry::getKey)
             .orElse(startYear);
         
-        result.setHighestOverallYear(yearWithHighestValue, yearToMaxPoint.get(yearWithHighestValue).value());
+        result.setMaxYear(yearWithHighestValue, yearToMaxPoint.get(yearWithHighestValue));
+
+        int yearWithLowestValue = yearToMinPoint.entrySet().stream()
+            .min(Map.Entry.comparingByValue(Comparator.comparingDouble(DataPoint::value)))
+            .map(Map.Entry::getKey)
+            .orElse(startYear);
+
+        result.setMinYear(yearWithLowestValue, yearToMinPoint.get(yearWithLowestValue));
+
+        DataPoint medianPoint = findMedianDataPoint(yearToMedianPoint.values().stream().collect(Collectors.toList()));
+        if (medianPoint != null) {
+            int medianYear = yearToMedianPoint.entrySet().stream()
+                .filter(e -> e.getValue().equals(medianPoint))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(startYear);
+
+            result.setMedianYear(medianYear, medianPoint);
+        }
         
         return result;
     }
@@ -135,39 +132,24 @@ public class PollutionExtremesCalculator implements StatisticsCalculator {
             .min(Comparator.comparingDouble(DataPoint::value))
             .orElse(null);
     }
-    
+
     /**
-     * Find the top N data points with highest values.
+     * Find the median data point.
      * @param dataPoints List of data points.
-     * @param count Number of top points to find.
-     * @return List of the top N data points.
+     * @return The median data point.
      */
-    private List<DataPoint> findTopHotspots(List<DataPoint> dataPoints, int count) {
-        return dataPoints.stream()
-            .filter(dp -> dp.value() >= 0) // Filter out missing values.
-            .sorted(Comparator.comparingDouble(DataPoint::value).reversed())
-            .limit(count)
+    private DataPoint findMedianDataPoint(List<DataPoint> dataPoints) {
+        List<DataPoint> sortedDataPoints = dataPoints.stream()
+            .filter(dp -> dp.value() >= 0) // Filter out invalid values.
+            .sorted(Comparator.comparingDouble(DataPoint::value))
             .collect(Collectors.toList());
-    }
-    
-    /**
-     * Calculate a percentile value from the data points.
-     * @param dataPoints List of data points.
-     * @param percentile The percentile to calculate (0 - 100).
-     * @return The calculated percentile value.
-     */
-    private double calculatePercentile(List<DataPoint> dataPoints, int percentile) {
-        List<Double> sortedValues = dataPoints.stream()
-            .mapToDouble(DataPoint::value)
-            .filter(value -> value >= 0) // Filter out missing values.
-            .sorted()
-            .boxed()
-            .collect(Collectors.toList());
-        
-        if (sortedValues.isEmpty()) return 0.0;
-        
-        int index = (int) Math.ceil(percentile / 100.0 * sortedValues.size()) - 1;
-        index = Math.max(0, Math.min(index, sortedValues.size() - 1));
-        return sortedValues.get(index);
+
+        int size = sortedDataPoints.size();
+        if (size == 0) {
+            return null;
+        }
+
+        int mid = size / 2;
+        return sortedDataPoints.get(mid);
     }
 }

@@ -5,7 +5,6 @@ import dataProcessing.Pollutant;
 import javafx.util.Pair;
 import statistics.back.StatisticsResult;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,18 +17,17 @@ import java.util.Map;
 public class PollutionExtremesResult implements StatisticsResult {
     private final String title; // Title of the result.
     private final String description; // Description of the result.
-    private final Pollutant pollutant;
+    private final Pollutant pollutant; // The pollutant for which these results are calculated.
     
-    private DataPoint maxPoint; // Data point with max value.
-    private DataPoint minPoint; // Data point with min value.
-    private List<DataPoint> topHotspots; // List of top hotspot points.
-    private Pair<Double, Integer> percentile;
-    private Pair<Integer, Double> highestOverallYear;
+    private Pair<Integer, DataPoint> maxYear;
+    private Pair<Integer, DataPoint> medianYear;
+    private Pair<Integer, DataPoint> minYear;
     private Map<Integer, DataPoint> yearToMaxPoints;
+    private Map<Integer, DataPoint> yearToMinPoints;
+    private Map<Integer, DataPoint> yearToMedianPoints;
     
     /**
      * Constructor for PollutionExtremesResult.
-     * 
      * @param title A short title describing these results
      * @param description A longer description of the results
      */
@@ -40,45 +38,30 @@ public class PollutionExtremesResult implements StatisticsResult {
     }
     
     /**
-     * Set the maximum data point.
-     * @param maxPoint The data point with max value.
-     */
-    public void setMaxPoint(DataPoint maxPoint) {
-        this.maxPoint = maxPoint;
-    }
-    
-    /**
-     * Set the minimum data point.
-     * @param minPoint The data point with min value.
-     */
-    public void setMinPoint(DataPoint minPoint) {
-        this.minPoint = minPoint;
-    }
-    
-    /**
-     * Set the top hotspots.
-     * @param topHotspots List of top hotspot points.
-     */
-    public void setTopHotspots(List<DataPoint> topHotspots) {
-        this.topHotspots = topHotspots;
-    }
-    
-    /**
-     * Set the percentile value for a percentile.
-     * @param percentileValue The value of the percentile.
-     * @param percentile The percentile value (e.g. 90 for 90th percentile).
-     */
-    public void setPercentile(double percentileValue, int percentile) {
-        this.percentile = new Pair<>(percentileValue, percentile);
-    }
-    
-    /**
      * Set the year with the highest overall value.
      * @param year The year with highest value.
-     * @param value The highest value.
+     * @param point The point with the highest value.
      */
-    public void setHighestOverallYear(int year, double value) {
-        this.highestOverallYear = new Pair<>(year, value);
+    public void setMaxYear(int year, DataPoint point) {
+        this.maxYear = new Pair<>(year, point);
+    }
+
+    /**
+     * Set the year with the median value.
+     * @param year The year with median value.
+     * @param point The point with the median value.
+     */
+    public void setMedianYear(int year, DataPoint point) {
+        this.medianYear = new Pair<>(year, point);
+    }
+
+    /**
+     * Set the year with the lowest overall value.
+     * @param year The year with lowest value.
+     * @param point The point with the lowest value.
+     */
+    public void setMinYear(int year, DataPoint point) {
+        this.minYear = new Pair<>(year, point);
     }
 
     /**
@@ -88,14 +71,30 @@ public class PollutionExtremesResult implements StatisticsResult {
     public void setYearlyMaxPoints(Map<Integer, DataPoint> yearToMaxPoints) {
         this.yearToMaxPoints = yearToMaxPoints;
     }
+
+    /**
+     * Store yearly min points.
+     * @param yearToMinPoint Map of year to min point.
+     */
+    public void setYearlyMinPoints(Map<Integer, DataPoint> yearToMinPoints) {
+        this.yearToMinPoints = yearToMinPoints;
+    }
+
+    /**
+     * Store yearly median points.
+     * @param yearToMedianPoint Map of year to median point.
+     */
+    public void setYearlyMedianPoints(Map<Integer, DataPoint> yearToMedianPoints) {
+        this.yearToMedianPoints = yearToMedianPoints;
+    }
     
     // Simple getters:
-    public DataPoint getMaxPoint() { return maxPoint; }
-    public DataPoint getMinPoint() { return minPoint; }
-    public List<DataPoint> getTopHotspots() { return topHotspots; }
-    public Pair<Double, Integer> getPercentile() { return percentile; }
-    public Pair<Integer, Double> getHighestOverallYear() { return highestOverallYear; }
     public Map<Integer, DataPoint> getYearToMaxPoints() { return yearToMaxPoints; }
+    public Map<Integer, DataPoint> getYearToMinPoints() { return yearToMinPoints; }
+    public Map<Integer, DataPoint> getYearToMedianPoints() { return yearToMedianPoints; }
+    public Pair<Integer, DataPoint> getMaxYear() { return maxYear; }
+    public Pair<Integer, DataPoint> getMedianYear() { return medianYear; }
+    public Pair<Integer, DataPoint> getMinYear() { return minYear; }
     
     @Override
     public String getTitle() {

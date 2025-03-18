@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +17,8 @@ import java.util.Map;
  * @version 2.0
  */
 public class LineChartPanel extends VBox {
-    private final Map<Integer, Double> data;
+    private List<Map<Integer, Double>> data;
+    
     private final LineChart<String, Number> lineChart;
     
     /**
@@ -24,10 +26,11 @@ public class LineChartPanel extends VBox {
      * @param title Chart title.
      * @param xAxisLabel X-axis label.
      * @param yAxisLabel Y-axis label.
-     * @param data Time series data (year to value mapping).
+     * @param data Time series data (year to value mapping) for different information.
      */
-    public LineChartPanel(String title, String xAxisLabel, String yAxisLabel, Map<Integer, Double> data) {
-        this.data = data;
+    @SafeVarargs
+    public LineChartPanel(String title, String xAxisLabel, String yAxisLabel, Map<Integer, Double> ...data) {
+        this.data = List.of(data);
         
         // Create chart axes:
         CategoryAxis xAxis = new CategoryAxis();
@@ -40,7 +43,7 @@ public class LineChartPanel extends VBox {
         lineChart.setTitle(title);
         lineChart.setAnimated(false);
         lineChart.setCreateSymbols(true);
-        lineChart.setLegendVisible(false);
+        lineChart.setLegendVisible(this.data.size() != 1); // Hide legend if only one series.
         
         // Make chart fill available space:
         VBox.setVgrow(lineChart, Priority.ALWAYS);
@@ -58,28 +61,43 @@ public class LineChartPanel extends VBox {
             return;
         }
         
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        
-        for (Integer key : data.keySet()) {
-            series.getData().add(new XYChart.Data<>(key.toString(), data.get(key)));
+        // Create a separate series for each data map
+        for (int i = 0; i < data.size(); i++) {
+            Map<Integer, Double> dataMap = data.get(i);
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Series " + (i + 1)); // Set a default name.
+            
+            for (Integer key : dataMap.keySet()) {
+                series.getData().add(new XYChart.Data<>(key.toString(), dataMap.get(key)));
+            }
+            
+            lineChart.getData().add(series);
         }
-        
-        lineChart.getData().add(series);
     }
     
     /**
      * Update the chart with new data.
      * @param newData New data to display.
      */
-    public void updateData(Map<Integer, Double> newData) {
+    @SuppressWarnings("unchecked")
+    public void updateData(Map<Integer, Double> ...newData) {
+        this.data = List.of(newData);
+
         lineChart.getData().clear();
-        
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        
-        for (Integer key : newData.keySet()) {
-            series.getData().add(new XYChart.Data<>(key.toString(), newData.get(key)));
+        populateChart();
+    }
+    
+    /**
+     * Set series names for the legend.
+     * @param names Names for each series in the chart
+     */
+    public void setSeriesNames(String... names) {
+        if (names == null || lineChart.getData().isEmpty()) {
+            return;
         }
         
-        lineChart.getData().add(series);
+        for (int i = 0; i < Math.min(names.length, lineChart.getData().size()); i++) {
+            lineChart.getData().get(i).setName(names[i]);
+        }
     }
 }
