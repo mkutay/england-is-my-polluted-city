@@ -16,6 +16,9 @@ import javafx.scene.text.TextFlow;
 /**
  * UI Component for the Welcome Page.
  * Handles layout and UI elements.
+ * 
+ * @author Matthias Loong
+ * @version 1.0
  */
 public class WelcomePage extends BorderPane {
     private final ImageView imageView = new ImageView();
@@ -66,15 +69,8 @@ public class WelcomePage extends BorderPane {
         imageView.setPreserveRatio(true); // Keep aspect ratio
     }
 
-    public Button getPrevButton() {
-        return prevButton;
-    }
-
-    public Button getNextButton() {
-        return nextButton;
-    }
-
-    public Button getCloseButton() {
-        return closeButton;
-    }
+    // Getters:
+    public Button getPrevButton() { return prevButton; }
+    public Button getNextButton() { return nextButton; }
+    public Button getCloseButton() { return closeButton; }
 }

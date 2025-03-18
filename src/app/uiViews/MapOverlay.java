@@ -6,7 +6,9 @@ import utility.CustomMapView;
 /**
  * Manages the map overlay, including the map view, legend, and zoom controls.
  * Ensures correct positioning of UI elements.
+ * 
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class MapOverlay {
     private final AnchorPane overlayPane;
@@ -37,7 +39,8 @@ public class MapOverlay {
         overlayPane.getChildren().addAll(mapView, legend, zoomControls);
     }
 
-    public AnchorPane getOverlayPane() {return overlayPane;}
-    public LegendPane getLegend() {return legend;}
-    public CustomMapView getMapView() {return mapView;}
+    // Getters:
+    public AnchorPane getOverlayPane() { return overlayPane; }
+    public LegendPane getLegend() { return legend; }
+    public CustomMapView getMapView() { return mapView; }
 }

@@ -29,6 +29,7 @@ import utility.CustomMapView;
  * A central map overlay
  *
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class MainLayoutHandler {
     private final BorderPane root;

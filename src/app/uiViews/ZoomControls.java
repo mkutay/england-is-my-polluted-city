@@ -6,6 +6,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import utility.CustomMapView;
 import utility.ImageUtils;
 
@@ -14,6 +15,7 @@ import utility.ImageUtils;
  * It consists of label buttons for Zoom In, Zoom Out, and Fullscreen mode.
  *
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class ZoomControls extends VBox {
     private final CustomMapView mapView;
@@ -37,6 +39,9 @@ public class ZoomControls extends VBox {
         this.setSpacing(10);
     }
 
+    /**
+     * Creates the zoom buttons and assigns icons and tooltips.
+     */
     private void createZoomButtons() {
         // Create labels
         zoomInButton = new Label();

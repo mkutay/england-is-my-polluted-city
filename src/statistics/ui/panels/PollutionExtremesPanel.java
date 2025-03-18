@@ -35,8 +35,9 @@ public class PollutionExtremesPanel extends StatisticsPanel {
      * @param result The PollutionExtremesResult to display.
      */
     public PollutionExtremesPanel(PollutionExtremesResult result) {
-        this.statisticsResult = result;
         super(result);
+        this.statisticsResult = result;
+        initialiseContent();
     }
     
     @Override
