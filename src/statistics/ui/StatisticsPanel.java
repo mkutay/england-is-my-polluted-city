@@ -38,12 +38,12 @@ public abstract class StatisticsPanel extends BorderPane {
         headerPanel = createHeaderPanel();
         setTop(headerPanel);
         
-        // Create content panel for statistics data
+        // Create content panel for statistics data.
         contentPanel = new VBox(10);
         contentPanel.setPadding(new Insets(10));
         contentPanel.setAlignment(Pos.TOP_LEFT);
         
-        // Add scrolling to content panel
+        // Add scrolling to content panel.
         ScrollPane scrollPane = new ScrollPane(contentPanel);
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
@@ -127,6 +127,15 @@ public abstract class StatisticsPanel extends BorderPane {
     protected void addSeparator() {
         Separator separator = new Separator();
         contentPanel.getChildren().add(separator);
-        contentPanel.getChildren().add(new VBox(5)); // spacing
+        contentPanel.getChildren().add(new VBox(5)); // Spacing.
+    }
+
+    /**
+     * Format a double value to 3 decimal places.
+     * @param value The value to format.
+     * @return The formatted value.
+     */
+    protected String formatDouble(double value) {
+        return Double.toString((int) (value * 1000) / 1000d);
     }
 }

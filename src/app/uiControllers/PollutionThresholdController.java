@@ -11,7 +11,7 @@ import javafx.scene.control.Slider;
 public class PollutionThresholdController {
     private final Slider thresholdSlider;
 
-    public PollutionThresholdController(){
+    public PollutionThresholdController() {
         thresholdSlider = new Slider(0, 1, 0);
     }
 

@@ -1,4 +1,4 @@
-package statistics.back.averagePollution;
+package statistics.back.trends;
 
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import statistics.back.StatisticsResult;
  * @author Mehmet Kutay Bozkurt
  * @version 2.0
  */
-public class AveragePollutionResult implements StatisticsResult {
+public class TrendsResult implements StatisticsResult {
     private final String title; // Title of the result.
     private final String description; // Description of the result.
     private final Pollutant pollutant; // The pollutant this result is for.
@@ -20,7 +20,9 @@ public class AveragePollutionResult implements StatisticsResult {
     private Double mean; // Mean of the data for this result.
     private Double median; // Median of the data for this result.
     private Double standardDeviation; // Standard deviation of the data.
-    private Double overallTrend; // Overall trend value.
+    private Double trendSlope; // Slope of the trend line.
+    private Double trendIntercept; // Y-intercept of the trend line.
+    private Double percentChange; // Percent change from start to end.
     private Map<Integer, Double> yearlyMeans; // Yearly mean values.
     
     /**
@@ -28,10 +30,20 @@ public class AveragePollutionResult implements StatisticsResult {
      * @param title A short title describing these results.
      * @param description A longer description of the results.
      */
-    public AveragePollutionResult(String title, String description, Pollutant pollutant) {
+    public TrendsResult(String title, String description, Pollutant pollutant) {
         this.title = title;
         this.description = description;
         this.pollutant = pollutant;
+    }
+
+    /**
+     * Set the trend linear regression coefficients.
+     * @param slope Slope of the trend line.
+     * @param intercept Y-intercept of the trend line.
+     */
+    public void setTrendCoefficients(double slope, double intercept) {
+        this.trendSlope = slope;
+        this.trendIntercept = intercept;
     }
     
     /**
@@ -67,18 +79,20 @@ public class AveragePollutionResult implements StatisticsResult {
     }
     
     /**
-     * Set the overall trend value.
-     * @param trend The trend value.
+     * Set the percent change from start to end.
+     * @param percentChange Percentage change value.
      */
-    public void setOverallTrend(double trend) {
-        this.overallTrend = trend;
+    public void setPercentChange(double percentChange) {
+        this.percentChange = percentChange;
     }
     
     // Simple getters:
-    public double getMean() { return mean; }
-    public double getMedian() { return median; }
-    public double getStandardDeviation() { return standardDeviation; }
-    public double getOverallTrend() { return overallTrend; }
+    public Double getMean() { return mean; }
+    public Double getMedian() { return median; }
+    public Double getStandardDeviation() { return standardDeviation; }
+    public Double getTrendSlope() { return trendSlope; }
+    public Double getTrendIntercept() { return trendIntercept; }
+    public Double getPercentChange() { return percentChange; }
     public Map<Integer, Double> getYearlyMeans() { return yearlyMeans; }
     
     @Override

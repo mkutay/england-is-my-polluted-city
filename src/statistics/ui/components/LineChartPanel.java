@@ -21,15 +21,15 @@ public class LineChartPanel extends VBox {
     
     /**
      * Constructor.
-     * @param title Chart title
-     * @param xAxisLabel X-axis label
-     * @param yAxisLabel Y-axis label
-     * @param data Time series data (year to value mapping)
+     * @param title Chart title.
+     * @param xAxisLabel X-axis label.
+     * @param yAxisLabel Y-axis label.
+     * @param data Time series data (year to value mapping).
      */
     public LineChartPanel(String title, String xAxisLabel, String yAxisLabel, Map<Integer, Double> data) {
         this.data = data;
         
-        // Create chart axes
+        // Create chart axes:
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel(xAxisLabel);

@@ -1,9 +1,8 @@
 package statistics.back;
 
 import dataProcessing.Pollutant;
-import statistics.back.averagePollution.AveragePollutionCalculator;
 import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
-import statistics.back.simpleTrends.SimpleTrendsCalculator;
+import statistics.back.trends.TrendsCalculator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +33,8 @@ public class StatisticsManager {
         resultCache = new HashMap<>();
         
         // Register default calculators, for now:
-        registerCalculator(new AveragePollutionCalculator());
+        registerCalculator(new TrendsCalculator());
         registerCalculator(new PollutionExtremesCalculator());
-        registerCalculator(new SimpleTrendsCalculator());
     }
     
     /**

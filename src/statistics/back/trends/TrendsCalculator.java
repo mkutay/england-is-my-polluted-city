@@ -1,11 +1,4 @@
-package statistics.back.averagePollution;
-
-import dataProcessing.DataManager;
-import dataProcessing.DataPoint;
-import dataProcessing.DataSet;
-import dataProcessing.Pollutant;
-import statistics.back.StatisticsCalculator;
-import statistics.back.StatisticsResult;
+package statistics.back.trends;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +8,20 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-/**
- * Calculator for average pollution statistics.
- * 
- * @author Mehmet Kutay Bozkurt
- * @version 2.0
- */
-public class AveragePollutionCalculator implements StatisticsCalculator {
+import dataProcessing.DataManager;
+import dataProcessing.DataPoint;
+import dataProcessing.DataSet;
+import dataProcessing.Pollutant;
+import statistics.back.StatisticsCalculator;
+import statistics.back.StatisticsResult;
+
+public class TrendsCalculator implements StatisticsCalculator {
     private final DataManager dataManager;
     
     /**
-     * Constructor
+     * Constructor.
      */
-    public AveragePollutionCalculator() {
+    public TrendsCalculator() {
         this.dataManager = DataManager.getInstance();
     }
     
@@ -35,7 +29,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
     public StatisticsResult calculateStatistics(Pollutant pollutant, int year) {
         DataSet dataSet = dataManager.getPollutantData(year, pollutant);
         
-        AveragePollutionResult result = new AveragePollutionResult(
+        TrendsResult result = new TrendsResult(
             "Average Pollution Levels", 
             "Statistical analysis of average pollution levels for " + 
             pollutant.getDisplayName() + " in " + year,
@@ -61,7 +55,7 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
     
     @Override
     public StatisticsResult calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
-        AveragePollutionResult result = new AveragePollutionResult(
+        TrendsResult result = new TrendsResult(
             "Average Pollution Trends", 
             "Trend analysis of average pollution levels for " + 
             pollutant.getDisplayName() + " from " + startYear + " to " + endYear,
@@ -119,17 +113,24 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
         result.setStandardDeviation(standardDeviation);
 
         result.setYearlyMeans(yearlyMeans);
+
+        double[] trendCoefficients = calculateLinearTrend(yearlyMeans, startYear, endYear);
+        result.setTrendCoefficients(trendCoefficients[0], trendCoefficients[1]);
+
+        double startValue = yearlyMeans.get(startYear);
+        double endValue = yearlyMeans.get(endYear);
         
-        // Calculate trend:
-        double trend = yearlyMeans.get(endYear) - yearlyMeans.get(startYear);
-        result.setOverallTrend(trend);
+        if (startValue > 0) {
+            double percentChange = ((endValue - startValue) / startValue) * 100.0;
+            result.setPercentChange(percentChange);
+        }
         
         return result;
     }
     
     @Override
     public String getStatisticsName() {
-        return "Average Pollution";
+        return "Trends";
     }
     
     /**
@@ -190,5 +191,41 @@ public class AveragePollutionCalculator implements StatisticsCalculator {
             .count();
         
         return Math.sqrt(sumSquaredDiffs / validCount);
+    }
+
+    /**
+     * Calculate linear regression coefficients for trend analysis.
+     * @param yearlyValues Map of year to value.
+     * @param startYear First year in the range.
+     * @param endYear Last year in the range.
+     * @return Array with [slope, intercept].
+     */
+    private double[] calculateLinearTrend(Map<Integer, Double> yearlyValues, int startYear, int endYear) {
+        int n = endYear - startYear + 1;
+        
+        if (n <= 1) {
+            return new double[] { 0.0, 0.0 };
+        }
+        
+        double sumX = 0;
+        double sumY = 0;
+        double sumXY = 0;
+        double sumXX = 0;
+        
+        for (int year = startYear; year <= endYear; year++) {
+            double x = year;
+            double y = yearlyValues.getOrDefault(year, 0.0);
+            
+            sumX += x;
+            sumY += y;
+            sumXY += x * y;
+            sumXX += x * x;
+        }
+        
+        // Calculate slope and intercept.
+        double slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+        double intercept = (sumY - slope * sumX) / n;
+        
+        return new double[] { slope, intercept };
     }
 }

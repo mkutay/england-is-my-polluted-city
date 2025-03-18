@@ -260,7 +260,7 @@ public class SidePanelController {
             
             mapShown = false;
         } else {
-            // Switching to map view
+            // Switching to map view.
             rootPane.setCenter(mapContent);
             switchLabel.setText("ⓘ View Pollutant Statistics");
             

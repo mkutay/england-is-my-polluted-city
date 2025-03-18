@@ -66,7 +66,6 @@ public class PollutionExtremesPanel extends StatisticsPanel {
         Map<Integer, Double> yearlyMaxValues = yearToMaxPoint.entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().value()));
 
-        addSeparator();
         addYearlyMaxChart(yearlyMaxValues);
         
         // Display the year with the highest value.
@@ -132,7 +131,6 @@ public class PollutionExtremesPanel extends StatisticsPanel {
      * @param yearlyMaxValues Map of year to maximum value.
      */
     private void addYearlyMaxChart(Map<Integer, Double> yearlyMaxValues) {
-        // Create a line chart panel:
         LineChartPanel chartPanel = new LineChartPanel(
             "Maximum Pollution By Year",
             "Year",
@@ -144,15 +142,6 @@ public class PollutionExtremesPanel extends StatisticsPanel {
         VBox.setVgrow(chartPanel, Priority.ALWAYS);
         
         addToContent(chartPanel);
-    }
-
-    /**
-     * Format a double value to 3 decimal places.
-     * @param value The value to format.
-     * @return The formatted value.
-     */
-    private String formatDouble(double value) {
-        return Double.toString((int) (value * 1000) / 1000d);
     }
 
     /**

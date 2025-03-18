@@ -3,8 +3,7 @@ package statistics.ui.panels;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import statistics.back.simpleTrends.SimpleTrendsResult;
+import statistics.back.trends.TrendsResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
@@ -16,14 +15,14 @@ import java.util.Map;
  * @author Mehmet Kutay Bozkurt
  * @version 2.0
  */
-public class SimpleTrendsPanel extends StatisticsPanel {
-    protected SimpleTrendsResult statisticsResult; // Re-cast.
+public class TrendsPanel extends StatisticsPanel {
+    protected TrendsResult statisticsResult; // Re-cast.
 
     /**
      * Constructor.
      * @param result The SimpleTrendsResult to display.
      */
-    public SimpleTrendsPanel(SimpleTrendsResult result) {
+    public TrendsPanel(TrendsResult result) {
         super(result);
         this.statisticsResult = result;
         initialiseContent();
@@ -31,12 +30,9 @@ public class SimpleTrendsPanel extends StatisticsPanel {
     
     @Override
     protected void initialiseContent() {
-        // Add trend information:
-        if (statisticsResult.getYearlyAverages() != null && !statisticsResult.getYearlyAverages().isEmpty()) {
+        if (statisticsResult.getYearlyMeans() != null && !statisticsResult.getYearlyMeans().isEmpty()) {
             // If we have time series data, create a chart.
-            addLineChart();
-            
-            addSeparator();
+            addLineChart(statisticsResult.getYearlyMeans());
             
             // Add trend statistics:
             addKeyValueRow("Trend Slope", formatDouble(statisticsResult.getTrendSlope()) + " units per year");
@@ -48,21 +44,21 @@ public class SimpleTrendsPanel extends StatisticsPanel {
                 addKeyValueRow("Percent Change", formatDouble(Math.abs(percentChange)) + "% " + changeDirection);
             }
         } else {
-            // Add snapshot data if no time series
-            Double totalPollution = statisticsResult.getTotalPollution();
-            Double avgPollution = statisticsResult.getAveragePollution();
-            Long dataPointCount = statisticsResult.getDataPointCount();
+            // Add snapshot data if no time series:
+            Double mean = statisticsResult.getMean();
+            Double median = statisticsResult.getMedian();
+            Double standardDeviation = statisticsResult.getStandardDeviation();
             
-            if (totalPollution != null) {
-                addKeyValueRow("Total Pollution", formatDouble(totalPollution));
+            if (mean != null) {
+                addKeyValueRow("Mean Pollution", formatDouble(mean));
             }
-            
-            if (avgPollution != null) {
-                addKeyValueRow("Average Pollution", formatDouble(avgPollution));
+
+            if (median != null) {
+                addKeyValueRow("Median Pollution", formatDouble(median));
             }
-            
-            if (dataPointCount != null) {
-                addKeyValueRow("Number of Data Points", dataPointCount.toString());
+
+            if (standardDeviation != null) {
+                addKeyValueRow("Standard Deviation", formatDouble(standardDeviation));
             }
         }
     }
@@ -71,29 +67,17 @@ public class SimpleTrendsPanel extends StatisticsPanel {
      * Add a line chart of yearly averages.
      * @param trendsResult The result containing yearly data.
      */
-    private void addLineChart() {
-        Map<Integer, Double> yearlyAverages = statisticsResult.getYearlyAverages();
-        if (yearlyAverages == null || yearlyAverages.isEmpty()) return;
-        
+    private void addLineChart(Map<Integer, Double> yearlyMeans) {
         LineChartPanel chartPanel = new LineChartPanel(
             "Pollution Level Over Time",
             "Year",
-            "Pollution Level of " + statisticsResult.getPollutant() + " (ppm)",
-            yearlyAverages
+            "Pollution Level of " + statisticsResult.getPollutant().getDisplayName() + " (ppm)",
+            yearlyMeans
         );
         
         chartPanel.setPadding(new Insets(10));
         VBox.setVgrow(chartPanel, Priority.ALWAYS);
         
         addToContent(chartPanel);
-    }
-
-    /**
-     * Format a double value to 3 decimal places.
-     * @param value The value to format.
-     * @return The formatted value.
-     */
-    private String formatDouble(double value) {
-        return Double.toString((int) (value * 1000) / 1000d);
     }
 }

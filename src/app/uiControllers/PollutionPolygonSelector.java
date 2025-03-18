@@ -8,11 +8,10 @@ import javafx.scene.paint.Color;
 import utility.CustomMapView;
 
 /**
- * Selection system for polygons
- *
- * TODO finish implementing or discard
+ * Selection system for polygons on the map.
  *
  * @author Anas Ahmed
+ * @version 1.0
  */
 public class PollutionPolygonSelector {
     private final CustomMapView mapView;
