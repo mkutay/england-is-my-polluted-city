@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import statistics.back.StatisticsResult;
+import statistics.back.allPollutions.AllPollutionsResult;
 import statistics.back.pollutionExtremes.PollutionExtremesResult;
 import statistics.back.trends.TrendsResult;
 import statistics.ui.panels.*;
@@ -49,6 +50,7 @@ public class StatisticsPanelFactory {
         return switch (result) {
             case TrendsResult stResult -> new TrendsPanel(stResult);
             case PollutionExtremesResult peResult -> new PollutionExtremesPanel(peResult);
+            case AllPollutionsResult apResult -> new AllPollutionsPanel(apResult);
             default -> throw new IllegalArgumentException("Unsupported statistics result type: " + result.getClass().getName());
         };
     }

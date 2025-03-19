@@ -1,6 +1,7 @@
 package statistics.back;
 
 import dataProcessing.Pollutant;
+import statistics.back.allPollutions.AllPollutionsCalculator;
 import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
 import statistics.back.trends.TrendsCalculator;
 
@@ -34,6 +35,7 @@ public class StatisticsManager {
         // Register default calculators, for now:
         registerCalculator(new TrendsCalculator());
         registerCalculator(new PollutionExtremesCalculator());
+        registerCalculator(new AllPollutionsCalculator());
     }
     
     /**

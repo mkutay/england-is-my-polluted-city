@@ -18,7 +18,7 @@ public class TrendsPanel extends StatisticsPanel {
 
     /**
      * Constructor.
-     * @param result The SimpleTrendsResult to display.
+     * @param result The TrendsResult to display.
      */
     public TrendsPanel(TrendsResult result) {
         super(result);
