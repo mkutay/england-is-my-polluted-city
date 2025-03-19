@@ -2,15 +2,69 @@ package utility;
 
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
+import javafx.scene.input.ScrollEvent;
 
 /**
- * Custom map view class to draw pollution data on the map.
- * Holds the utilities by extending the MapView class to use the map view functionality.
+ * The CustomMapView class extends MapView to restrict zooming and display pollution data.
+ * Allows adding pollution points as markers on the map.
  * 
  * @author Anas Ahmed
  * @version 1.0
  */
 public class CustomMapView extends MapView {
+    private final double minZoom = 3;  // Min zoom allowed
+    private final double maxZoom = 20; // Max zoom allowed
+
+    public CustomMapView() {
+        setupZoomControl();
+    }
+
+    /**
+     * Restricts zooming within the specified range and handles mouse scroll events.
+     */
+    private void setupZoomControl() {
+        this.setOnScroll(this::handleScrollZoom);
+    }
+
+    /**
+     * Zoom in one level.
+     */
+    public void zoomIn() {
+        applyZoom(1);
+    }
+
+    /**
+     * Zoom out one level.
+     */
+    public void zoomOut() {
+        applyZoom(-1);
+    }
+
+    /**
+     * Applies zoom changes while keeping the center fixed.
+     * @param zoomChange The amount to change zoom by.
+     */
+    private void applyZoom(double zoomChange) {
+        double newZoom = Math.max(minZoom, Math.min(this.getZoom() + zoomChange, maxZoom));
+
+        if (newZoom != this.getZoom()) {    // Prevent unnecessary updates if zoom hasn't changed
+            MapPoint point = getMapPosition(getWidth() / 2, getHeight() / 2);
+            this.setCenter(point);  // Keep the center fixed while zooming
+            this.setZoom(newZoom);
+            this.dirtyRefresh();
+        }
+    }
+
+    /**
+     * Handles zooming behaviour when scrolling.
+     * @param event The scroll event.
+     */
+    private void handleScrollZoom(ScrollEvent event) {
+        double zoomChange = event.getDeltaY() > 0 ? 1 : -1; // Zoom in on scroll up, out on scroll down
+        applyZoom(zoomChange);
+        event.consume(); // Prevent default zoom behavior
+    }
+
     /**
      * Gets a scale factor to scale 1 pixel into 1 meter in the real world depending on current zoom level.
      * i.e. Pixel size * sf = real world size.

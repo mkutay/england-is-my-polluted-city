@@ -1,6 +1,5 @@
 package app.uiViews;
 
-import com.gluonhq.maps.MapPoint;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -32,8 +31,8 @@ public class ZoomControls extends VBox {
         createZoomButtons();
         this.getChildren().addAll(zoomInButton, zoomOutButton, fullScreenButton);
 
-        zoomInButton.setOnMouseClicked(e -> zoomMap(1));
-        zoomOutButton.setOnMouseClicked(e -> zoomMap(-1));
+        zoomInButton.setOnMouseClicked(e -> mapView.zoomIn());
+        zoomOutButton.setOnMouseClicked(e -> mapView.zoomOut());
         fullScreenButton.setOnMouseClicked(e -> toggleFullscreen());
 
         this.setSpacing(10);
@@ -67,22 +66,6 @@ public class ZoomControls extends VBox {
         zoomInButton.setGraphic(zoomIn);
         zoomOutButton.setGraphic(zoomOut);
         fullScreenButton.setGraphic(fullScreen);
-    }
-
-    /**
-     * Adjusts the zoom level of the map.
-     *
-     * @param zoomChange The amount to adjust the zoom by (+1 for in, -1 for out).
-     */
-    private void zoomMap(double zoomChange) {
-        double newZoom = mapView.getZoom() + zoomChange;
-        newZoom = Math.max(5, Math.min(newZoom, 20)); // Ensure zoom stays within limits
-
-        MapPoint point = mapView.getMapPosition(mapView.getWidth()/2, mapView.getHeight()/2);
-        mapView.setZoom(newZoom);
-        mapView.setCenter(point);
-
-        mapView.dirtyRefresh();
     }
 
     /**
