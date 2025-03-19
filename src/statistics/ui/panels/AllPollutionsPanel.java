@@ -12,10 +12,10 @@ import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
 /**
- * Specialised panel for displaying SimpleTrends results using JavaFX.
+ * Specialised panel for displaying all pollutant results using JavaFX.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 2.0
+ * @version 1.0
  */
 public class AllPollutionsPanel extends StatisticsPanel {
     protected AllPollutionsResult statisticsResult; // Re-cast.

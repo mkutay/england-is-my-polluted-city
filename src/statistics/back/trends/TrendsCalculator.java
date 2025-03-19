@@ -15,6 +15,12 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
+/**
+ * Calculator for trends analysis.
+ * 
+ * @author Mehmet Kutay Bozkurt
+ * @version 1.0
+ */
 public class TrendsCalculator implements StatisticsCalculator {
     private final DataManager dataManager;
     

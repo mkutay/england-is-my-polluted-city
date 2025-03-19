@@ -15,6 +15,13 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
 
+/**
+ * Calculator for all pollutants.
+ * Calculates statistics for all pollutants over a given time range.
+ * 
+ * @author Mehmet Kutay Bozkurt
+ * @version 1.0
+ */
 public class AllPollutionsCalculator implements StatisticsCalculator {
     private final DataManager dataManager;
     

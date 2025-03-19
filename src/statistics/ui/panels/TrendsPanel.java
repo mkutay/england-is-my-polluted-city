@@ -8,7 +8,7 @@ import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
 /**
- * Specialised panel for displaying SimpleTrends results using JavaFX.
+ * Specialised panel for displaying trends results using JavaFX.
  * 
  * @author Mehmet Kutay Bozkurt
  * @version 2.0

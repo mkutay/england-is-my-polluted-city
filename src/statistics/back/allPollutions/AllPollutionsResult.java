@@ -7,8 +7,8 @@ import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;
 
 /**
- * Specialized statistics result for average pollution data.
- * Provides type-safe accessors for common average statistics.
+ * Specialized statistics result for all pollutants.
+ * Provides type-safe accessors for statistics.
  * 
  * @author Mehmet Kutay Bozkurt
  * @version 2.0
