@@ -14,6 +14,7 @@ import javafx.scene.input.ScrollEvent;
 public class CustomMapView extends MapView {
     private final double minZoom = 3;  // Min zoom allowed
     private final double maxZoom = 20; // Max zoom allowed
+    private final double zoomStep = 0.1; // Smaller step for smooth zooming
 
     public CustomMapView() {
         setupZoomControl();
@@ -60,7 +61,7 @@ public class CustomMapView extends MapView {
      * @param event The scroll event.
      */
     private void handleScrollZoom(ScrollEvent event) {
-        double zoomChange = event.getDeltaY() > 0 ? 1 : -1; // Zoom in on scroll up, out on scroll down
+        double zoomChange = event.getDeltaY() > 0 ? zoomStep : -zoomStep; // Zoom in on scroll up, out on scroll down
         applyZoom(zoomChange);
         event.consume(); // Prevent default zoom behavior
     }
