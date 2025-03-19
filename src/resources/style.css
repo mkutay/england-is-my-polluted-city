@@ -1,3 +1,14 @@
+/* Text on blurred main stage while welcomePage window is open*/
+.tutorial-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
 /* top navigation bar - file, menu */
 .top-nav {
     -fx-padding: 5px;

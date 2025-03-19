@@ -10,6 +10,7 @@ import javafx.scene.control.Separator;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import dataProcessing.Pollutant;
@@ -33,6 +34,7 @@ import utility.CustomMapView;
  */
 public class MainLayoutHandler {
     private final BorderPane root;
+    private final StackPane rootContainer;
     private final NavigationBarController navBarController;
     private final SidePanelController sidePanelController;
     private final MapController mapController;
@@ -42,6 +44,7 @@ public class MainLayoutHandler {
     public MainLayoutHandler(Stage stage, App app) throws PollutionLayerNotInitialisedException {
         // Setup UI controller
         this.root = new BorderPane();
+        this.rootContainer = new StackPane(root);
 
         CustomMapView mapView = new CustomMapView();
         this.mapOverlay = new MapOverlay(mapView);
@@ -69,8 +72,11 @@ public class MainLayoutHandler {
     }
 
     public Scene createScene() {
-        Scene scene = new Scene(root, 900, 800);
+        Scene scene = new Scene(rootContainer, 900, 800);
         scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
         return scene;
+    }
+    public StackPane getRootContainer() {
+        return rootContainer;
     }
 }

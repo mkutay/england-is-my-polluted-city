@@ -103,7 +103,7 @@ public abstract class StatisticsPanel extends BorderPane {
         
         Label keyLabel = new Label(key + ":");
         keyLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
-        keyLabel.setMinWidth(150);
+        keyLabel.setMinWidth(190);
         
         Label valueLabel = new Label(value);
         valueLabel.setFont(Font.font("System", FontWeight.NORMAL, 14));

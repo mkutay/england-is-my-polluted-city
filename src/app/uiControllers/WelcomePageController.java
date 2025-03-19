@@ -1,5 +1,6 @@
 package app.uiControllers;
 
+import app.App;
 import app.uiViews.WelcomePage;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ import java.util.*;
 public class WelcomePageController {
     private final WelcomePage welcomePage;
     private final Stage stage;
+    private final App app;
     private int currentPage = 0;    // Current Page index
 
     // Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key.
@@ -28,7 +30,8 @@ public class WelcomePageController {
         initialiseMenu();
     }
 
-    public WelcomePageController() {
+    public WelcomePageController(App app) {
+        this.app = app;
         welcomePage = new WelcomePage();
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -101,5 +104,9 @@ public class WelcomePageController {
         String description = tutorialPicDescMap.get(imagePath);
 
         welcomePage.updateContent(imagePath, description, isFirst, isLast);
+    }
+    // Allow app to access tutorial window's stage
+    public Stage getStage() {
+        return stage;
     }
 }
