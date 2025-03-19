@@ -88,7 +88,7 @@ public class MapController {
      * @param pollutant The pollutant to update to.
      */
     public void updateMapDataSet(int year, Pollutant pollutant, ColorScheme colorScheme) {
-        System.out.println("Updating map data set to year: " + year + ", pollutant: " + pollutant + ", color scheme: " + colorScheme);
+        //System.out.println("Updating map data set to year: " + year + ", pollutant: " + pollutant + ", color scheme: " + colorScheme);
 
         if (year == currentYear && pollutant == currentPollutant && colorScheme.toString().equals(currentColourScheme.toString())) {
             return; // No need to update if the data is the same.

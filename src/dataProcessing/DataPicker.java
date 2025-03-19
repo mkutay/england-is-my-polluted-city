@@ -49,8 +49,8 @@ public class DataPicker {
             throw new IllegalArgumentException("Pollutant pattern does not exist for pollutant: " + pollutant);
         }
 
-        System.out.println("Pollutant loaded: " + pollutant);
-        System.out.println("Pollutant pattern: " + pollutantPattern);
+        //System.out.println("Pollutant loaded: " + pollutant);
+        //System.out.println("Pollutant pattern: " + pollutantPattern);
 
         if (!getAvailableYears(pollutant).contains(year)) {
             throw new IllegalArgumentException("Year " + year + " is not available for pollutant " + pollutant);

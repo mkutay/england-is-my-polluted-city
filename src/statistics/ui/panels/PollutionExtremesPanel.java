@@ -103,7 +103,7 @@ public class PollutionExtremesPanel extends StatisticsPanel {
 
             return label;
         } catch (Exception e) {
-            System.out.println("Failed to fetch postcode data for hotspot: " + hotspot);
+            System.err.println("Failed to fetch postcode data for hotspot: " + hotspot);
             e.printStackTrace();
             return null;
         }

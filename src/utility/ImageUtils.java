@@ -13,24 +13,6 @@ import javafx.scene.image.ImageView;
  */
 public class ImageUtils {
     /**
-     * Loads an image from the given classpath resource path and returns an ImageView.
-     * If the image is not found, an empty ImageView is returned.
-     * @param resourcePath The classpath-relative path to the image (e.g., "/icons/rainbow.png").
-     * @return An ImageView containing the image or an empty ImageView if not found.
-     */
-    public static ImageView createImage(String resourcePath) {
-        var resource = ImageUtils.class.getResource(resourcePath);
-
-        if (resource == null) {
-            System.err.println("Warning: Image resource not found: " + resourcePath);
-            return new ImageView();
-        }
-
-        Image img = new Image(resource.toExternalForm());
-        return new ImageView(img); // Use natural size of the image
-    }
-
-    /**
      * Loads an image from the specified classpath resource path and resizes it to fit the given dimensions.
      * The aspect ratio is preserved. If the image is not found, returns an empty ImageView.
      * @param resourcePath The classpath-relative path to the image

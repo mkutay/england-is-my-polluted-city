@@ -18,7 +18,7 @@ public class LODManager {
     private final static int MAX_VISIBLE_DATAPOINTS = 12_000; // If visible data points exceeds this number, attempt to use smaller LOD.
 
     public LODManager(DataSet dataSet, int numLODs) {
-        System.out.println("Creating " + numLODs + " LODs");
+        //System.out.println("Creating " + numLODs + " LODs");
         LODDataList = new ArrayList<>(numLODs);
 
         // Create LODs asynchronously.
@@ -26,7 +26,7 @@ public class LODManager {
         for (int i = 0; i < numLODs; i++) {
             final int finalIndex = i;
             CompletableFuture<LODData> future = CompletableFuture.supplyAsync(() -> {
-                System.out.println("Creating LOD " + (finalIndex + 1) + "...");
+                //System.out.println("Creating LOD " + (finalIndex + 1) + "...");
                 return new LODData(finalIndex + 1, dataSet);
             });
             futures.add(future);
@@ -38,7 +38,7 @@ public class LODManager {
             LODDataList.add(future.join());
         }
         
-        System.out.println("Finished generating LODs");
+        //System.out.println("Finished generating LODs");
     }
 
     /**

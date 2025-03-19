@@ -79,7 +79,7 @@ public class MapClickHandler {
 
             return new ShownLocationData(borough, constituency, postCode, country);
         } catch (Exception e) {
-            System.out.println("Failed to get address: " + e.getMessage());
+            System.err.println("Failed to get address: " + e.getMessage());
             return null;
         }
     }
@@ -110,7 +110,7 @@ public class MapClickHandler {
             return new ShownRealtimeData(lastUpdated, String.valueOf(aqiValue), pollutantValues);
         }
         catch (Exception e) {
-            System.out.println("Failed to get live data: " + e.getMessage());
+            System.err.println("Failed to get live data: " + e.getMessage());
             return null;
         }
     }

@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import utility.CustomMapView;
 
 /**
- * Selection system for polygons on the map.
+ * Selection system for polygons on the map. (Not currently implemented)
  *
  * @author Anas Ahmed
  * @version 1.0
