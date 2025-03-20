@@ -38,15 +38,15 @@ public class PollutionExtremesPanel extends StatisticsPanel {
         addLineChart();
 
         if (statisticsResult.getMaxYear() != null) {
-            addKeyValueRow("Year with Highest Pollution", statisticsResult.getMaxYear().getKey() + " - " + statisticsResult.getMaxYear().getValue().value() + " ppm, " + getHotSpotLabelString(statisticsResult.getMaxYear().getValue()));
+            addKeyValueRow("Year with Highest Pollution", statisticsResult.getMaxYear().getKey() + " - " + formatDouble(statisticsResult.getMaxYear().getValue().value()) + " ppm, " + getHotSpotLabelString(statisticsResult.getMaxYear().getValue()));
         }
 
         if (statisticsResult.getMedianYear() != null) {
-            addKeyValueRow("Year with Median Pollution", statisticsResult.getMedianYear().getKey() + " - " + statisticsResult.getMedianYear().getValue().value() + " ppm, " + getHotSpotLabelString(statisticsResult.getMedianYear().getValue()));
+            addKeyValueRow("Year with Median Pollution", statisticsResult.getMedianYear().getKey() + " - " + formatDouble(statisticsResult.getMedianYear().getValue().value()) + " ppm, " + getHotSpotLabelString(statisticsResult.getMedianYear().getValue()));
         }
 
         if (statisticsResult.getMinYear() != null) {
-            addKeyValueRow("Year with Lowest Pollution", statisticsResult.getMinYear().getKey() + " - " + statisticsResult.getMinYear().getValue().value() + " ppm, " + getHotSpotLabelString(statisticsResult.getMinYear().getValue()));
+            addKeyValueRow("Year with Lowest Pollution", statisticsResult.getMinYear().getKey() + " - " + formatDouble(statisticsResult.getMinYear().getValue().value()) + " ppm, " + getHotSpotLabelString(statisticsResult.getMinYear().getValue()));
         }
     }
 
