@@ -42,8 +42,11 @@ public class AQICNAPI {
      * @throws InterruptedException If the operation is interrupted.
      */
     public static AQIResponse getPollutionData(double latitude, double longitude) throws IOException, InterruptedException {
+        if (latitude == 0 || longitude == 0){
+            System.out.println("Latitude or Longitude is 0");
+            return null;
+        }
         String url = AQICN_API_BASE_URL + "feed/geo:" + latitude + ";" + longitude + "/?token=" + AQICN_API_KEY;
-
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .GET()
