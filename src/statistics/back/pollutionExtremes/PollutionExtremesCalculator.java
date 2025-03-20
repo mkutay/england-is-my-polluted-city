@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @author Mehmet Kutay Bozkurt
  * @version 2.0
  */
-public class PollutionExtremesCalculator extends StatisticsCalculator {
+public class PollutionExtremesCalculator implements StatisticsCalculator {
     private final DataManager dataManager; // Data manager instance.
     
     /**

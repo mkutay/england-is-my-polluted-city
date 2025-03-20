@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 
 import dataProcessing.Pollutant;
 import statistics.back.allPollutions.AllPollutionsResult;
+import statistics.back.trends.TrendsResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 
@@ -55,19 +56,19 @@ public class AllPollutionsPanel extends StatisticsPanel {
      * Add a line chart of yearly values.
      */
     private void addLineChart() {
-        if (statisticsResult.getYearlyMeans() == null || statisticsResult.getYearlyMeans().isEmpty()) {
+        if (statisticsResult.getTrends() == null || statisticsResult.getTrends().isEmpty()) {
             return;
         }
 
-        Map<Pollutant, Map<Integer, Double>> means = statisticsResult.getYearlyMeans();
+        Map<Pollutant, TrendsResult> trends = statisticsResult.getTrends();
 
         LineChartPanel chartPanel = new LineChartPanel(
             "Pollution Levels Over Time",
             "Year",
             "Pollution Level in ppm",
-            means.get(Pollutant.NO2),
-            means.get(Pollutant.PM10),
-            means.get(Pollutant.PM2_5)
+            trends.get(Pollutant.NO2).getYearlyMeans(),
+            trends.get(Pollutant.PM10).getYearlyMeans(),
+            trends.get(Pollutant.PM2_5).getYearlyMeans()
         );
 
         chartPanel.setSeriesNames(Pollutant.NO2.getDisplayName(), Pollutant.PM10.getDisplayName(), Pollutant.PM2_5.getDisplayName());

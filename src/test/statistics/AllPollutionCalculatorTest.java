@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ class AllPollutionCalculatorTest {
 
     @Test
     public void testCalculateStatisticsOverTime_YearlyMean() {
-        Map<Integer, Double> yearlyMeans = result.getYearlyMeans().get(POLLUTANT);
+        Map<Integer, Double> yearlyMeans = result.getTrends().get(POLLUTANT).getYearlyMeans();
         assertTrue(yearlyMeans.containsKey(START_YEAR));
 
         List<DataPoint> dataPoints = dataManager.getPollutantData(START_YEAR, POLLUTANT).getData();
@@ -82,7 +83,10 @@ class AllPollutionCalculatorTest {
 
     @Test
     public void testCalculateStatisticsOverTime_Mean() {
-        Map<Pollutant, Double> mean = result.getMean();
+        Map<Pollutant, Double> mean = result.getTrends()
+            .values()
+            .stream()
+            .collect(Collectors.toMap(t -> t.getPollutant(), t -> t.getMean()));
 
         double avg = 0;
         for (double value : mean.values()) {
@@ -94,7 +98,10 @@ class AllPollutionCalculatorTest {
 
     @Test
     public void testCalculateStatisticsOverTime_Median() {
-        Map<Pollutant, Double> median = result.getMedian();
+        Map<Pollutant, Double> median = result.getTrends()
+            .values()
+            .stream()
+            .collect(Collectors.toMap(t -> t.getPollutant(), t -> t.getMedian()));
 
         double avg = 0;
         for (double value : median.values()) {
@@ -106,7 +113,10 @@ class AllPollutionCalculatorTest {
 
     @Test
     public void testCalculateStatisticsOverTime_StandardDeviation() {
-        Map<Pollutant, Double> standardDeviations = result.getStandardDeviation();
+        Map<Pollutant, Double> standardDeviations = result.getTrends()
+            .values()
+            .stream()
+            .collect(Collectors.toMap(t -> t.getPollutant(), t -> t.getStandardDeviation()));
 
         double avg = 0;
         for (double value : standardDeviations.values()) {
@@ -119,9 +129,7 @@ class AllPollutionCalculatorTest {
     @Test
     public void testCalculateStatisticsOverTime_AllPollutants() {
         for (Pollutant p : Pollutant.values()) {
-            assertTrue(result.getMean().containsKey(p));
-            assertTrue(result.getMedian().containsKey(p));
-            assertTrue(result.getStandardDeviation().containsKey(p));
+            assertTrue(result.getTrends().containsKey(p));
         }
     }
 }
