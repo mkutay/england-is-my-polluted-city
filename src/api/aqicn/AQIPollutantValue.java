@@ -10,4 +10,12 @@ public class AQIPollutantValue {
     private Object v;  // "v" is the actual value, and we store it as an Object, as this value can have multiple dynamic types.
 
     public Object getIAQIValue() { return v; }
+
+    @Override
+    public String toString(){
+
+        return "AQIValue{" +
+                "value=" + v +
+                '}';
+    }
 }
