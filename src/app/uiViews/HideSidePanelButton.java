@@ -24,8 +24,8 @@ public class HideSidePanelButton extends Label {
      */
     public HideSidePanelButton(SidePanel sidePanel) {
         this.sidePanel = sidePanel;
-        icon_hide = ImageUtils.createImage("/resources/icons/cat_hide.png",90);
-        icon_show = ImageUtils.createImage("/resources/icons/cat_show.png",90);
+        icon_hide = ImageUtils.createImage("/resources/icons/cat_hide.png", 70);
+        icon_show = ImageUtils.createImage("/resources/icons/cat_show.png", 70);
         setGraphic(icon_show);
         setStyle("-fx-cursor: hand;");
 
@@ -34,23 +34,19 @@ public class HideSidePanelButton extends Label {
         Tooltip.install(this, tooltip); // Attach tooltip to button
 
         setOnMouseClicked(event -> togglePanel());
+
+        // Change icon when hovered
+        setOnMouseEntered(event -> setGraphic(icon_hide));
+        setOnMouseExited(event -> setGraphic(icon_show));
     }
 
     /**
      * Toggles the panel's visibility and updates the button's icon and tooltip.
      */
     private void togglePanel() {
-        if (isHidden) {
-            sidePanel.setVisible(true);
-            sidePanel.setManaged(true);
-            setGraphic(icon_show);
-            tooltip.setText("Hide Side Panel");
-        } else {
-            sidePanel.setVisible(false);
-            sidePanel.setManaged(false);
-            setGraphic(icon_hide);
-            tooltip.setText("Show Side Panel");
-        }
         isHidden = !isHidden;
+        sidePanel.setVisible(!isHidden);
+        sidePanel.setManaged(!isHidden);
+        tooltip.setText(isHidden ? "Show Side Panel" : "Hide Side Panel");
     }
 }

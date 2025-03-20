@@ -73,7 +73,6 @@ public class LegendPane extends VBox {
 
             addLegendItem(label, color);
         }
-
     }
 
     private void addLegendItem(String label, Color color) {
