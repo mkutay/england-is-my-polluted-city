@@ -76,7 +76,7 @@ public class MapController {
      * @throws PollutionLayerNotInitialisedException If pollution layer is not initialised.
      */
     public AnchorPane getMapOverlay() throws PollutionLayerNotInitialisedException {
-        if (pollutionLayerInitialised) return mapOverlay.getOverlayPane();
+        if (pollutionLayerInitialised) return mapOverlay;
 
         throw new PollutionLayerNotInitialisedException("Map is not initialised. Call initialisePollutionLayer first.");
     }
