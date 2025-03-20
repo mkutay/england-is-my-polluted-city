@@ -43,8 +43,8 @@ public class AboutPageController {
         ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
         headerLabelBox.getChildren().addAll(icon, headerLabel);
 
-        // Authors of app.
-        Label authorsLabel = new Label("Created with Love by: Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, Chelsea Feliciano");
+        //List authors of app
+        Label authorsLabel = new Label("Created with Love by: Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano");
         // Separator line to separate Header + authors from credits text.
         Separator separator = new Separator();
 
