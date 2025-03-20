@@ -15,7 +15,7 @@ import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
 import statistics.back.pollutionExtremes.PollutionExtremesResult;
 
 /**
- * Test class for the TrendsCalculator class.
+ * Test class for the PollutionExtremesCalculator class.
  * 
  * @author Mehmet Kutay Bozkurt
  * @version 1.0
