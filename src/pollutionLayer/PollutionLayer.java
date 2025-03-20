@@ -52,13 +52,13 @@ public class PollutionLayer extends MapLayer {
 
         this.colorSchemeManager = colorSchemeManager;
 
+        //Calculate maximum pollution value (used in pollution threshold calculations)
         maxPollutionValue = dataSet.getData().stream().map(DataPoint::value).max(Double::compareTo).orElse(0.0);
 
         canvas = new Canvas();
         gc = canvas.getGraphicsContext2D();
         this.getChildren().add(canvas);
 
-        // Add click event handler to the canvas. TODO refactor
         canvas.setOnMouseClicked(e -> pollutionLayerEventHandler.handleMouseClick(pollutionPolygonManager, pollutant, e));
 
         pollutionPolygonManager.updatePollutionPolygons(mapView);
