@@ -17,14 +17,13 @@ public class WelcomePageController {
     private final WelcomePage welcomePage;
     private final Stage stage;
     private final App app;
-    private int currentPage = 0;    // Current Page index
+    //Explicitly initialise the current page counter as 0 for easier reading.
+    private int currentPage = 0;
 
     //Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key, returning both the image and the description it uses.
     private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static final List<String> imagePaths = new ArrayList<>();
-
-    private static final int MAX_WIDTH = 900;
-    private static final int MAX_HEIGHT = 800;
+    //Placeholder image to be used if image loading runs into an error
     private static final String PLACEHOLDER_IMAGE = "/resources/screenshots/PLACEHOLDER_IMG.png";
 
     static {
@@ -43,6 +42,7 @@ public class WelcomePageController {
         stage.setTitle("Tutorial");
         stage.setScene(new Scene(welcomePage));
 
+        //Logic for handling the navigation buttons
         welcomePage.getPrevButton().setOnAction(e -> navigate(-1));
         welcomePage.getNextButton().setOnAction(e -> navigate(1));
         welcomePage.getCloseButton().setOnAction(e -> close());
@@ -51,10 +51,10 @@ public class WelcomePageController {
     }
 
     /**
-     * This method will initialise all content
+     * This method will initialise all content for the menu. This includes the descriptions for each page of the tutorial along with their associated images.
      */
     private static void initialiseMenu(){
-        //String formatting for each tutorial page
+        //String formatting for each tutorial page to make it easier to write text.
         String welcomeMessage = """
                 Welcome to the UK Emissions Interactive Map!
                 This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
@@ -90,6 +90,7 @@ public class WelcomePageController {
                 
                 """;
 
+        //Add the image path and description pairs into the linked hashmap
         tutorialPicDescMap.put("/resources/screenshots/main_page.png", welcomeMessage);
         tutorialPicDescMap.put("/resources/screenshots/main_page_selection.png", sidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/main_page_colour_selector.png", sidePanelTutorial);
@@ -99,29 +100,55 @@ public class WelcomePageController {
         tutorialPicDescMap.put("/resources/screenshots/statistics_page.png", statsTutorial);
         tutorialPicDescMap.put("/resources/screenshots/main_screen_ready.png", lastPage);
 
-        // Store ordered image paths
+        //Store ordered image paths
         imagePaths.addAll(tutorialPicDescMap.keySet());
     }
 
-
+    /**
+     * Shows the WelcomePage
+     */
     public void show() {
         reset();
         stage.show();
     }
 
+    /**
+     * Navigate between pages. The current page will increment based on the input. (1 to step forward one, -1 to step backwards one)
+     * @param direction Takes in an integer (usually only 1 or -1)
+     */
     private void navigate(int direction) {
-        currentPage += direction;
+        //Some edge case handling for integers greater than 1 or lesser than -1
+        if (currentPage + direction > imagePaths.size() - 1){
+            currentPage = imagePaths.size() - 1;
+        }
+        if (currentPage + direction < 0){
+            currentPage = 0;
+        }
+        else{
+            currentPage += direction;
+        }
         updateUI();
     }
 
+    /**
+     * Closes the current stage
+     */
     private void close() {
         stage.close();
     }
 
+    /**
+     * Resets the WelcomePage to start at the first page
+     */
     private void reset() {
         currentPage = 0;
         updateUI();
     }
+
+    /**
+     * Updates the UI when navigating with the navigation buttons at the bottom of the page
+     * @throws IllegalArgumentException Used when the file path is not recognised by the app. Usually when the file is entered incorrectly or gets deleted from the project. A placeholder image will display in this case.
+     */
 
     private void updateUI() throws IllegalArgumentException{
         boolean isFirst = (currentPage == 0);
@@ -137,7 +164,11 @@ public class WelcomePageController {
             System.out.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used.");
         }
     }
-    // Allow app to access tutorial window's stage
+
+    /**
+     * Allow the app to access the WelcomePage's stage
+     * @return The WelcomePage stage
+     */
     public Stage getStage() {
         return stage;
     }
