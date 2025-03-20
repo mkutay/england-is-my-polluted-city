@@ -9,11 +9,11 @@ import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
 
 /**
- * Interface for statistics calculators.
- * All statistics calculation implementations should implement this interface.
+ * Abstract class for statistics calculators.
+ * All statistics calculation implementations should extend this abstract class.
  * 
  * @author Mehmet Kutay Bozkurt
- * @version 2.0
+ * @version 3.0
  */
 public abstract class StatisticsCalculator {
     /**
