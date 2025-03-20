@@ -77,6 +77,13 @@ public class AllPollutionsCalculator extends StatisticsCalculator {
         return result;
     }
 
+    /**
+     * Calculates statistics for a given pollutant over a given time range.
+     * @param pollutant The pollutant to calculate statistics for.
+     * @param startYear The start year over the range.
+     * @param endYear The end year of the range.
+     * @param result The result object to store the statistics in.
+     */
     private void calculateForPollutant(Pollutant pollutant, int startYear, int endYear, AllPollutionsResult result) {
         Map<Integer, Double> yearlyMeans = new ConcurrentHashMap<>();
         Map<Integer, Double> yearlyMedians = new ConcurrentHashMap<>();
