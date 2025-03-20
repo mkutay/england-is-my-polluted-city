@@ -100,4 +100,23 @@ class TrendsCalculatorTest {
         avg /= yearlyStandardDeviations.size();
         assertTrue(Math.abs(avg - result.getStandardDeviation()) < EPSILON);
     }
+
+    @Test
+    public void testCalculateStatisticsOverTime_SameYear() {
+        TrendsResult sameYearResult = assertDoesNotThrow(() -> {
+            return (TrendsResult) calculator.calculateStatisticsOverTime(POLLUTANT, START_YEAR, START_YEAR);
+        });
+        
+        assertTrue(sameYearResult.getYearlyMeans().containsKey(START_YEAR));
+        assertFalse(sameYearResult.getYearlyMeans().containsKey(START_YEAR + 1));
+        assertFalse(sameYearResult.getYearlyMeans().containsKey(START_YEAR - 1));
+        Map<Integer, Double> yearlyMeans = sameYearResult.getYearlyMeans();
+
+        double avg = 0;
+        for (double value : yearlyMeans.values()) {
+            avg += value;
+        }
+        avg /= yearlyMeans.size();
+        assertTrue(Math.abs(avg - sameYearResult.getMean()) < EPSILON);
+    }
 }
