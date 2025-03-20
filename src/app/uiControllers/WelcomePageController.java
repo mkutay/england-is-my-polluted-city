@@ -17,13 +17,13 @@ public class WelcomePageController {
     private final WelcomePage welcomePage;
     private final Stage stage;
     private final App app;
-    //Explicitly initialise the current page counter as 0 for easier reading.
+    // Explicitly initialise the current page counter as 0 for easier reading.
     private int currentPage = 0;
 
-    //Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key, returning both the image and the description it uses.
+    // Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key, returning both the image and the description it uses.
     private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static final List<String> imagePaths = new ArrayList<>();
-    //Placeholder image to be used if image loading runs into an error
+    // Placeholder image to be used if image loading runs into an error.
     private static final String PLACEHOLDER_IMAGE = "/resources/screenshots/PLACEHOLDER_IMG.png";
 
     static {
@@ -32,7 +32,7 @@ public class WelcomePageController {
 
     /**
      * The constructor method for the welcome page controller.
-     * @param app The main javaFX app object to allow the app to display this page
+     * @param app The main JavaFX app object to allow the app to display this page.
      */
     public WelcomePageController(App app) {
         this.app = app;
@@ -42,7 +42,7 @@ public class WelcomePageController {
         stage.setTitle("Tutorial");
         stage.setScene(new Scene(welcomePage));
 
-        //Logic for handling the navigation buttons
+        // Logic for handling the navigation buttons.
         welcomePage.getPrevButton().setOnAction(e -> navigate(-1));
         welcomePage.getNextButton().setOnAction(e -> navigate(1));
         welcomePage.getCloseButton().setOnAction(e -> close());
@@ -53,8 +53,8 @@ public class WelcomePageController {
     /**
      * This method will initialise all content for the menu. This includes the descriptions for each page of the tutorial along with their associated images.
      */
-    private static void initialiseMenu(){
-        //String formatting for each tutorial page to make it easier to write text.
+    private static void initialiseMenu() {
+        // String formatting for each tutorial page to make it easier to write text.
         String welcomeMessage = """
                 Welcome to the UK Emissions Interactive Map!
                 This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
@@ -90,7 +90,7 @@ public class WelcomePageController {
                 
                 """;
 
-        //Add the image path and description pairs into the linked hashmap
+        // Add the image path and description pairs into the linked HashMap.
         tutorialPicDescMap.put("/resources/screenshots/main_page.png", welcomeMessage);
         tutorialPicDescMap.put("/resources/screenshots/main_page_selection.png", sidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/main_page_colour_selector.png", sidePanelTutorial);
@@ -100,12 +100,12 @@ public class WelcomePageController {
         tutorialPicDescMap.put("/resources/screenshots/statistics_page.png", statsTutorial);
         tutorialPicDescMap.put("/resources/screenshots/main_screen_ready.png", lastPage);
 
-        //Store ordered image paths
+        // Store ordered image paths.
         imagePaths.addAll(tutorialPicDescMap.keySet());
     }
 
     /**
-     * Shows the WelcomePage
+     * Shows the WelcomePage.
      */
     public void show() {
         reset();
@@ -113,18 +113,19 @@ public class WelcomePageController {
     }
 
     /**
-     * Navigate between pages. The current page will increment based on the input. (1 to step forward one, -1 to step backwards one)
-     * @param direction Takes in an integer (usually only 1 or -1)
+     * Navigate between pages.
+     * The current page will increment based on the input.
+     * Specifically, 1 to step forward one, -1 to step backwards one.
+     * @param direction Takes in an integer (usually only 1 or -1).
      */
     private void navigate(int direction) {
-        //Some edge case handling for integers greater than 1 or lesser than -1
-        if (currentPage + direction > imagePaths.size() - 1){
+        // Some edge case handling for integers greater than 1 or lesser than -1.
+        if (currentPage + direction > imagePaths.size() - 1) {
             currentPage = imagePaths.size() - 1;
         }
-        if (currentPage + direction < 0){
+        if (currentPage + direction < 0) {
             currentPage = 0;
-        }
-        else{
+        } else {
             currentPage += direction;
         }
         updateUI();
@@ -146,20 +147,19 @@ public class WelcomePageController {
     }
 
     /**
-     * Updates the UI when navigating with the navigation buttons at the bottom of the page
+     * Updates the UI when navigating with the navigation buttons at the bottom of the page.
      * @throws IllegalArgumentException Used when the file path is not recognised by the app. Usually when the file is entered incorrectly or gets deleted from the project. A placeholder image will display in this case.
      */
-
-    private void updateUI() throws IllegalArgumentException{
+    private void updateUI() throws IllegalArgumentException {
         boolean isFirst = (currentPage == 0);
         boolean isLast = (currentPage == imagePaths.size() - 1);
         String imagePath = imagePaths.get(currentPage);
         String description = tutorialPicDescMap.get(imagePath);
-        //Add error handling if the image path does not exist (in the case image got deleted or it was entered incorrectly)
+        // Add error handling if the image path does not exist (in the case image got deleted or it was entered incorrectly).
         try {
             welcomePage.updateContent(imagePath, description, isFirst, isLast);
         } catch (Exception e) {
-            //Catch the error without terminating the app. Use a placeholder image instead.
+            // Catch the error without terminating the app. Use a placeholder image instead.
             welcomePage.updateContent(PLACEHOLDER_IMAGE, description, isFirst, isLast);
             System.out.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used.");
         }

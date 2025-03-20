@@ -31,35 +31,32 @@ public class WelcomePage extends BorderPane {
      * Constructor for the Welcome Page. This holds the entire layout of the WelcomePage.
      */
     public WelcomePage() {
-
-        //Header
+        // Header:
         Label title = new Label("Welcome to the UK Emissions Map!");
         title.setStyle("-fx-font-size: 30px; -fx-font-weight: bold; -fx-padding: 30 0 0 0;");
 
-        //Vbox to store the title of the page and the image view
+        // Vbox to store the title of the page and the image view.
         VBox header = new VBox(title, imageView);
-        header.setAlignment(Pos.CENTER); // Center image & text
+        header.setAlignment(Pos.CENTER); // Center image and text.
 
-        //Description / Tutorial text
+        // Description / Tutorial text.
         TextFlow textFlow = new TextFlow(descriptionText);
         textFlow.setStyle("-fx-padding: 0 60 0 60;");
         textFlow.setTextAlignment(TextAlignment.CENTER);
 
-        //Navigation Buttons
+        // Navigation Buttons.
         HBox buttonBox = new HBox(10, prevButton, nextButton, closeButton);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setStyle("-fx-padding: 10 0 20 0;");
 
-        //Fit the image within the imageview
+        // Fit the image within the imageview.
         imageView.fitWidthProperty().bind(widthProperty().multiply(0.8));
         imageView.setPreserveRatio(true);
 
-        //Sets the layout
+        // Sets the layout.
         setTop(header);
         setCenter(textFlow);
         setBottom(buttonBox);
-
-
     }
 
     /**
@@ -84,10 +81,10 @@ public class WelcomePage extends BorderPane {
     private void loadImage(String imagePath) {
         Image image = new Image(imagePath);
         imageView.setImage(image);
-        //Scale the image down to make it look nicer
+        // Scale the image down to make it look nicer.
         double newHeight = image.getHeight() * 0.7;
         imageView.setFitHeight(newHeight);
-        //Retains aspect ratio
+        // Retains aspect ratio.
         imageView.setPreserveRatio(true);
     }
 

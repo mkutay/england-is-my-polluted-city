@@ -43,7 +43,6 @@ public class MainLayoutHandler {
 
     /**
      * Initialises the main layout and UI components.
-     *
      * @param stage The primary application stage.
      * @param app   The main application instance.
      * @throws PollutionLayerNotInitialisedException if pollution data fails to load.
@@ -86,7 +85,6 @@ public class MainLayoutHandler {
 
     /**
      * Creates and returns the main application scene.
-     *
      * @return The primary Scene object.
      */
     public Scene createScene() {
@@ -95,6 +93,9 @@ public class MainLayoutHandler {
         return scene;
     }
 
+    /**
+     * @return The root container of the application layout.
+     */
     public StackPane getRootContainer() {
         return rootContainer;
     }

@@ -26,7 +26,9 @@ import static app.App.APP_NAME;
  * @version 1.0
  */
 public class AboutPageController {
-
+    /**
+     * Statically show the about page.
+     */
     public static void show() {
         Stage aboutStage = new Stage();
         aboutStage.initModality(Modality.APPLICATION_MODAL);
@@ -41,13 +43,13 @@ public class AboutPageController {
         ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
         headerLabelBox.getChildren().addAll(icon, headerLabel);
 
-        //Authors of app.
+        // Authors of app.
         Label authorsLabel = new Label("Created with Love by: Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, Chelsea Feliciano");
-        //Separator line to separate Header + authors from credits text.
+        // Separator line to separate Header + authors from credits text.
         Separator separator = new Separator();
 
-        //Credits text:
-        TextFlow creditsText = getText();
+        // Credits text:
+        TextFlow creditsText = getCreditsText();
         creditsText.setStyle("-fx-font-size: 14px; -fx-padding: 10");
 
         Button closeButton = new Button("Close");
@@ -63,30 +65,39 @@ public class AboutPageController {
         aboutStage.show();
     }
 
-    private static TextFlow getText() {
+    /**
+     * Create the credits text for the about page.
+     * @return TextFlow with the credits text.
+     */
+    private static TextFlow getCreditsText() {
         TextFlow textFlow = new TextFlow();
         textFlow.setTextAlignment(TextAlignment.LEFT);
 
         textFlow.getChildren().addAll(
-                new Text("The project makes use of the following external libraries and APIs:\n\n"),
-                createHyperlink("Gluon Maps", "https://github.com/gluonhq/maps"),
-                new Text(" - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps\n\n"),
-                createHyperlink("OSGB by DST", "https://github.com/dstl/osgb"),
-                new Text(" - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude\n\n"),
-                createHyperlink("GeographicLib", "https://github.com/geographiclib/geographiclib-java"),
-                new Text(" - Used for geodesic distance calculation\n\n"),
-                createHyperlink("Postcodes.io", "https://postcodes.io/"),
-                new Text(" - API used to get location & address data from the specified longitude and latitude on the map\n\n"),
-                createHyperlink("World Air Quality Index API", "https://aqicn.org/api/"),
-                new Text(" - An API to get real-time Air Quality Index Updates from the World Air Quality Index Project\n\n"),
-                createHyperlink("GSON", "https://github.com/google/gson"),
-                new Text(" - A library by Google to convert between JSON and Java Objects\n")
+            new Text("The project makes use of the following external libraries and APIs:\n\n"),
+            createHyperlink("Gluon Maps", "https://github.com/gluonhq/maps"),
+            new Text(" - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps\n\n"),
+            createHyperlink("OSGB by DST", "https://github.com/dstl/osgb"),
+            new Text(" - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude\n\n"),
+            createHyperlink("GeographicLib", "https://github.com/geographiclib/geographiclib-java"),
+            new Text(" - Used for geodesic distance calculation\n\n"),
+            createHyperlink("Postcodes.io", "https://postcodes.io/"),
+            new Text(" - API used to get location & address data from the specified longitude and latitude on the map\n\n"),
+            createHyperlink("World Air Quality Index API", "https://aqicn.org/api/"),
+            new Text(" - An API to get real-time Air Quality Index Updates from the World Air Quality Index Project\n\n"),
+            createHyperlink("GSON", "https://github.com/google/gson"),
+            new Text(" - A library by Google to convert between JSON and Java Objects\n")
         );
 
         return textFlow;
     }
 
-    // Helper method to create clickable links
+    /**
+     * Helper method to create clickable links.
+     * @param text The text to display.
+     * @param url The URL to open when clicked.
+     * @return A Hyperlink object.
+     */
     private static Hyperlink createHyperlink(String text, String url) {
         Hyperlink hyperlink = new Hyperlink(text);
         hyperlink.setOnAction(event -> {
