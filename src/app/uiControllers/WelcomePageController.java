@@ -57,7 +57,7 @@ public class WelcomePageController {
         // String formatting for each tutorial page to make it easier to write text.
         String welcomeMessage = """
                 Welcome to the UK Emissions Interactive Map!
-                This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
+                This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano.
                 
                 This is a short tutorial on how to use the app effectively.
                 To start, you can use your mouse to drag around the map and use your mousewheel or trackpad to zoom in or out by scrolling.
@@ -87,7 +87,6 @@ public class WelcomePageController {
         String lastPage = """
                 You are now ready to use the interactive map!
                 If you need to view this tutorial again, you can access it by clicking "Help" => "Tutorial" on the navigation bar.
-                
                 """;
 
         // Add the image path and description pairs into the linked HashMap.
