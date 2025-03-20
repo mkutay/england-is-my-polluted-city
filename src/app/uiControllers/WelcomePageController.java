@@ -47,7 +47,7 @@ public class WelcomePageController {
 
     private static void initialiseMenu(){
         // Some string formatting
-        String firstPage = """
+        String welcomeMessage = """
                 Welcome to the UK Emissions Interactive Map!
                 This project was made by Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong and Chelsea Feliciano.
                 
@@ -55,23 +55,41 @@ public class WelcomePageController {
                 To start, you can use your mouse to drag around the map and use your mousewheel or trackpad to zoom in or out by scrolling.
                 Clicking on the "Legend" box will reveal the pollution values for the colours represented on the map.
                 """;
-        String secondPage = """
+        String sidePanelTutorial = """
                 On the side panel, you are able to select the Pollutant and historical data by year to view.
                 Selecting an option will automatically load the data to be viewed.
+                
+                Use the slider to only highlight areas that reach a certain pollution percentage.
+                
+                This app also allows changing the colour to be more colour blind friendly.
                 """;
-        String thirdPage = """
+        String popUpTutorial = """
                 Right clicking on any area of the map will display detailed information about the selected area's location information such as coordinates and postal code on the map along with pollution details.
                 The popup will also display live pollution details taken from the World Air Quality Index which is updated hourly.
                 """;
-        String fourthPage = """
+        String closeSidePanelTutorial = """
+                Click on the cat next to the side panel to hide the side panel for easier map viewing!
+                The buttons on the upper-right hand side of the application also allow for zooming in and out, as well as switching between windowed and full-screen modes.
+                """;
+
+        String statsTutorial = """
                 Clicking on "View Pollution Statistics" will bring up the Statistics page with a breakdown of various pollution statistics of the selected pollutant and date range.
                 Use the selectors on the side panel to choose the pollutant and date range to search. Further statistical views are available by toggling the buttons on the bottom of the page
                 """;
+        String lastPage = """
+                You are now ready to use the interactive map!
+                If you need to view this tutorial again, you can access it by clicking "Help" => "Tutorial" on the navigation bar.
+                
+                """;
 
-        tutorialPicDescMap.put("/resources/screenshots/main_page.png", firstPage);
-        tutorialPicDescMap.put("/resources/screenshots/main_page_selection.png", secondPage);
-        tutorialPicDescMap.put("/resources/screenshots/info_popup.png", thirdPage);
-        tutorialPicDescMap.put("/resources/screenshots/statistics_page.png", fourthPage);
+        tutorialPicDescMap.put("/resources/screenshots/main_page.png", welcomeMessage);
+        tutorialPicDescMap.put("/resources/screenshots/main_page_selection.png", sidePanelTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/main_page_colour_selector.png", sidePanelTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/info_popup.png", popUpTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/main_page_cat.png", closeSidePanelTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/fullscreen_cat.png", closeSidePanelTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/statistics_page.png", statsTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/main_screen_ready.png", lastPage);
 
         // Store ordered image paths
         imagePaths.addAll(tutorialPicDescMap.keySet());
