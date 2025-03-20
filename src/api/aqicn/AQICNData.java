@@ -10,11 +10,13 @@ public class AQICNData {
     private int aqi;
     private AQIPollutantData iaqi;
     private AQITimestamp time;
+    private AQICity city;
 
     // Getters:
     public AQIPollutantData getPollutantValues() { return iaqi; }
     public AQITimestamp getTimeData() { return time; }
     public int getAqi() { return aqi; }
+    public AQICity getCity() { return city; }
 
     @Override
     public String toString() {
