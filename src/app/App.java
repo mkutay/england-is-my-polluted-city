@@ -55,7 +55,7 @@ public class App extends Application {
             System.err.println("Error: primaryStage is null, cannot dim.");
             return;
         }
-        //Makes window blur until welcomePage is closed
+        // Makes window blur until welcomePage is closed.
         BoxBlur blurEffect = new BoxBlur(3, 3, 5);
         primaryStage.getScene().getRoot().setEffect(blurEffect);
 
@@ -73,8 +73,8 @@ public class App extends Application {
         welcomePageController.show(); // Show tutorial window
 
         // Makes window transparent until welcomePage is closed
-        //primaryStage.setOpacity(0.8); // Dim effect on the entire window
-        //welcomePageController.getStage().setOnHidden(e -> primaryStage.setOpacity(1.0));
+        // primaryStage.setOpacity(0.8); // Dim effect on the entire window
+        // welcomePageController.getStage().setOnHidden(e -> primaryStage.setOpacity(1.0));
 
         welcomePageController.getStage().setOnHidden(e -> {
             primaryStage.getScene().getRoot().setEffect(null);

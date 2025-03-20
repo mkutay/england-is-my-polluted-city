@@ -100,58 +100,74 @@ public class SidePanelController {
         sidePanel.updateNavigationLabels(target);
 
         if ("stats".equals(target)) {
-            // Switching to statistics view.
-            rootPane.setCenter(statisticsController.getStatisticsPane());
-            sidePanel.getSwitchLabel().setText("Return to Map");
-            
-            // Show end year dropdown and change year label to "Start Year".
-            sidePanel.getEndYearDropdownBox().setVisible(true);
-            sidePanel.getEndYearDropdownBox().setManaged(true);
-            dataSelectionController.setYearLabelText("Start Year:");
-
-            sidePanel.getColorDropdownBox().setVisible(false);
-            sidePanel.getColorDropdownBox().setManaged(false);
-            sidePanel.getSliderContainer().setVisible(false);
-            sidePanel.getSliderContainer().setManaged(false);
-            
-            Integer startYear = dataSelectionController.getSelectedYear();
-            Integer endYear = dataSelectionController.getSelectedEndYear();
-            Pollutant pollutant = dataSelectionController.getSelectedPollutant();
-            
-            if (startYear != null && endYear != null && pollutant != null) {
-                statisticsController.updateDataSetRange(startYear, endYear, pollutant);
-            }
-            
-            mapShown = false;
+            switchToStatistics();
         } else {
-            // Switching to map view.
-            rootPane.setCenter(mapContent);
-            sidePanel.getSwitchLabel().setText("ⓘ View Pollutant Statistics");
-            
-            // Hide end year dropdown and change year label back to "Year".
-            sidePanel.getEndYearDropdownBox().setVisible(false);
-            sidePanel.getEndYearDropdownBox().setManaged(false);
-            dataSelectionController.setYearLabelText("Year:");
-
-            sidePanel.getColorDropdownBox().setVisible(true);
-            sidePanel.getColorDropdownBox().setManaged(true);
-            sidePanel.getSliderContainer().setVisible(true);
-            sidePanel.getSliderContainer().setManaged(true);
-            
-            Integer year = dataSelectionController.getSelectedYear();
-            Pollutant pollutant = dataSelectionController.getSelectedPollutant();
-            ColorScheme colorScheme = colorSchemeController.getSelectedColorScheme();
-            
-            if (year != null && pollutant != null && colorScheme != null) {
-                mapController.updateMapDataSet(year, pollutant, colorScheme);
-            }
-            
-            mapShown = true;
+            switchToMap();
         }
+    }
+
+    /**
+     * Switches to the statistics view.
+     */
+    private void switchToStatistics() {
+        // Switching to statistics view.
+        rootPane.setCenter(statisticsController.getStatisticsPane());
+        sidePanel.getSwitchLabel().setText("Return to Map");
+        
+        // Show end year dropdown and change year label to "Start Year".
+        sidePanel.getEndYearDropdownBox().setVisible(true);
+        sidePanel.getEndYearDropdownBox().setManaged(true);
+        dataSelectionController.setYearLabelText("Start Year:");
+
+        sidePanel.getColorDropdownBox().setVisible(false);
+        sidePanel.getColorDropdownBox().setManaged(false);
+        sidePanel.getSliderContainer().setVisible(false);
+        sidePanel.getSliderContainer().setManaged(false);
+        
+        Integer startYear = dataSelectionController.getSelectedYear();
+        Integer endYear = dataSelectionController.getSelectedEndYear();
+        Pollutant pollutant = dataSelectionController.getSelectedPollutant();
+        
+        if (startYear != null && endYear != null && pollutant != null) {
+            statisticsController.updateDataSetRange(startYear, endYear, pollutant);
+        }
+        
+        mapShown = false;
+    }
+
+    /**
+     * Switches to the map view.
+     */
+    private void switchToMap() {
+        // Switching to map view.
+        rootPane.setCenter(mapContent);
+        sidePanel.getSwitchLabel().setText("ⓘ View Pollutant Statistics");
+        
+        // Hide end year dropdown and change year label back to "Year".
+        sidePanel.getEndYearDropdownBox().setVisible(false);
+        sidePanel.getEndYearDropdownBox().setManaged(false);
+        dataSelectionController.setYearLabelText("Year:");
+
+        sidePanel.getColorDropdownBox().setVisible(true);
+        sidePanel.getColorDropdownBox().setManaged(true);
+        sidePanel.getSliderContainer().setVisible(true);
+        sidePanel.getSliderContainer().setManaged(true);
+        
+        Integer year = dataSelectionController.getSelectedYear();
+        Pollutant pollutant = dataSelectionController.getSelectedPollutant();
+        ColorScheme colorScheme = colorSchemeController.getSelectedColorScheme();
+        
+        if (year != null && pollutant != null && colorScheme != null) {
+            mapController.updateMapDataSet(year, pollutant, colorScheme);
+        }
+        
+        mapShown = true;
     }
 
     /**
      * @return The side panel VBox.
      */
-    public SidePanel getSidePanel() {return sidePanel;}
+    public SidePanel getSidePanel() {
+        return sidePanel;
+    }
 }

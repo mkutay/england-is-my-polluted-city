@@ -33,8 +33,8 @@ public class MapController {
     private Pollutant currentPollutant;
     private ColorScheme currentColourScheme;
     private PollutionLayer pollutionLayer;
-    //private PollutionPolygonSelector pollutionPolygonSelector;
     private boolean pollutionLayerInitialised = false;
+    //private PollutionPolygonSelector pollutionPolygonSelector;
 
     /**
      * Constructor for MapController.
@@ -49,7 +49,7 @@ public class MapController {
 
         //pollutionPolygonSelector = new PollutionPolygonSelector(mapView, mapOverlay);
 
-        setupMapView(); // Opens mapView in London
+        setupMapView(); // Opens mapView in London.
     }
 
     /**
@@ -111,6 +111,10 @@ public class MapController {
         mapView.dirtyRefresh();
     }
 
+    /**
+     * Updates the pollution layer with a new threshold percentage.
+     * @param thresholdPercentage The new threshold percentage.
+     */
     public void updatePollutionThreshold(double thresholdPercentage){
         pollutionLayer.setVisiblePolygonThreshold(thresholdPercentage);
     }

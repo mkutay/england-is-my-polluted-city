@@ -25,8 +25,8 @@ public class DataSelectionController {
     private final ComboBox<Integer> yearDropdown;
     private final ComboBox<Integer> endYearDropdown;
 
-    private BiConsumer<Integer, Pollutant> onSelectionChangedCallback;
-    private TriConsumer<Integer, Integer, Pollutant> onRangeSelectionChangedCallback;
+    private BiConsumer<Integer, Pollutant> onSelectionChangedCallback; // Single year callback with pollutant.
+    private TriConsumer<Integer, Integer, Pollutant> onRangeSelectionChangedCallback; // Year range callback with pollutant.
     private Label yearLabel;
     
     private boolean updatingDropdowns = false; // Flag to prevent recursive updates.
@@ -69,6 +69,9 @@ public class DataSelectionController {
         setupEventListeners();
     }
     
+    /**
+     * Setup cell factories for the pollutant dropdown to display the pollutant names.
+     */
     private void setupPollutantCellFactory() {
         pollutantDropdown.setCellFactory(listView -> new ListCell<>() {
             @Override
@@ -146,6 +149,9 @@ public class DataSelectionController {
         }
     }
     
+    /**
+     * Setup event listeners for dropdowns.
+     */
     private void setupEventListeners() {
         // Pollutant changes.
         pollutantDropdown.setOnAction(e -> {

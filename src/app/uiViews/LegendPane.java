@@ -27,6 +27,9 @@ public class LegendPane extends VBox {
     private final VBox content;
     private boolean expanded = false;
 
+    /**
+     * Constructor.
+     */
     public LegendPane() {
         HBox header = new HBox();
         Label titleLabel = new Label("Legend");
@@ -38,7 +41,6 @@ public class LegendPane extends VBox {
         titleLabel.getStyleClass().add("legend-title");
         header.getStyleClass().add("legend-header");
         getStyleClass().add("legend-pane");
-
 
         // Content area (initially hidden).
         content = new VBox();
@@ -56,7 +58,12 @@ public class LegendPane extends VBox {
         header.setOnMouseClicked(e -> toggle());
     }
 
-    public void updateLegend(ColorSchemeManager colorSchemeManager, double maxPollutionValue){
+    /**
+     * Updates the legend according to the color scheme and maximum pollution value.
+     * @param colorSchemeManager The color scheme manager.
+     * @param maxPollutionValue The maximum pollution value.
+     */
+    public void updateLegend(ColorSchemeManager colorSchemeManager, double maxPollutionValue) {
         clearLegendItems();
 
         List<Color> colors = colorSchemeManager.getColorScheme().getColors();
@@ -75,6 +82,11 @@ public class LegendPane extends VBox {
         }
     }
 
+    /**
+     * Adds a legend item to the legend.
+     * @param label The label.
+     * @param color The color.
+     */
     private void addLegendItem(String label, Color color) {
         HBox item = new HBox(5);
         Label itemLabel = new Label(label);
@@ -85,10 +97,16 @@ public class LegendPane extends VBox {
         content.getChildren().add(item);
     }
 
-    private void clearLegendItems(){
+    /**
+     * Clears all legend items.
+     */
+    private void clearLegendItems() {
         content.getChildren().clear();
     }
 
+    /**
+     * Toggles the visibility of the content area of the legend.
+     */
     private void toggle() {
         expanded = !expanded;
 

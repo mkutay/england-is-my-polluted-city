@@ -12,10 +12,13 @@ import javafx.scene.input.ScrollEvent;
  * @version 1.0
  */
 public class CustomMapView extends MapView {
-    private final double minZoom = 3;  // Min zoom allowed
+    private final double minZoom = 3; // Min zoom allowed
     private final double maxZoom = 20; // Max zoom allowed
     private final double zoomStep = 0.1; // Smaller step for smooth zooming
 
+    /**
+     * Constructor.
+     */
     public CustomMapView() {
         setupZoomControl();
     }

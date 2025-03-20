@@ -14,16 +14,17 @@ import utility.CustomMapView;
  * It ensures proper alignment and placement of these components within the overlay.
  *
  * @author Chelsea Feliciano
+ * @version 1.0
  */
 public class MapOverlay extends AnchorPane {
     private final LegendPane legend;
     private final ZoomControls zoomControls;
-    private HideSidePanelButton hideSidePanelButton;
     private final CustomMapView mapView;
+    
+    private HideSidePanelButton hideSidePanelButton;
 
     /**
      * Constructs the map overlay with a given map view.
-     *
      * @param mapView The map view to be displayed within the overlay.
      */
     public MapOverlay(CustomMapView mapView) {
@@ -49,7 +50,6 @@ public class MapOverlay extends AnchorPane {
 
     /**
      * Adds a button to toggle the visibility of a side panel.
-     *
      * @param sidePanel The side panel controlled by the button.
      */
     public void setSidePanel(SidePanel sidePanel) {

@@ -20,6 +20,10 @@ import java.util.List;
 /**
  * Manages the UI layout and components of the side panel.
  * This class is responsible for UI construction and delegates logic to SidePanelController.
+ * 
+ * Refactor and class by Chelsea Feliciano
+ * @author Chelsea Feliciano, Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong
+ * @version 2.0
  */
 public class SidePanel extends VBox {
     private Label mapLabel;
@@ -48,11 +52,11 @@ public class SidePanel extends VBox {
 
         this.getStyleClass().add("side-panel");
         this.getChildren().addAll(
-                createAppLabel(),
-                createNavigationBar(),
-                createSelectionControls(),
-                createPollutionThresholdSlider(),
-                createSwitchButton()
+            createAppLabel(),
+            createNavigationBar(),
+            createSelectionControls(),
+            createPollutionThresholdSlider(),
+            createSwitchButton()
         );
     }
 
