@@ -18,12 +18,12 @@
     -fx-background-color: gray;/* Gray color */
 }
 
-/* styles for side panel */
+/* side panel */
 .side-panel {
     -fx-background-color: linear-gradient(to top right, white, cornsilk);
 }
 
-/* styles for title */
+/* title */
 .app-title {
     -fx-max-width: 150px;
     -fx-font-weight: bold;
