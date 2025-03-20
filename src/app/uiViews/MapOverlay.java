@@ -55,8 +55,8 @@ public class MapOverlay extends AnchorPane {
     public void setSidePanel(SidePanel sidePanel) {
         hideSidePanelButton = new HideSidePanelButton(sidePanel);
         getChildren().add(hideSidePanelButton);
-        setBottomAnchor(hideSidePanelButton, 30.0);
-        setLeftAnchor(hideSidePanelButton, -25.0);
+        setBottomAnchor(hideSidePanelButton, 50.0);
+        setLeftAnchor(hideSidePanelButton, -5.0);
     }
 
     // Getters:
