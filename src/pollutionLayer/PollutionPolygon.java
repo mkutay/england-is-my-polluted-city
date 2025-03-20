@@ -101,8 +101,7 @@ public class PollutionPolygon {
      * @return the colour of this polygon based on the ColourScheme
      */
     public Color getColor(ColorScheme colorScheme) {
-        Color color = colorScheme.getColor(normalisedValue);
-        return color;
+        return colorScheme.getColor(normalisedValue);
     }
 
     /**
