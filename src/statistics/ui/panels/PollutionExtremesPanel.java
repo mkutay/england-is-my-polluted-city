@@ -77,6 +77,7 @@ public class PollutionExtremesPanel extends StatisticsPanel {
         );
 
         chartPanel.setSeriesNames("Max", "Median", "Min");
+        chartPanel.populateChart();
         
         chartPanel.setPadding(new Insets(10));
         VBox.setVgrow(chartPanel, Priority.ALWAYS);

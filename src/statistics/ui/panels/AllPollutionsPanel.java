@@ -72,6 +72,7 @@ public class AllPollutionsPanel extends StatisticsPanel {
         );
 
         chartPanel.setSeriesNames(Pollutant.NO2.getDisplayName(), Pollutant.PM10.getDisplayName(), Pollutant.PM2_5.getDisplayName());
+        chartPanel.populateChart();
         
         chartPanel.setPadding(new Insets(10));
         VBox.setVgrow(chartPanel, Priority.ALWAYS);

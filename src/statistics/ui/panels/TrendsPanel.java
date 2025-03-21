@@ -76,6 +76,7 @@ public class TrendsPanel extends StatisticsPanel {
         );
 
         chartPanel.setSeriesNames("Mean", "Median", "Standard Deviation");
+        chartPanel.populateChart();
         
         chartPanel.setPadding(new Insets(10));
         VBox.setVgrow(chartPanel, Priority.ALWAYS);
