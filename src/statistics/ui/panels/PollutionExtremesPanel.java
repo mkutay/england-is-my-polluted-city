@@ -99,7 +99,11 @@ public class PollutionExtremesPanel extends StatisticsPanel {
                 hotspot.gridCode(), hotspot.x(), hotspot.y());
 
             if (response != null && response.getResult() != null && !response.getResult().isEmpty()) {
-                label += " - " + response.getResult().get(0).getParliamentary_constituency();
+                label += " - " + response.getResult().get(0).getRegion();
+            } else if (response != null && response.getResult() != null && !response.getResult().isEmpty()) {
+                label += " - " + response.getResult().get(0).getPostcode();
+            } else if (response != null && response.getResult() != null && !response.getResult().isEmpty()) {
+                label += " - " + response.getResult().get(0).getAdmin_district();
             }
 
             return label;
