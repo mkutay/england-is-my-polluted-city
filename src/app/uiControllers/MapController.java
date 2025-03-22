@@ -34,6 +34,8 @@ public class MapController {
     private ColorScheme currentColourScheme;
     private PollutionLayer pollutionLayer;
     private boolean pollutionLayerInitialised = false;
+
+    private double currentPollutionThreshold = 0; //Store current pollution threshold to send to pollution layer on creation
     //private PollutionPolygonSelector pollutionPolygonSelector;
 
     /**
@@ -107,6 +109,8 @@ public class MapController {
         mapOverlay.getLegend().updateLegend(colorSchemeManager, dataSet.getMaxPollutionValue());
 
         pollutionLayer = new PollutionLayer(mapView, dataSet, clickHandler, pollutant, colorSchemeManager);
+        pollutionLayer.setVisiblePolygonThreshold(currentPollutionThreshold); //update threshold
+
         mapView.addLayer(pollutionLayer); // Add back the new pollution layer.
         mapView.dirtyRefresh();
     }
@@ -117,5 +121,6 @@ public class MapController {
      */
     public void updatePollutionThreshold(double thresholdPercentage){
         pollutionLayer.setVisiblePolygonThreshold(thresholdPercentage);
+        currentPollutionThreshold = thresholdPercentage;
     }
 }

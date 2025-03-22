@@ -88,7 +88,7 @@ public class PollutionLayer extends MapLayer {
             MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst();
             Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude());
 
-            if (polygonTopLeftScreen == null){
+            if (polygonTopLeft == null){
                 continue; // Edge case when switching to statistics panel.
             }
 
@@ -123,6 +123,6 @@ public class PollutionLayer extends MapLayer {
      */
     public void setVisiblePolygonThreshold(double thresholdPercentage) {
         pollutionThresholdPercentage = thresholdPercentage;
-        renderPolygons(); // Re-draw.
+        markDirty(); // Re-draw.
     }
 }
