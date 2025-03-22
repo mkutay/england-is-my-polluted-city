@@ -93,7 +93,7 @@ public class WelcomePageController {
                 """;
 
         // Add the image path and description pairs into the linked HashMap.
-        tutorialPicDescMap.put("/resources/screenshots/main_page.png", welcomeMessage);
+        tutorialPicDescMap.put("/resources/screenshots/main_pagee.png", welcomeMessage);
         tutorialPicDescMap.put("/resources/screenshots/main_page_selection.png", sidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/main_page_colour_selector.png", sidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/info_popup.png", popUpTutorial);
@@ -165,7 +165,7 @@ public class WelcomePageController {
         } catch (Exception e) {
             // Catch the error without terminating the app. Use a placeholder image instead.
             welcomePage.updateContent(PLACEHOLDER_IMAGE, description, isFirst, isLast);
-            System.out.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used.");
+            System.out.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used. Exception: "+ e);
         }
     }
 
