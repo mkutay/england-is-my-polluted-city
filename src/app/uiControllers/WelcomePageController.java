@@ -82,6 +82,9 @@ public class WelcomePageController {
                 Clicking on "View Pollution Statistics" will bring up the Statistics page with a breakdown of various pollution statistics of the selected pollutant and date range.
                 Use the selectors on the side panel to choose the pollutant and date range to search. Further statistical views are available by toggling the buttons on the bottom of the page
                 """;
+        String statsToolTips = """
+                To view more detailed stats at a given data point in the statistics panel, hover over any data point with your mouse. This will work for both line and bar graphs.
+                """;
         String lastPage = """
                 You are now ready to use the interactive map!
                 If you need to view this tutorial again, you can access it by clicking "Help" => "Tutorial" on the navigation bar.
@@ -95,6 +98,8 @@ public class WelcomePageController {
         tutorialPicDescMap.put("/resources/screenshots/main_page_cat.png", closeSidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/fullscreen_cat.png", closeSidePanelTutorial);
         tutorialPicDescMap.put("/resources/screenshots/statistics_page.png", statsTutorial);
+        tutorialPicDescMap.put("/resources/screenshots/stats_tooltip.png", statsToolTips);
+        tutorialPicDescMap.put("/resources/screenshots/histogram_tooltip.png", statsToolTips);
         tutorialPicDescMap.put("/resources/screenshots/main_screen_ready.png", lastPage);
 
         // Store ordered image paths.
@@ -158,7 +163,7 @@ public class WelcomePageController {
         } catch (Exception e) {
             // Catch the error without terminating the app. Use a placeholder image instead.
             welcomePage.updateContent(PLACEHOLDER_IMAGE, description, isFirst, isLast);
-            System.out.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used.");
+            System.err.println("Illegal Argument Exception: This is likely due to a file not being named correctly. Check if the path reference for your image is correct. Placeholder Image has been used. Exception: "+ e);
         }
     }
 

@@ -2,6 +2,8 @@ package statistics.back;
 
 import dataProcessing.Pollutant;
 import statistics.back.allPollutions.AllPollutionsCalculator;
+import statistics.back.distribution.DistributionAnalysisCalculator;
+import statistics.back.histogram.HistogramCalculator;
 import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
 import statistics.back.trends.TrendsCalculator;
 
@@ -36,6 +38,8 @@ public class StatisticsManager {
         registerCalculator(new TrendsCalculator());
         registerCalculator(new PollutionExtremesCalculator());
         registerCalculator(new AllPollutionsCalculator());
+        registerCalculator(new HistogramCalculator());
+        registerCalculator(new DistributionAnalysisCalculator());
     }
     
     /**

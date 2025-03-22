@@ -127,7 +127,6 @@ public abstract class StatisticsPanel extends BorderPane {
     protected void addSeparator() {
         Separator separator = new Separator();
         contentPanel.getChildren().add(separator);
-        contentPanel.getChildren().add(new VBox(5)); // Spacing.
     }
 
     /**
@@ -136,6 +135,9 @@ public abstract class StatisticsPanel extends BorderPane {
      * @return The formatted value.
      */
     protected String formatDouble(double value) {
-        return Double.toString((int) (value * 1000) / 1000d);
+        if (Double.isNaN(value)) {
+            return "N/A";
+        }
+        return String.format("%.2f", value);
     }
 }

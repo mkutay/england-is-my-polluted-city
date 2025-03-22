@@ -4,8 +4,10 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 public class LineChartPanel extends VBox {
     private List<Map<Integer, Double>> data;
+    private String[] names;
     
     private final LineChart<String, Number> lineChart;
     
@@ -48,30 +51,40 @@ public class LineChartPanel extends VBox {
         // Make chart fill available space:
         VBox.setVgrow(lineChart, Priority.ALWAYS);
         
-        populateChart();
-        
         getChildren().add(lineChart);
     }
     
     /**
      * Populate the chart with data.
      */
-    private void populateChart() {
+    public void populateChart() {
         if (data == null || data.isEmpty()) {
             return;
         }
         
-        // Create a separate series for each data map
+        // Create a separate series for each data map:
         for (int i = 0; i < data.size(); i++) {
             Map<Integer, Double> dataMap = data.get(i);
             XYChart.Series<String, Number> series = new XYChart.Series<>();
-            series.setName("Series " + (i + 1)); // Set a default name.
+            series.setName(names[i]);
             
             for (Integer key : dataMap.keySet()) {
-                series.getData().add(new XYChart.Data<>(key.toString(), dataMap.get(key)));
+                XYChart.Data<String, Number> dataPoint = new XYChart.Data<>(key.toString(), dataMap.get(key));
+                series.getData().add(dataPoint);
             }
             
             lineChart.getData().add(series);
+        }
+
+        // Add tooltip to show actual value on hover:
+        for (XYChart.Series<String, Number> series : lineChart.getData()) {
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                String tooltipText = String.format("%s: %.2f (%s)", data.getXValue(), data.getYValue(), series.getName());
+                
+                Tooltip tooltip = new Tooltip(tooltipText);
+                tooltip.setShowDelay(Duration.millis(80));
+                Tooltip.install(data.getNode(), tooltip);
+            }
         }
     }
     
@@ -92,12 +105,10 @@ public class LineChartPanel extends VBox {
      * @param names Names for each series in the chart
      */
     public void setSeriesNames(String... names) {
-        if (names == null || lineChart.getData().isEmpty()) {
+        if (names == null || names.length == 0) {
             return;
         }
-        
-        for (int i = 0; i < Math.min(names.length, lineChart.getData().size()); i++) {
-            lineChart.getData().get(i).setName(names[i]);
-        }
+
+        this.names = names;
     }
 }

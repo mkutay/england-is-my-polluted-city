@@ -1,11 +1,5 @@
 package statistics.back;
 
-import java.util.List;
-import java.util.Map;
-import java.util.OptionalDouble;
-import java.util.stream.Collectors;
-
-import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
 
 /**
