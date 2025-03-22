@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests valid and invalid inputs for the AQI API
+ * @author Matthias Loong
+ */
 public class AQIAPITest {
     //Test coordinates for London:
     private static final double VALID_LATITUDE = 51.508045;
@@ -43,7 +47,7 @@ public class AQIAPITest {
     @Test
     void testAQIAPIInvalidCoordinates(){
         try {
-            AQIResponse response = AQICNAPI.getPollutionData(INVALID_LONGITUDE, INVALID_LONGITUDE);
+            AQIResponse response = AQICNAPI.getPollutionData(INVALID_LATITUDE, INVALID_LONGITUDE);
 
             //Response should be null if 0 is entered as a value
             assertNull(response, "Response should be null for invalid coordinates.");
