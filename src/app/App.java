@@ -49,7 +49,7 @@ public class App extends Application {
      */
     public void showWelcomePage() {
         if (welcomePageController == null) {
-            welcomePageController = new WelcomePageController(this);
+            welcomePageController = new WelcomePageController();
         }
         if (primaryStage == null) {
             System.err.println("Error: primaryStage is null, cannot dim.");

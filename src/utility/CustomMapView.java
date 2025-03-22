@@ -66,7 +66,7 @@ public class CustomMapView extends MapView {
     private void handleScrollZoom(ScrollEvent event) {
         double zoomChange = event.getDeltaY() > 0 ? zoomStep : -zoomStep; // Zoom in on scroll up, out on scroll down
         applyZoom(zoomChange);
-        event.consume(); // Prevent default zoom behavior
+        event.consume(); // Prevent default zoom behaviour
     }
 
     /**

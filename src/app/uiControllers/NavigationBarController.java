@@ -18,7 +18,7 @@ public class NavigationBarController {
 
     /**
      * Constructor for NavigationBarController.
-     * Creates and initializes the top navigation bar.
+     * Creates and initialises the top navigation bar.
      */
     public NavigationBarController(App app) {
         this.app = app;

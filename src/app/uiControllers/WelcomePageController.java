@@ -1,6 +1,5 @@
 package app.uiControllers;
 
-import app.App;
 import app.uiViews.WelcomePage;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,7 +15,6 @@ import java.util.*;
 public class WelcomePageController {
     private final WelcomePage welcomePage;
     private final Stage stage;
-    private final App app;
     // Explicitly initialise the current page counter as 0 for easier reading.
     private int currentPage = 0;
 
@@ -32,15 +30,15 @@ public class WelcomePageController {
 
     /**
      * The constructor method for the welcome page controller.
-     * @param app The main JavaFX app object to allow the app to display this page.
+     //* @param app The main JavaFX app object to allow the app to display this page.
      */
-    public WelcomePageController(App app) {
-        this.app = app;
+    public WelcomePageController() {
         welcomePage = new WelcomePage();
         stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setTitle("Tutorial");
         stage.setScene(new Scene(welcomePage));
+        stage.sizeToScene();
 
         // Logic for handling the navigation buttons.
         welcomePage.getPrevButton().setOnAction(e -> navigate(-1));
