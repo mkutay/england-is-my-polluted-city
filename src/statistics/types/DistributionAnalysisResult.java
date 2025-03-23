@@ -1,4 +1,4 @@
-package statistics.back.distribution;
+package statistics.types;
 
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;

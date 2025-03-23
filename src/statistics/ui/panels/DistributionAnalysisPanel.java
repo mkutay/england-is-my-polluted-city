@@ -8,7 +8,7 @@ import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import statistics.back.distribution.DistributionAnalysisResult;
+import statistics.types.DistributionAnalysisResult;
 import statistics.types.DistributionYearlyMetric;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.DataTablePanel;

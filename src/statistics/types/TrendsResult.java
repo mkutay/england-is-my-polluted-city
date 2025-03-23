@@ -1,4 +1,4 @@
-package statistics.back.trends;
+package statistics.types;
 
 import java.util.Map;
 

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
-import statistics.back.allPollutions.AllPollutionsCalculator;
-import statistics.back.allPollutions.AllPollutionsResult;
+import statistics.back.calculators.AllPollutionsCalculator;
+import statistics.types.AllPollutionsResult;
 
 /**
  * Test class for the AllPollutionCalculator class.

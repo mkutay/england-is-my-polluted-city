@@ -1,4 +1,4 @@
-package statistics.back.histogram;
+package statistics.types;
 
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;

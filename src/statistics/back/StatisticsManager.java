@@ -1,11 +1,11 @@
 package statistics.back;
 
 import dataProcessing.Pollutant;
-import statistics.back.allPollutions.AllPollutionsCalculator;
-import statistics.back.distribution.DistributionAnalysisCalculator;
-import statistics.back.histogram.HistogramCalculator;
-import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
-import statistics.back.trends.TrendsCalculator;
+import statistics.back.calculators.AllPollutionsCalculator;
+import statistics.back.calculators.DistributionAnalysisCalculator;
+import statistics.back.calculators.HistogramCalculator;
+import statistics.back.calculators.PollutionExtremesCalculator;
+import statistics.back.calculators.TrendsCalculator;
 
 import java.util.ArrayList;
 import java.util.List;

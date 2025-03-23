@@ -3,7 +3,7 @@ package statistics.ui.panels;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import statistics.back.trends.TrendsResult;
+import statistics.types.TrendsResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 

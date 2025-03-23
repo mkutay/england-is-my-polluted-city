@@ -1,4 +1,4 @@
-package statistics.back.histogram;
+package statistics.back.calculators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +15,7 @@ import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
+import statistics.types.HistogramResult;
 
 public class HistogramCalculator implements StatisticsCalculator {
     private static final int DEFAULT_HISTOGRAM_BINS = 10;

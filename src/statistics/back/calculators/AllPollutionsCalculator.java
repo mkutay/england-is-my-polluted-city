@@ -1,4 +1,4 @@
-package statistics.back.allPollutions;
+package statistics.back.calculators;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
-import statistics.back.trends.TrendsCalculator;
-import statistics.back.trends.TrendsResult;
+import statistics.types.AllPollutionsResult;
+import statistics.types.TrendsResult;
 
 /**
  * Calculator for all pollutants.

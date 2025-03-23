@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import statistics.back.pollutionExtremes.PollutionExtremesResult;
+import statistics.types.PollutionExtremesResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 import dataProcessing.DataPoint;

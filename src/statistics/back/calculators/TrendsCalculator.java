@@ -1,4 +1,4 @@
-package statistics.back.trends;
+package statistics.back.calculators;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
+import statistics.types.TrendsResult;
 
 /**
  * Calculator for trends analysis.

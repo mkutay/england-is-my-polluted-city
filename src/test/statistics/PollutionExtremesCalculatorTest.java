@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
-import statistics.back.pollutionExtremes.PollutionExtremesCalculator;
-import statistics.back.pollutionExtremes.PollutionExtremesResult;
+import statistics.back.calculators.PollutionExtremesCalculator;
+import statistics.types.PollutionExtremesResult;
 
 /**
  * Test class for the PollutionExtremesCalculator class.

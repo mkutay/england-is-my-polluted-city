@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
-import statistics.back.distribution.DistributionAnalysisCalculator;
-import statistics.back.distribution.DistributionAnalysisResult;
+import statistics.back.calculators.DistributionAnalysisCalculator;
+import statistics.types.DistributionAnalysisResult;
 
 /**
  * Test class for the DistributionAnalysisCalculator class.

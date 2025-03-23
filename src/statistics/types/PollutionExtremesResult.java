@@ -1,4 +1,4 @@
-package statistics.back.pollutionExtremes;
+package statistics.types;
 
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;

@@ -8,8 +8,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
-import statistics.back.histogram.HistogramResult;
+import statistics.types.HistogramResult;
 
 /**
  * A JavaFX histogram chart panel for displaying distribution data with a logarithmic scale.

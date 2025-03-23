@@ -1,4 +1,4 @@
-package statistics.back.distribution;
+package statistics.back.calculators;
 
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
@@ -6,6 +6,7 @@ import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
+import statistics.types.DistributionAnalysisResult;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;

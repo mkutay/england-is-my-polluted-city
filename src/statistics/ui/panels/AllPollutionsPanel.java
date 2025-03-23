@@ -7,8 +7,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import dataProcessing.Pollutant;
-import statistics.back.allPollutions.AllPollutionsResult;
-import statistics.back.trends.TrendsResult;
+import statistics.types.AllPollutionsResult;
+import statistics.types.TrendsResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.LineChartPanel;
 

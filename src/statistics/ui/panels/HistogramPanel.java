@@ -3,8 +3,7 @@ package statistics.ui.panels;
 import javafx.geometry.Insets;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import statistics.back.histogram.HistogramResult;
+import statistics.types.HistogramResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.components.HistogramChartPanel;
 

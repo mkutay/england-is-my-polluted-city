@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import statistics.back.StatisticsResult;
-import statistics.back.allPollutions.AllPollutionsResult;
-import statistics.back.distribution.DistributionAnalysisResult;
-import statistics.back.histogram.HistogramResult;
-import statistics.back.pollutionExtremes.PollutionExtremesResult;
-import statistics.back.trends.TrendsResult;
+import statistics.types.AllPollutionsResult;
+import statistics.types.DistributionAnalysisResult;
+import statistics.types.HistogramResult;
+import statistics.types.PollutionExtremesResult;
+import statistics.types.TrendsResult;
 import statistics.ui.panels.*;
 
 /**

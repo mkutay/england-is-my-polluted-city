@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
-import statistics.back.trends.TrendsCalculator;
-import statistics.back.trends.TrendsResult;
+import statistics.back.calculators.TrendsCalculator;
+import statistics.types.TrendsResult;
 
 /**
  * Test class for the TrendsCalculator class.

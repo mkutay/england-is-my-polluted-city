@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
-import statistics.back.histogram.HistogramCalculator;
-import statistics.back.histogram.HistogramResult;
+import statistics.back.calculators.HistogramCalculator;
+import statistics.types.HistogramResult;
 
 /**
  * Test class for the HistogramCalculator class.

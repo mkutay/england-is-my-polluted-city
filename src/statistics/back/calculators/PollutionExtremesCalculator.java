@@ -1,4 +1,4 @@
-package statistics.back.pollutionExtremes;
+package statistics.back.calculators;
 
 import dataProcessing.DataManager;
 import dataProcessing.DataPoint;
@@ -6,6 +6,7 @@ import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
 import statistics.back.StatisticsResult;
+import statistics.types.PollutionExtremesResult;
 
 import java.util.ArrayList;
 import java.util.Comparator;

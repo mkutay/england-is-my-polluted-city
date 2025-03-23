@@ -1,10 +1,9 @@
-package statistics.back.allPollutions;
+package statistics.types;
 
 import java.util.Map;
 
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsResult;
-import statistics.back.trends.TrendsResult;
 
 /**
  * Specialized statistics result for all pollutants.
