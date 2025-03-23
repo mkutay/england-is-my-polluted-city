@@ -13,121 +13,24 @@
 \parskip=8pt
 
 \begin{document}
-
+    
     \pagenumbering{gobble}
 
-    \begin{titlepage}
-        \begin{center}
-            \LARGE
-            \textbf{KING'S COLLEGE LONDON}
-
-            \vspace{2cm}
-
-            \begin{adjustwidth}{-1cm}{-1cm}
-                \centering
-                \Large
-                \textbf{4CCS1PPA PROGRAMMING PRACTICE AND APPLICATIONS}
-            \end{adjustwidth}
-
-            \vspace{0.5cm}
-
-            \Large
-            \textbf{Fourth "Air Pollution" Coursework (Mar 2025)}
-
-            \vspace{2cm}
-
-            \Large
-            Project Name: Englang is My Polluted City
-
-            \vspace{1cm}
-
-            \Large
-            \begin{tabular}{l l}
-                Student Name: & Mehmet Kutay Bozkurt \\
-                Student ID: & 23162628 \\
-                \vspace{0.5cm} & \\
-                Student Name: & Anas Ahmed \\
-                Student ID: & 23171444 \\
-                \vspace{0.5cm} & \\
-                Student Name: & Matthias Loong \\
-                Student ID: & 23078800 \\
-                \vspace{0.5cm} & \\
-                Student Name: & Chelsea Feliciano \\
-                Student ID: & 22042916
-            \end{tabular}
-        \end{center}
-        % \tableofcontents
-    \end{titlepage}
+    \input{sections/titlepage}
 
     \begin{multicols}{2}
 
         \pagenumbering{arabic}
 
-        \section{Introduction}
-        
-
-        \section{Directions for Use}
-
-        \section{Tasks Lists and Implementation Details}
-
-        \subsection{Base Tasks}
-
-        \noindent \textbf{Welcome Panel:}
-
-        \noindent \textbf{Data Visualisation Panel (Map View):} We have implemented a colour scheme for the entire map, where the colour
-        of a grid area is determined by the pollution
-        level of that area. The colour scheme is implemented as an interface \verb|ColourScheme| with a single method \verb|getColour()|.
-        This allows us to have different colour schemes for the map, and a way to switch between them quite easily — improving 
-        maintainability and responsibility-driven design.
-
-        \noindent \textbf{Pollution Statistics Panel:}
-
-        \noindent \textbf{Detailed Grid Data:}
-
-        \subsection{Unit Testing}
-
-        \noindent Unit testing was implemented for various classes and various methods within those classes. The unit tests are
-        implemented with JUnit. The tests were implemented to test the functionality of the methods in the classes, and to ensure
-        that the methods are working as expected. These tests were vital in adding functionality to the codebase, as they allowed
-        us to ensure that the new functionality did not break any existing functionality.
-
-        \subsection{Challenge Tasks}
-
-        \noindent \textbf{More Extensive Graph Based Trends:}
-
-        \noindent \textbf{Interactive Map:}
-
-        \noindent \textbf{Adding the Entire UK in the Map:}
-
-        \noindent \textbf{Various Optimisations:} Various optimisations were made to the codebase to vastly improve performance.
-        LOD (Level of Detail) was implemented to decrease the number of grid areas rendered on the map, and the number of data points
-        rendered in the graph as the user zooms out. Additionally, culling was implemented to only render grid areas that are visible
-        on the screen.
-       
-        \section{Code Quality Considerations}
-
-        \subsection{Coupling and Responsibility-Driven Design}
-      
-        \subsection{Cohesion}
-        
-        \subsection{Maintainability}
-
-        \subsection{Acknowledgements}
-        \noindent Various APIs and external libraries were used in this project for extended functionality:
-
-        - \textbf{Gluon Maps} (https://github.com/gluonhq/maps) - Maps Library by Gluon (maintainer of JavaFX) that implements OpenStreetMaps
-
-        - \textbf{OSGB by DST} (https://github.com/dstl/osgb]) - Library to convert British Grid System (Easting / Northing) to Latitude and Longitude
-
-        - \textbf{GeographicLib} (https://github.com/geographiclib/geographiclib-java) - Used for geodesic distance calculation
-
-        - \textbf{Postcodes.io} (https://postcodes.io/) - API used to get location \& address data from the specified longitude and latitude on the map
-
-        - \textbf{GSON} (https://github.com/google/gson) - A library by Google to convert between Json and Java Objects
-
-        - \textbf{World Air Quality Index API} (https://aqicn.org/api/) - An API to get real time Air Quality Index Updates from the World Air Quality Index Project
-        
-        \section{Final Remarks}
+        \input{sections/intro}
+        \input{sections/directions}
+        \input{sections/roles}
+        \input{sections/basetasks}
+        \input{sections/testing}
+        \input{sections/challenges}
+        \input{sections/optimisatons}
+        \input{sections/bugs}
+        \input{sections/libraries}
         
     \end{multicols}
 
