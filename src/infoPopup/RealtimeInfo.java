@@ -12,7 +12,6 @@ import java.util.Objects;
  * This class is used to display the live air quality readings in the info popup
  * by giving access to the content.
  * 
- * Refactor and class by Mehmet Kutay Bozkurt
  * @author Matthias Loong
  * @version 1.0
  */
@@ -46,7 +45,7 @@ public class RealtimeInfo {
         livePollutantFlow = new TextFlow();
         liveUpdatedTimeFlow = new TextFlow();
 
-        // Initialise Labels that will be displayed in BOLD (e.g Postal Code:, Country: )
+        // Initialise Labels that will be displayed in BOLD (e.g Postal Code:, Country:, etc.)
         liveAQILabel = new Label("Live Composite AQI: ");
         liveAQILabel.setStyle(labelStyle);
         livePollutantLabel = new Label("Live Pollution Level (AQI): ");

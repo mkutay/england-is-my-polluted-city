@@ -17,7 +17,6 @@ import utility.ImageUtils;
  * @version 1.0
  */
 public class ZoomControls extends VBox {
-    private final CustomMapView mapView;
     private Label zoomInButton;
     private Label zoomOutButton;
     private Label fullScreenButton;
@@ -26,8 +25,6 @@ public class ZoomControls extends VBox {
      * Constructs a ZoomControls instance and attaches event handlers.
      */
     public ZoomControls(CustomMapView mapView) {
-        this.mapView = mapView;
-
         createZoomButtons();
         this.getChildren().addAll(zoomInButton, zoomOutButton, fullScreenButton);
 
@@ -42,27 +39,27 @@ public class ZoomControls extends VBox {
      * Creates the zoom buttons and assigns icons and tooltips.
      */
     private void createZoomButtons() {
-        // Create labels
+        // Create labels:
         zoomInButton = new Label();
         zoomOutButton = new Label();
         fullScreenButton = new Label();
 
-        // Apply common CSS class to all buttons
+        // Apply common CSS class to all buttons:
         zoomInButton.getStyleClass().add("zoom-button");
         zoomOutButton.getStyleClass().add("zoom-button");
         fullScreenButton.getStyleClass().add("zoom-button");
 
-        // Set tooltips (hover text)
+        // Set tooltips (hover text):
         Tooltip.install(zoomInButton, new Tooltip("Zoom In"));
         Tooltip.install(zoomOutButton, new Tooltip("Zoom Out"));
         Tooltip.install(fullScreenButton, new Tooltip("Fullscreen Mode"));
 
-        // Create ImageViews for icons
+        // Create ImageViews for icons:
         ImageView zoomIn = ImageUtils.createImage("/resources/icons/add.png", 20);
         ImageView zoomOut = ImageUtils.createImage("/resources/icons/minus.png", 20);
         ImageView fullScreen = ImageUtils.createImage("/resources/icons/fullscreen.png", 20);
 
-        // Assign icons to labels
+        // Assign icons to labels:
         zoomInButton.setGraphic(zoomIn);
         zoomOutButton.setGraphic(zoomOut);
         fullScreenButton.setGraphic(fullScreen);

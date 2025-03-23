@@ -1,4 +1,5 @@
 package app.uiControllers;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Separator;
 import javafx.scene.image.ImageView;
@@ -8,15 +9,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import utility.ImageUtils;
-
 import javafx.scene.control.Hyperlink;
-import java.awt.Desktop;
-import java.net.URI;
 import javafx.scene.text.TextFlow;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.Text;
 
+import java.awt.Desktop;
+import java.net.URI;
+
+import utility.ImageUtils;
 import static app.App.APP_NAME;
 
 /**
@@ -43,9 +44,9 @@ public class AboutPageController {
         ImageView icon = ImageUtils.createImage("/resources/icons/rainbow.png", 50);
         headerLabelBox.getChildren().addAll(icon, headerLabel);
 
-        //List authors of app
+        // List authors of app:
         Label authorsLabel = new Label("Created with Love by: Mehmet Kutay Bozkurt, Anas Ahmed, Matthias Loong, and Chelsea Feliciano");
-        // Separator line to separate Header + authors from credits text.
+        // Separator line to separate Header + authors from credits text:
         Separator separator = new Separator();
 
         // Credits text:

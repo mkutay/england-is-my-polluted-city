@@ -11,10 +11,6 @@ import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Test class for the DataManager class. Tests the public methods of the class.
@@ -52,15 +48,6 @@ class DataManagerTest {
     public void testGetAvailableYears() {
         List<Integer> years = dataManager.getAvailableYears(TEST_POLLUTANT);
         assertNotNull(years, "Should return a non-null list of years.");
-    }
-
-    @Test
-    public void testGetPollutantDataAsync() throws InterruptedException, ExecutionException, TimeoutException {
-        CompletableFuture<DataSet> future = dataManager.getPollutantDataAsync(TEST_YEAR, TEST_POLLUTANT);
-        DataSet dataSet = future.get(5, TimeUnit.SECONDS); // Wait up to 5 seconds.
-        
-        assertNotNull(dataSet, "Async data loading should return a non-null dataset.");
-        assertTrue(dataManager.isDataCached(TEST_POLLUTANT, TEST_YEAR), "Data should be cached after async loading.");
     }
 
     @Test

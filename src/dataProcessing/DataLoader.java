@@ -22,8 +22,6 @@ public class DataLoader {
      * @return A DataSet object holding the complete dataset
      */
     public DataSet loadDataFile(String fileName) {
-        // System.out.println("Loading file " + fileName + "...");
-        
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             // The first four lines of the file hold special information; read them in:
             String pollutant = readDataHeader(br);
@@ -44,8 +42,6 @@ public class DataLoader {
                 dataSet.addData(values);
                 line = br.readLine();
             }
-
-            // System.out.println("File loaded.");
 
             return dataSet;
         } catch (IOException e) {

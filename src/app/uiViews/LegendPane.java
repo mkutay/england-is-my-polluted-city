@@ -2,6 +2,7 @@ package app.uiViews;
 
 import colors.ColorSchemeManager;
 import dataProcessing.Pollutant;
+import utility.ImageUtils;
 
 import javafx.animation.*;
 import javafx.scene.control.Label;
@@ -12,9 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-import utility.ImageUtils;
-
 import javafx.geometry.Insets;
+
 import java.util.List;
 
 /**
@@ -25,7 +25,8 @@ import java.util.List;
  */
 public class LegendPane extends VBox {
     private final VBox content;
-    private boolean expanded = false;
+
+    private boolean expanded = false; // Tracks whether the legend content area is expanded.
 
     /**
      * Constructor.
@@ -34,7 +35,7 @@ public class LegendPane extends VBox {
         HBox header = new HBox();
         Label titleLabel = new Label("Legend");
         ImageView icon = ImageUtils.createImage("/resources/icons/hamburger.png", 18);
-        HBox.setMargin(icon, new Insets(2.5,0,0,0));
+        HBox.setMargin(icon, new Insets(2.5, 0, 0, 0));
         Tooltip.install(header, new Tooltip("Click to expand"));
 
         header.getChildren().addAll(icon, titleLabel);
@@ -73,8 +74,8 @@ public class LegendPane extends VBox {
             double lowerBound = ((double) i / colors.size()) * maxPollutionValue;
             double upperBound = ((double) (i + 1) / colors.size()) * maxPollutionValue;
 
-            lowerBound =  (double) (int) (lowerBound * 10) / 10; // Round to 1 decimal place.
-            upperBound =  (double) (int) (upperBound * 10) / 10;
+            lowerBound = (double) (int) (lowerBound * 10) / 10; // Round to 1 decimal place.
+            upperBound = (double) (int) (upperBound * 10) / 10;
 
             String label = lowerBound + "-" + upperBound + " " + Pollutant.UNITS;
 
@@ -91,8 +92,10 @@ public class LegendPane extends VBox {
         HBox item = new HBox(5);
         Label itemLabel = new Label(label);
         item.getStyleClass().add("legend-item");
+
         Circle colorBox = new Circle(7.5,color);
         colorBox.getStyleClass().add("legend-circle");
+        
         item.getChildren().addAll(colorBox, itemLabel);
         content.getChildren().add(item);
     }

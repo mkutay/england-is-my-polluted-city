@@ -7,7 +7,7 @@ import javafx.stage.Modality;
 import java.util.*;
 
 /**
- * The welcome page for the project. Will be shown on launch or by clicking "Tutorial" in the navigation bar
+ * The welcome page for the project. Will be shown on launch or by clicking "Tutorial" in the navigation bar.
  *
  * @author Matthias Loong
  * @version 1.0
@@ -18,9 +18,11 @@ public class WelcomePageController {
     // Explicitly initialise the current page counter as 0 for easier reading.
     private int currentPage = 0;
 
-    // Store path to images and descriptions in a linked hashmap (for easy iteration). Image path serves as a key, returning both the image and the description it uses.
+    // Store path to images and descriptions in a linked hashmap (for easy iteration).
+    // Image path serves as a key, returning both the image and the description it uses.
     private static final Map<String, String> tutorialPicDescMap = new LinkedHashMap<>();
     private static final List<String> imagePaths = new ArrayList<>();
+
     // Placeholder image to be used if image loading runs into an error.
     private static final String PLACEHOLDER_IMAGE = "/resources/screenshots/PLACEHOLDER_IMG.png";
 
@@ -30,7 +32,7 @@ public class WelcomePageController {
 
     /**
      * The constructor method for the welcome page controller.
-     //* @param app The main JavaFX app object to allow the app to display this page.
+     * @param app The main JavaFX app object to allow the app to display this page.
      */
     public WelcomePageController() {
         welcomePage = new WelcomePage();
@@ -49,7 +51,8 @@ public class WelcomePageController {
     }
 
     /**
-     * This method will initialise all content for the menu. This includes the descriptions for each page of the tutorial along with their associated images.
+     * This method will initialise all content for the menu. This includes the
+     * descriptions for each page of the tutorial along with their associated images.
      */
     private static void initialiseMenu() {
         // String formatting for each tutorial page to make it easier to write text.
@@ -134,14 +137,14 @@ public class WelcomePageController {
     }
 
     /**
-     * Closes the current stage
+     * Closes the current stage.
      */
     private void close() {
         stage.close();
     }
 
     /**
-     * Resets the WelcomePage to start at the first page
+     * Resets the WelcomePage to start at the first page.
      */
     private void reset() {
         currentPage = 0;
@@ -168,8 +171,8 @@ public class WelcomePageController {
     }
 
     /**
-     * Allow the app to access the WelcomePage's stage
-     * @return The WelcomePage stage
+     * Allow the app to access the WelcomePage's stage.
+     * @return The WelcomePage stage.
      */
     public Stage getStage() {
         return stage;

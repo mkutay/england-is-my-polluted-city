@@ -3,7 +3,6 @@ package statistics.types;
 import java.util.Map;
 
 import dataProcessing.Pollutant;
-import statistics.back.StatisticsResult;
 
 /**
  * Specialized statistics result for all pollutants.

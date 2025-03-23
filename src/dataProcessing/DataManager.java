@@ -3,7 +3,6 @@ package dataProcessing;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import javafx.util.Pair;
 
@@ -74,16 +73,6 @@ public class DataManager {
      */
     public List<Integer> getAvailableYears(Pollutant pollutant) {
         return dataPicker.getAvailableYears(pollutant);
-    }
-    
-    /**
-     * Asynchronously load pollutant data for a specific year and pollutant by supplying a CompletableFuture.
-     * @param year The year requested as an integer.
-     * @param pollutant The requested pollutant.
-     * @return A CompletableFuture that will complete with the loaded DataSet.
-     */
-    public CompletableFuture<DataSet> getPollutantDataAsync(int year, Pollutant pollutant) {
-        return CompletableFuture.supplyAsync(() -> getPollutantData(year, pollutant));
     }
     
     /**

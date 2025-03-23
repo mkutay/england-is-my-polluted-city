@@ -88,7 +88,7 @@ public class PollutionLayer extends MapLayer {
             MapPoint polygonTopLeft = polygon.getWorldCoordinates().getFirst();
             Point2D polygonTopLeftScreen = getMapPoint(polygonTopLeft.getLatitude(), polygonTopLeft.getLongitude());
 
-            if (polygonTopLeft == null){
+            if (polygonTopLeft == null) {
                 continue; // Edge case when switching to statistics panel.
             }
 

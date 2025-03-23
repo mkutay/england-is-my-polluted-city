@@ -60,11 +60,11 @@ public class WelcomePage extends BorderPane {
     }
 
     /**
-     * Method to update the content currently shown on the WelcomePage
-     * @param imagePath The image path relative to the root directory of the project (src)
-     * @param description The tutorial text associated with the current page
-     * @param isFirst Checks if the current page is the first page
-     * @param isLast Checks if the current page is the last page
+     * Method to update the content currently shown on the WelcomePage.
+     * @param imagePath The image path relative to the root directory of the project.
+     * @param description The tutorial text associated with the current page.
+     * @param isFirst Checks if the current page is the first page.
+     * @param isLast Checks if the current page is the last page.
      */
     public void updateContent(String imagePath, String description, boolean isFirst, boolean isLast) {
         loadImage(imagePath);
@@ -75,8 +75,8 @@ public class WelcomePage extends BorderPane {
     }
 
     /**
-     * Loads the image into the ImageView and resizes it to prepare it to be shown on the WelcomePage
-     * @param imagePath The image path relative to the root directory of the project (src)
+     * Loads the image into the ImageView and resizes it to prepare it to be shown on the WelcomePage.
+     * @param imagePath The image path relative to the root directory of the project.
      */
     private void loadImage(String imagePath) {
         Image image = new Image(imagePath);

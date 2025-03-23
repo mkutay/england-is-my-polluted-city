@@ -210,7 +210,7 @@ public class DataSelectionController {
     
     /**
      * Set a callback for when either selection changes.
-     * @param callback BiConsumer that takes the selected year and pollutant
+     * @param callback BiConsumer that takes the selected year and pollutant.
      */
     public void setOnSelectionChanged(BiConsumer<Integer, Pollutant> callback) {
         this.onSelectionChangedCallback = callback;
@@ -221,7 +221,7 @@ public class DataSelectionController {
     
     /**
      * Set a callback for when the year range selection changes.
-     * @param callback TriConsumer that takes the start year, end year, and pollutant
+     * @param callback TriConsumer that takes the start year, end year, and pollutant.
      */
     public void setOnRangeSelectionChanged(TriConsumer<Integer, Integer, Pollutant> callback) {
         this.onRangeSelectionChangedCallback = callback;

@@ -3,27 +3,26 @@ package test;
 import api.aqicn.AQICNAPI;
 import api.aqicn.AQICNData;
 import api.aqicn.AQIResponse;
-import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
+
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Tests valid and invalid inputs for the AQI API
+ * Tests valid and invalid inputs for the AQI API.
+ * 
  * @author Matthias Loong
+ * @version 1.0
  */
 public class AQIAPITest {
-    //Test coordinates for London:
+    // Test coordinates for London:
     private static final double VALID_LATITUDE = 51.508045;
     private static final double VALID_LONGITUDE = -0.128217;
 
-
-    //Invalid coordinates:
+    // Invalid coordinates:
     private static final double INVALID_LATITUDE = 0.0;
     private static final double INVALID_LONGITUDE = 0.0;
-
-
-
-
 
     @Test
     void testAQIAPIValidCoordinates(){
@@ -32,9 +31,9 @@ public class AQIAPITest {
             String status = AQICNAPI.getPollutionData(VALID_LATITUDE, VALID_LONGITUDE).getStatus();
             assertNotNull(status, "Response should not be null.");
             assertEquals("ok", status, "Status should be ok.");
-            //Test if the data is null
+            // Test if the data is null.
             assertNotNull(data, "Results should not be null.");
-            //Test for pollutant values (must cast as a double for No2 value)
+            // Test for pollutant values (must cast as a double for NO2 value).
             double No2Value = (Double) data.getPollutantValues().getNo2().getIAQIValue();
             assertNotEquals(0, No2Value, "Value should not be 0");
             System.out.println(data);
@@ -49,10 +48,8 @@ public class AQIAPITest {
         try {
             AQIResponse response = AQICNAPI.getPollutionData(INVALID_LATITUDE, INVALID_LONGITUDE);
 
-            //Response should be null if 0 is entered as a value
+            // Response should be null if 0 is entered as a value.
             assertNull(response, "Response should be null for invalid coordinates.");
-
-
         } catch (IOException | InterruptedException e) {
             fail("Exception thrown: " + e.getMessage());
         }

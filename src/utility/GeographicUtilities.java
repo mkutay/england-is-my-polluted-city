@@ -13,7 +13,7 @@ import uk.gov.dstl.geo.osgb.Constants;
  * @author Anas Ahmed
  * @version 1.0
  */
-public class GeographicUtilities{
+public class GeographicUtilities {
     /**
      * Distance between two latitude and longitude positions on earth using vincenty formula.
      * @param point1 MapPoint of the first world position.

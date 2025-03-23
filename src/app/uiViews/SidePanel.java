@@ -169,11 +169,11 @@ public class SidePanel extends VBox {
         }
     }
 
-    // Getters:
-    public Label getMapLabel() {return mapLabel;}
-    public Label getStatsLabel() {return statsLabel;}
-    public Label getSwitchLabel() {return switchLabel;}
-    public VBox getEndYearDropdownBox() {return endYearDropdownBox;}
-    public VBox getColorDropdownBox() {return colorDropdownBox;}
-    public VBox getSliderContainer() {return sliderContainer;}
+    // Instance getters:
+    public Label getMapLabel() { return mapLabel; }
+    public Label getStatsLabel() { return statsLabel; }
+    public Label getSwitchLabel() { return switchLabel; }
+    public VBox getEndYearDropdownBox() { return endYearDropdownBox; }
+    public VBox getColorDropdownBox() { return colorDropdownBox; }
+    public VBox getSliderContainer() { return sliderContainer; }
 }

@@ -7,9 +7,9 @@ import utility.CustomMapView;
  * A UI component that overlays a map view with additional controls and manages their positioning.
  *
  * This overlay contains:
- * - A legend for map data representation
- * - Zoom controls for adjusting the map view
- * - A toggle button for showing or hiding the side panel
+ * - A legend for map data representation,
+ * - Zoom controls for adjusting the map view,
+ * - A toggle button for showing or hiding the side panel.
  *
  * It ensures proper alignment and placement of these components within the overlay.
  *
@@ -33,13 +33,13 @@ public class MapOverlay extends AnchorPane {
         legend = new LegendPane();
         zoomControls = new ZoomControls(mapView);
 
-        // Ensure the map view covers the entire overlay
+        // Ensure the map view covers the entire overlay:
         setTopAnchor(mapView, 0.0);
         setBottomAnchor(mapView, 0.0);
         setLeftAnchor(mapView, 0.0);
         setRightAnchor(mapView, 0.0);
 
-        // Position legend and zoom controls in the overlay
+        // Position legend and zoom controls in the overlay:
         setBottomAnchor(legend, 20.0);
         setRightAnchor(legend, 20.0);
         setTopAnchor(zoomControls, 20.0);
