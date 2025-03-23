@@ -6,6 +6,7 @@ import statistics.back.calculators.DistributionAnalysisCalculator;
 import statistics.back.calculators.HistogramCalculator;
 import statistics.back.calculators.PollutionExtremesCalculator;
 import statistics.back.calculators.TrendsCalculator;
+import statistics.types.StatisticsResult;
 
 import java.util.ArrayList;
 import java.util.List;

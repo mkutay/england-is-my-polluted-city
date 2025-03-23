@@ -8,8 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
-import statistics.back.StatisticsResult;
 import statistics.types.AllPollutionsResult;
+import statistics.types.StatisticsResult;
 import statistics.types.TrendsResult;
 
 /**

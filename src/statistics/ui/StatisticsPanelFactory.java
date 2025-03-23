@@ -3,11 +3,11 @@ package statistics.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import statistics.back.StatisticsResult;
 import statistics.types.AllPollutionsResult;
 import statistics.types.DistributionAnalysisResult;
 import statistics.types.HistogramResult;
 import statistics.types.PollutionExtremesResult;
+import statistics.types.StatisticsResult;
 import statistics.types.TrendsResult;
 import statistics.ui.panels.*;
 

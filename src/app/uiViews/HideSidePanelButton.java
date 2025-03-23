@@ -3,6 +3,7 @@ package app.uiViews;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
+
 import utility.ImageUtils;
 
 /**

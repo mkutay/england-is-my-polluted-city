@@ -1,6 +1,7 @@
 package statistics.back;
 
 import dataProcessing.Pollutant;
+import statistics.types.StatisticsResult;
 
 /**
  * An interface for statistics calculators.

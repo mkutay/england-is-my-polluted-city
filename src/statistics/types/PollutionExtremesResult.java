@@ -3,7 +3,6 @@ package statistics.types;
 import dataProcessing.DataPoint;
 import dataProcessing.Pollutant;
 import javafx.util.Pair;
-import statistics.back.StatisticsResult;
 
 import java.util.Map;
 

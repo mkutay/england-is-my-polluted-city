@@ -1,7 +1,6 @@
 package statistics.types;
 
 import dataProcessing.Pollutant;
-import statistics.back.StatisticsResult;
 
 /**
  * A class to store histogram data results from HistogramCalculator.

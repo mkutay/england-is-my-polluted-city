@@ -51,9 +51,9 @@ public class CustomMapView extends MapView {
     private void applyZoom(double zoomChange) {
         double newZoom = Math.max(minZoom, Math.min(this.getZoom() + zoomChange, maxZoom));
 
-        if (newZoom != this.getZoom()) {    // Prevent unnecessary updates if zoom hasn't changed
+        if (newZoom != this.getZoom()) { // Prevent unnecessary updates if zoom hasn't changed.
             MapPoint point = getMapPosition(getWidth() / 2, getHeight() / 2);
-            this.setCenter(point);  // Keep the center fixed while zooming
+            this.setCenter(point); // Keep the center fixed while zooming.
             this.setZoom(newZoom);
             this.dirtyRefresh();
         }
@@ -64,9 +64,9 @@ public class CustomMapView extends MapView {
      * @param event The scroll event.
      */
     private void handleScrollZoom(ScrollEvent event) {
-        double zoomChange = event.getDeltaY() > 0 ? zoomStep : -zoomStep; // Zoom in on scroll up, out on scroll down
+        double zoomChange = event.getDeltaY() > 0 ? zoomStep : -zoomStep; // Zoom in on scroll up, out on scroll down.
         applyZoom(zoomChange);
-        event.consume(); // Prevent default zoom behaviour
+        event.consume(); // Prevent default zoom behaviour.
     }
 
     /**

@@ -1,14 +1,13 @@
 package app.uiControllers;
 
+import com.gluonhq.maps.MapPoint;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
 import app.PollutionLayerNotInitialisedException;
 import app.uiViews.MapOverlay;
 import colors.ColorScheme;
 import colors.ColorSchemeManager;
-import com.gluonhq.maps.MapPoint;
-
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
 import dataProcessing.DataManager;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
@@ -35,8 +34,7 @@ public class MapController {
     private PollutionLayer pollutionLayer;
     private boolean pollutionLayerInitialised = false;
 
-    private double currentPollutionThreshold = 0; //Store current pollution threshold to send to pollution layer on creation
-    //private PollutionPolygonSelector pollutionPolygonSelector;
+    private double currentPollutionThreshold = 0; // Stores current pollution threshold to send to pollution layer on creation.
 
     /**
      * Constructor for MapController.
@@ -49,8 +47,6 @@ public class MapController {
 
         clickHandler = new MapClickHandler(stage);
 
-        //pollutionPolygonSelector = new PollutionPolygonSelector(mapView, mapOverlay);
-
         setupMapView(); // Opens mapView in London.
     }
 
@@ -59,7 +55,7 @@ public class MapController {
      */
     private void setupMapView() {
         MapPoint startLoc = new MapPoint(51.508045, -0.128217); // London coordinates.
-        mapView.setCenter(startLoc); // Instantly centers the map
+        mapView.setCenter(startLoc); // Instantly centers the map.
         mapView.setZoom(10);
     }
 
@@ -90,8 +86,6 @@ public class MapController {
      * @param pollutant The pollutant to update to.
      */
     public void updateMapDataSet(int year, Pollutant pollutant, ColorScheme colorScheme) {
-        //System.out.println("Updating map data set to year: " + year + ", pollutant: " + pollutant + ", color scheme: " + colorScheme);
-
         if (year == currentYear && pollutant == currentPollutant && colorScheme.toString().equals(currentColourScheme.toString())) {
             return; // No need to update if the data is the same.
         }

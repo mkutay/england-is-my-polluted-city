@@ -1,6 +1,7 @@
 package app.uiControllers;
 
 import app.App;
+
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -41,9 +42,11 @@ public class NavigationBarController {
 
         // Help Menu:
         Menu helpMenu = new Menu("Help");
+
         // Add About Page:
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> AboutPageController.show());
+        
         // Add Tutorial Page:
         MenuItem tutorialItem = new MenuItem("Tutorial");
         tutorialItem.setOnAction(e -> app.showWelcomePage());

@@ -10,7 +10,7 @@ import javafx.geometry.Pos;
 
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsManager;
-import statistics.back.StatisticsResult;
+import statistics.types.StatisticsResult;
 import statistics.ui.StatisticsPanel;
 import statistics.ui.StatisticsPanelFactory;
 

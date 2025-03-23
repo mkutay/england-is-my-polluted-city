@@ -14,8 +14,8 @@ import dataProcessing.DataPoint;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
-import statistics.back.StatisticsResult;
 import statistics.types.HistogramResult;
+import statistics.types.StatisticsResult;
 
 public class HistogramCalculator implements StatisticsCalculator {
     private static final int DEFAULT_HISTOGRAM_BINS = 10;

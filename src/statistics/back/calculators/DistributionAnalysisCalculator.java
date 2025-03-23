@@ -5,8 +5,8 @@ import dataProcessing.DataPoint;
 import dataProcessing.DataSet;
 import dataProcessing.Pollutant;
 import statistics.back.StatisticsCalculator;
-import statistics.back.StatisticsResult;
 import statistics.types.DistributionAnalysisResult;
+import statistics.types.StatisticsResult;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;

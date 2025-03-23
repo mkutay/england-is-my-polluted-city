@@ -1,8 +1,6 @@
 package app.uiControllers;
 
-import colors.ColorScheme;
-import colors.ColorblindColorScheme;
-import colors.DefaultColorScheme;
+import colors.*;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,6 +17,7 @@ import java.util.function.Consumer;
  */
 public class ColorSchemeController {
     private final ComboBox<ColorScheme> colorDropdown;
+
     private Consumer<ColorScheme> onColorSchemeChangedCallback;
 
     /**
@@ -52,11 +51,11 @@ public class ColorSchemeController {
 
     /**
      * Set a callback for when the color scheme changes.
-     * @param callback Consumer that takes the selected ColorScheme
+     * @param callback Consumer that takes the selected ColorScheme.
      */
     public void setOnColorSchemeChanged(Consumer<ColorScheme> callback) {
         this.onColorSchemeChangedCallback = callback;
-        // Initial notification with current value
+        // Initial notification with current value:
         notifyColorSchemeChanged();
     }
 

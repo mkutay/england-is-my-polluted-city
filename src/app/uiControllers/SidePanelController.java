@@ -3,11 +3,9 @@ package app.uiControllers;
 import app.uiViews.SidePanel;
 import colors.ColorScheme;
 import dataProcessing.Pollutant;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Node;
-
-import javafx.scene.control.Label;
-import java.util.List;
 
 /**
  * Manages the side panel UI elements and coordinates between different view components.
@@ -17,7 +15,7 @@ import java.util.List;
  */
 public class SidePanelController {
     private final SidePanel sidePanel;
-    private final BorderPane rootPane; // Root pane for swapping center content
+    private final BorderPane rootPane; // Root pane for swapping center content.
 
     // UI Component Controllers:
     private final MapController mapController;
@@ -29,8 +27,6 @@ public class SidePanelController {
     // UI Navigation Elements:
     private Node mapContent;
     private boolean mapShown = true;
-
-    private List<Label> navigationLabels;
 
     /**
      * Constructor for SidePanelController.
@@ -47,7 +43,7 @@ public class SidePanelController {
         this.colorSchemeController = new ColorSchemeController();
         this.pollutionThresholdController = new PollutionThresholdController();
 
-        // Creates a VBox with UI components of sidepanel
+        // Creates a VBox with UI components of sidepanel:
         this.sidePanel = new SidePanel(dataSelectionController, colorSchemeController, pollutionThresholdController);
         setupEventHandlers();
     }
@@ -56,7 +52,7 @@ public class SidePanelController {
      * Sets up event handlers for data selection and color scheme changes.
      */
     private void setupEventHandlers() {
-        // Handle view navigation (map <-> statistics)
+        // Handle view navigation (map <-> statistics):
         sidePanel.getMapLabel().setOnMouseClicked(e -> switchView("map"));
         sidePanel.getStatsLabel().setOnMouseClicked(e -> switchView("stats"));
         sidePanel.getSwitchLabel().setOnMouseClicked(e -> switchView(mapShown ? "stats" : "map"));

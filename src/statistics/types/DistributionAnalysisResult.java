@@ -1,7 +1,6 @@
 package statistics.types;
 
 import dataProcessing.Pollutant;
-import statistics.back.StatisticsResult;
 
 import java.util.Map;
 import java.util.stream.Collectors;
