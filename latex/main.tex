@@ -7,31 +7,367 @@
 \usepackage{listings}
 \usepackage{amsmath}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \usepackage[lmargin=0.8in, rmargin=0.8in, tmargin=1in, bmargin=1.3in]{geometry}
 
 \setkomafont{disposition}{\normalfont\bfseries}
 \parskip=8pt
 
+% \RedeclareSectionCommand[
+%     beforeskip=-0.75\baselineskip,
+%     afterskip=0.75\baselineskip]{section}
+
+% \RedeclareSectionCommand[
+%     beforeskip=-0.75\baselineskip,
+%     afterskip=0.75\baselineskip]{subsection}
+
 \begin{document}
     
-    \pagenumbering{gobble}
+\pagenumbering{gobble}
 
-    \input{sections/titlepage}
+\begin{titlepage}
+    \begin{center}
+        \Huge
+        \textbf{KING'S COLLEGE LONDON}
 
-    \begin{multicols}{2}
+        \vspace{2cm}
 
-        \pagenumbering{arabic}
+        \LARGE
+        \textbf{4CCS1PPA PROGRAMMING PRACTICE AND APPLICATIONS}
 
-        \input{sections/intro}
-        \input{sections/directions}
-        \input{sections/roles}
-        \input{sections/basetasks}
-        \input{sections/testing}
-        \input{sections/challenges}
-        \input{sections/optimisatons}
-        \input{sections/bugs}
-        \input{sections/libraries}
+        \vspace{1cm}
+
+        \Large
+        \textbf{Fourth “Air Pollution” Coursework (Mar 2025)}
+
+        \vspace{1cm}
+
+        \Large
+        Project Name: England is My Polluted City
+
+        \vspace{1cm}
+
+        \Large
+        \begin{tabular}{l l}
+            Student Name: & Mehmet Kutay Bozkurt \\
+            Student ID: & 23162628 \\
+            \vspace{0.5cm} & \\
+            Student Name: & Anas Ahmed \\
+            Student ID: & 23171444 \\
+            \vspace{0.5cm} & \\
+            Student Name: & Matthias Loong \\
+            Student ID: & 23078800 \\
+            \vspace{0.5cm} & \\
+            Student Name: & Chelsea Feliciano \\
+            Student ID: & 22042916
+        \end{tabular}
+    \end{center}
+    % \tableofcontents
+\end{titlepage}
+
+\begin{multicols}{2}
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+
+\noindent This project implements a fully functional JavaFX Application to display historical Air Pollution Data of the whole
+United Kingdom on an interactive map. Users are able to explore the historic pollution levels between 2018 and 2023
+on a colour coded map, as well as view detailed location and pollution data at specific data points. There are many
+quality of life features implemented, such as a robust GUI to filter through different years and pollutants, an extensive 
+statistics framework, as well as a “colourblind mode” to make the pollution viewer more accessible. 
+
+\noindent This project fulfils all of the base requirements and extends functionality greatly by implementing features such as
+Live Air Quality API integration and a highly detailed statistical analysis tool. The challenge extensions are
+listed in greater detail in the report (see section \ref{challenge-tasks}).
+
+\noindent Additionally, this project takes great care and consideration for high cohesion and low coupling in the codebase,
+making all classes modular and following the Model View Controller design pattern to fully separate UI
+functionalities from the logic of the program.
+
+\section{Directions for Use}
+
+\noindent The main application class \verb|App| can be found inside the app folder, and running it as a JavaFX application
+starts the programme. Additional libraries are used in the programme to increase the usability of the application.
+These libraries are \href{https://github.com/gluonhq/maps}{Gluon Maps} (and its dependencies),
+\href{https://github.com/dstl/osgb}{OSGB}, \href{https://github.com/geographiclib/geographiclib-java}{GeographicLib},
+and \href{https://github.com/google/gson}{Gson}.
+All of these libraries are already inside the given BlueJ project.
+
+\section{Roles and Responsibilities Breakdown}
+
+\noindent Overall, the codebase was equally worked upon by the entire team. Contributions are demonstrated in the
+commit history best, but the following outlines the main tasks each member worked on.
+
+\subsection{Mehmet Kutay Bozkurt}
+
+\vspace{-0.2em}
+
+\begin{itemize}
+    \itemsep-0.3em 
+    \item Created the statistics framework, created and added all of the statistical calculators and UI panels. Created the
+    statistics controller to go through different panels.
+    \item Created pop-up on the map to view detailed information about location.
+    \item Created the API that accesses the \href{https://postcodes.io/}{Postcodes.io} end-point to get detailed information
+    about the location, such as region, borough, and constituency.
+    \item Created the singleton class \verb|DataManager| to be the only entry point to the pollution data.
+    \item Started the colouring framework for the map pollution values.
+\end{itemize}
+
+\vspace{-0.2em}
+
+\subsection{Anas Ahmed}
+
+\vspace{-0.2em}
+
+\begin{itemize}
+    \itemsep-0.3em 
+    \item Pollution layer: Rendering of pollution polygons onto the map, handling scaling, sizing, mapping squares onto spherical
+    world-map and optimisation with LODs (Level Of Details).
+    \item Pollution threshold system.
+    \item Improvements and small refactors in colour system and legend.
+    \item Major refactors throughout the integration of UI and backend elements (model-view system).
+\end{itemize}
+
+\vspace{-0.2em}
+
+\subsection{Matthias Loong}
+
+\vspace{-0.2em}
+
+\begin{itemize}
+    \itemsep-0.3em 
+    \item Implemented the \verb|DataPicker| class to dynamically select a data set according to the pollutant and year with the
+    GUI side panel and \verb|ComboBox| selectors.
+    \item Implemented Real-Time Air Quality Index API.
+    \item Updated Information Pop-Up to display more detailed information at a given data point.
+    \item Created About and Welcome Page views.
+\end{itemize}
+
+\vspace{-0.2em}
+
+\subsection{Chelsea Feliciano}
+
+\vspace{-0.2em}
+
+\begin{itemize}
+    \itemsep-0.3em 
+    \item Created collapsible legend pane.
+    \item Added colourblind colour scheme.
+    \item Created zoom Control Buttons — Zoom In/Out and Fullscreen.
+    \item Created the cat button to toggle side panel visibility.
+    \item Created and modified the design and layout of UI components (apart from statistics related stuff).
+\end{itemize}
+
+\vspace{-0.2em}
+
+\section{Base Tasks}
+
+\subsection{Welcome Panel}
+
+\noindent A welcome panel was implemented as an additional window that greets users when launching the app. Users can
+scroll through screenshots and visual instructions on how to use the app effectively. If needed, the welcome screen is
+easily accessible again by clicking on “Help” and then “Tutorial” on the navigation bar.
+    
+\noindent Error handling was implemented for image file paths in the case they get deleted or are entered incorrectly
+in the codebase, when the screen is being updated.
+    
+\noindent Additionally, an “About” panel was implemented that gives detailed acknowledgements to the authors of the
+app along with credits for the external libraries and APIs used.
+    
+\subsection{Data Visualisation Panel (Map View)}
+
+\noindent The map was implemented using Gluon Maps, an external maps library created by the maintainers of JavaFX.
+The map displays all pollution data provided from the CSV files and colour codes them on the map. While the map starts
+with a view of London, the user is able to drag around the map to take a closer look at specific areas of London by
+zooming in, or view the entirety of the UK by zooming out. This can be done with the scroll wheel or with the zoom
+buttons on the upper-right hand corner of the screen.
+    
+\noindent A new \verb|PollutionLayer| class was created to process colours and visualise the pollution data on the map accurately.
+For smoother performance, Level of Detail optimisation was implemented. More information about the optimisations are
+detailed in the “Optimisations” section of this report.
+    
+\noindent Users are able to view a specified pollutant and year, in addition to being able to change the
+colours of the map to be colorblind friendly.
+    
+\noindent Useful buttons on the right side of the map allow users to toggle a legend to view the values of pollution
+in relation to the colours layered on the map, as well as allowing users to switch between full-screen and windowed mode.
+    
+\noindent A colour scheme for the map was implemented where the colour of a grid area is determined by its pollution
+level. The colour scheme is implemented as an interface \verb|ColourScheme| with a single method \verb|getColour|.
+This allows the application to have different colour schemes for the map, and a way to switch between them quite easily,
+improving maintainability and responsibility-driven design.
+
+\subsection{Pollution Statistics Panel}
+
+\noindent Various statistical information can be accessed by clicking the “View Pollutant Statistics” on the side panel.
+Each type of information is divided into different panels, which can be viewed through using the “Next” and “Previous”
+buttons on the bottom. Different panels include
+
+\vspace{-0.2em}
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item “Pollution Hotspots Trends” for recording the highest, median, and the lowest pollution levels with their locations.
+    This panel also integrates with the Postcode API to showcase where the area is located.
+    
+    \item“Average Pollution Trends” for showing how the pollution values changed over time with the mean, median, and
+    standard deviation being shown for each year. Additional information is also displayed for the overall averages and
+    percent changes.
+    
+    \item “All Pollutions” for seeing how much the average value for each pollutant has changed over the years.
+\end{itemize}
+
+\vspace{-0.2em}
+    
+\noindent The statistics module follows a three-tier pattern: Calculators (backend logic for statistical computations),
+result objects (intermediate representation for just the data), and panels (visualisation and user interface). Each one
+of these follows extensibility in mind. Specifically, an abstract class is used for the general \verb|StatisticsPanel|
+class, which each different type of statistics views \verb|extend|. Each result object and calculator also implement a
+similar interface called \verb|StatisticsResult| and \verb|StatisticsCalculator|, respectively. With the
+\verb|StatisticsPanelFactory| and \verb|StatisticsManager| classes, adding new statistics panels is easy and requires no
+changes to other parts of the code, showing the high level of cohesion and low coupling.
+    
+\noindent The actual graph charts were also divided into components for any panel to use. \verb|LineChartPanel| expects a
+variable argumant for the data, allowing additional lines with different colours to be added easily. These components were
+created for high modularity.
+    
+\noindent Finally, the UI panels and the backend calculators are not coupled at all. The main view is managed by the
+\verb|StatisticsController| which calls the \verb|StatisticsManager| to generate the results using the calculators; then,
+the controller supplies the results to the \verb|StatisticsPanelFactory|, which in return creates the actual panel views.
+
+\subsection{Detailed Grid Data}
+
+\noindent When right-clicking anywhere on the map, users are able to view a pop-up with all relevant information for a data
+point, such as: Latitude and Longitude Coordinates, Unique Grid Code, Pollution Level for the selected Pollutant and Year,
+Borough or County, and nearest UK Postcode. 
+    
+\noindent The grid data also implements an API (explained in-depth in section \ref{api-integration}) to retrieve real-time
+air quality updates and displays it accordingly.
+    
+\noindent Users can click anywhere on the map to close the pop-up. Right clicking another location on the map will
+close the current pop-up and open a new one with the correct information for the selected data point.
+
+\section{Unit Testing}
+
+\noindent Unit testing was implemented with JUnit for various classes and public methods in those classes to test the
+\textit{interface} of those classes. The tests ensure that the methods are working as expected and use different forms
+of input ranging from valid to invalid. For example, for querying location data, both valid coordinates within London
+and invalid coordinates were tested to ensure successful querying and correct error handling. Tests were also created
+on all of the statistics calculators to ensure that they give out correct information. This was done by calculating statistical
+values differently to how they are in the calculators. Overall, these tests were vital in adding functionality to the codebase,
+as they ensured that new functionality did not break any existing functionality.
+
+\section{Challenge Tasks} \label{challenge-tasks}
+
+\subsection{Interactive Map}
+
+\noindent The GluonMaps external library was used to implement an interactive map. It features tile-based maps, allowing for easy
+management of zooming in and out and dragging of the map within the view. Furthermore, the library features robust
+information, allowing us to convert locations on the screen to coordinates for easy mapping of the data provided.
+    
+\subsection{Adding the Entire UK in the Map}
+
+\noindent Given that the project was already utilising an external mapping library and the data provided was for the whole
+United Kingdom, we decided to expand the coverage of the project to account for all data points.
+    
+\subsection{API Integration} \label{api-integration}
+
+\noindent The project makes use of two external APIs to display information related to the data provided:
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item The Postcodes API allows the usage of provided coordinates to return details about the selected data points:
+    UK Postal Code, County/Borough, and Country. 
+    
+    \item The AQICN API was used to get real-time air-quality updates from the World Air Quality Index and display the values
+    to the user along with the time the Air Quality Index was last updated.
+\end{itemize}
+    
+\subsection{More Extensive Graph Based Trends}
+
+\noindent Two additional panels were added for more statistical information on the pollution data. These are:
+
+\vspace{-0.1em}
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item “Histogram” for seeing the distribution of pollution value ranges—displayed on a bar chart with a logarithmic scale.
+    Additionally, specific values can be seen by hovering the bars to open a tooltip.
+    
+    \item “Distribution Analysis” to showcase the percentiles over time and some more statistical values of the data
+    (such as skewness and kurtosis). Hovering over the table shows what these specific values mean.
+\end{itemize}
+
+\vspace{-0.1em}
+    
+\noindent These panels were added using the framework mentioned above, where two additional components were added (\verb|DataTablePanel|
+and \verb|HistogramChartPanel|). Tooltips for each cell in the table from \verb|DataTablePanel| was added to explain the meaning
+of the values. For \verb|HistogramChartPanel|, an additional \verb|LogarithmicAxis| class was added to show a logarithmic scale
+for better viewing.
+
+\noindent Overall, these modular components enhanced how the statistics information is shown.
+
+\subsection{Pollution Thresholds}
+
+\noindent Users are able to use a slider that will display areas with a certain pollution percentage and other areas with a gray colour.
+
+\section{Code Optimisations}
+
+Various optimisations were made to the codebase to vastly improve performance. These include:
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item LOD (Level of Detail) was implemented to decrease the number of grid areas rendered on the map, and the number of
+    data points rendered in the graph as the user zooms out. 
+    
+    \item Polygon view-culling was implemented to only render grid areas that are visible on the screen.
+    
+    \item Multithreadding was added to fetch the LOD values, data from the CSV files, and generate the statistics for
+    multiple years. This allowed all of the values to be loaded and generated in parallel, increasing the efficiency.
+\end{itemize}
+
+\section{Bugs and Issues}
+
+Most issues were identified and fixed thanks to rigorous testing, as mentioned above, but some issues were identified
+and could not be fixed due to time constraints:
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item Loading Pollution Statistics for the first time before caching will take a few seconds, causing some lag. All
+    subsequent loading of the page will be instant.
+    
+    \item When zooming in and out of the map view quickly, due to the loading of the LODs, the map stops for a couple
+    moments. This is due to the loading of the LODs and the rendering of the polygons, which was deemed unavoidable.
+
+    \item Opening the About or Welcome page when in fullscreen might result in unexpected behaviour.
         
-    \end{multicols}
+    \item Most issues were identified and fixed thanks to rigorous testing, as mentioned above.
+\end{itemize}
 
+\section{Libraries used}
+
+\noindent Various APIs and external libraries were used in this project for extended functionality:
+
+\begin{itemize}
+    \itemsep-0.3em
+    \item \href{https://github.com/gluonhq/maps}{Gluon Maps}: Maps Library by Gluon (a maintainer of JavaFX) that implements
+    OpenStreetMaps.
+
+    \item \href{https://github.com/dstl/osgb}{OSGB by DST}: Library to convert British Grid System (Easting / Northing) to
+    Latitude and Longitude.
+
+    \item \href{https://github.com/geographiclib/}{GeographicLib}: Used for geodesic distance calculation.
+
+    \item \href{https://github.com/google/gson}{Gson}: A library by Google to serialise and deserialise JSON objects to
+    and from Java objects.
+
+    \item \href{https://postcodes.io/}{Postcodes.io}: API used to get location and address data from the specified longitude
+    and latitude on the map.
+
+    \item \href{https://aqicn.org/api/}{World Air Quality Index API}: An API to get real time Air Quality Index Updates
+    from the World Air Quality Index Project.
+\end{itemize}
+    
+\end{multicols}
 \end{document}

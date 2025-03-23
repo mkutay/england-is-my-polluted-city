@@ -1,8 +1,8 @@
 .idea
 out
-latex
-latex/main.pdf
-latex/main.tex
+*.aux
+*.log
+*.out
 .DS_Store
 main.out
 .env
