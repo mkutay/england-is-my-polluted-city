@@ -9,10 +9,9 @@ import statistics.back.calculators.TrendsCalculator;
 import statistics.types.StatisticsResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manager class for statistics calculations.
@@ -33,7 +32,7 @@ public class StatisticsManager {
      */
     private StatisticsManager() {
         calculators = new ArrayList<>();
-        resultCache = new ConcurrentHashMap<>();
+        resultCache = new HashMap<>();
         
         // Register default calculators, for now:
         registerCalculator(new TrendsCalculator());
@@ -77,9 +76,8 @@ public class StatisticsManager {
      * @return Map of calculator names to their results.
      */
     public Map<String, StatisticsResult> calculateStatisticsOverTime(Pollutant pollutant, int startYear, int endYear) {
-        Map<String, StatisticsResult> results = new ConcurrentHashMap<>();
+        Map<String, StatisticsResult> results = new HashMap<>();
         
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (StatisticsCalculator calculator : calculators) {
             final String key = makeTimeSeriesKey(calculator.getStatisticsName(), pollutant, startYear, endYear);
             
@@ -89,30 +87,13 @@ public class StatisticsManager {
                 continue;
             }
 
-            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-                // Calculate and cache:
-                StatisticsResult result = calculator.calculateStatisticsOverTime(pollutant, startYear, endYear);
-                resultCache.put(key, result);
-                results.put(calculator.getStatisticsName(), result);
-            });
-            futures.add(future);
+            // Calculate and cache:
+            StatisticsResult result = calculator.calculateStatisticsOverTime(pollutant, startYear, endYear);
+            resultCache.put(key, result);
+            results.put(calculator.getStatisticsName(), result);
         }
-
-        // Wait for all calculations to finish:
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         
         return results;
-    }
-
-    /**
-     * Asynchronously calculate statistics for a specific data set over a time.
-     * @param pollutant The pollutant to analyse.
-     * @param startYear The start year.
-     * @param endYear The end year to analyse.
-     * @return CompletableFuture.
-     */
-    public CompletableFuture<Map<String, StatisticsResult>> calculateStatisticsOverTimeAsync(Pollutant pollutant, int startYear, int endYear) {
-        return CompletableFuture.supplyAsync(() -> calculateStatisticsOverTime(pollutant, startYear, endYear));
     }
     
     /**
