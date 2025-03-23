@@ -1,0 +1,8 @@
+\section{Code Optimisations}
+Various optimisations were made to the codebase to vastly improve performance.
+
+    - LOD (Level of Detail) was implemented to decrease the number of grid areas rendered on the map, and the number of data points rendered in the graph as the user zooms out. 
+    
+    - Polygon view-culling was implemented to only render grid areas that are visible on the screen.
+    
+    - Multithreadding was added to fetch the LOD values, data from the CSV files, and generate the statistics for multiple years. This allowed all of the values to be loaded and generated in parallel, increasing the efficiency.

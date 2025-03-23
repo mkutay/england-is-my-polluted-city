@@ -1,0 +1,40 @@
+\section{Base Tasks}
+\subsection{Welcome Panel}
+    - A welcome panel was implemented as a pop up window that will greet users when launching the app. Users can scroll through screenshots and visual instructions on how to use the app effectively. If needed, the welcome screen is easily accessible again through clicking on “Help” and then “Tutorial” on the navigation bar of the app.
+    
+    - Error handling was implemented for image file paths in the case they get deleted or are entered incorrectly when the screen is being updated.
+    
+    - Additionally, an “About” panel was implemented that gives detailed acknowledgements to the authors of the app along with credits for the external libraries and APIs used.
+    
+\subsection{Data Visualisation Panel (Map View)}
+    - The map was implemented using Gluon Maps, an external maps library created by the maintainers of JavaFX. The map displays all pollution data provided from the CSV files and color codes them on the map. While the map starts with a view of London, the user is able to drag around the map to take a closer look at specific areas of London by zooming in, or view the entirety of the UK by zooming out. This can be done with the scroll wheel or with the zoom buttons on the upper-right hand corner of the screen.
+    
+    - A new PollutionLayer class was created to process colours and visualise the pollution data on the map accurately. For smoother performance, Level of Detail optimisation was implemented. More information about the optimisations are detailed in the “Optimisations” section of this report.
+    
+    - Users are able to view a specified pollutant and year. Additionally, we have added a feature to change the colours of the map to be colorblind friendly.
+    
+    - Useful buttons on the right side of the map allow users to toggle a legend to view the values of pollution in relation to the colours layered on the map, as well as allow users to switch between full-screen and windowed mode.
+    
+    - A colour scheme for the map was implemented where the colour of a grid area is determined by its pollution level. The colour scheme is implemented as an interface \verb|ColourScheme| with a single method \verb|getColour|. This allows us to have different colour schemes for the map, and a way to switch between them quite easily — improving maintainability and responsibility-driven design.
+
+\subsection{Pollution Statistics Panel}
+    - Various statistical information can be accessed by clicking the “View Pollutant Statistics” on the side panel. Each type of information is divided into different panels, which can be viewed through using the “Next” and “Previous” buttons on the bottom. Different panels include
+    
+    - “Pollution Hotspots Trends” for recording the highest, median, and the lowest pollution levels with their locations. This panel also integrates with the Postcode API to showcase where the area is located.
+    
+    - “Average Pollution Trends” for showing how the pollution values changed over time with the mean, median, and standard deviation being shown for each year. Additional information is also displayed for the overall averages and percent changes.
+    
+    - “All Pollutions” for seeing how much the average value for each pollutant has changed over the years.
+    
+    - The statistics module follows a three-tier pattern: Calculators (backend logic for statistical computations), result objects (intermediate representation for just the data), and panels (visualisation and user interface). Each one of these follows extensibility in mind. Specifically, an abstract class is used for the general \verb|StatisticsPanel| class, which each different type of statistics views \verb|extend|. Each result object and calculator also implement a similar interface called \verb|StatisticsResult| and \verb|StatisticsCalculator|, respectively. With the \verb|StatisticsPanelFactory| and \verb|StatisticsManager| classes, adding new statistics panels is easy and requires no changes to other parts of the code, showing the high level of cohesion and low coupling.
+    
+    - The actual graph charts were also divided into components for any panel to use. \verb|LineChartPanel| expects a variable argumant for the data, allowing additional lines with different colours to be added easily. These components were created for high modularity.
+    
+    - Finally, the UI panels and the backend calculators are not coupled at all. The main view is managed by the \verb|StatisticsController| which calls the \verb|StatisticsManager| to generate the results using the calculators; then, the controller supplies the results to the \verb|StatisticsPanelFactory|, which in return creates the actual panel views.
+
+\subsection{Detailed Grid Data}
+    - When right-clicking anywhere on the map, users are able to view a pop-up with all relevant information for a data point, such as: Latitude and Longitude Coordinates, Unique Grid Code, Pollution Level for the selected Pollutant and Year, Borough or County, and nearest UK Postcode. 
+    
+    - The grid data also implements an API (to be explained in-depth later) to retrieve real-time air quality updates and displays it accordingly.
+    
+    - Users can click anywhere on the map to close the pop-up. Right clicking another location on the map will close the current pop-up and open a new one with the correct information for the selected data point.

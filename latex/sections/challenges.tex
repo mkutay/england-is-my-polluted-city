@@ -1,0 +1,27 @@
+\section{Challenge Tasks}
+\subsection{Interactive Map}
+The GluonMaps external library was used to implement an interactive map. It features tile-based maps, allowing for easy management of zooming in and out and dragging of the map within the view. Furthermore, the library features robust information, allowing us to convert locations on the screen to coordinates for easy mapping of the data provided.
+    
+\subsection{Adding the Entire UK in the Map}
+Given that the project was already utilising an external mapping library and the data provided was for the whole United Kingdom, we decided to expand the coverage of the project to account for all data points.
+    
+\subsection{API Integration}
+The project makes use of two external APIs to display information related to the data provided:
+    
+    - The Postcodes API allows the usage of provided coordinates to return details about the selected data points: UK Postal Code, County/Borough, and Country. 
+    
+    - The AQICN API was used to get real-time air-quality updates from the World Air Quality Index and display the values to the user along with the time the Air Quality Index was last updated.
+    
+\subsection{More Extensive Graph Based Trends}
+Two additional panels were added for more statistical information on the pollution data. These are:
+
+    -“Histogram” for seeing the distribution of pollution value ranges—displayed on a bar chart with a logarithmic scale. Additionally, specific values can be seen by hovering the bars to open a tooltip.
+    
+    - “Distribution Analysis” to showcase the percentiles over time and some more statistical values of the data (such as skewness and kurtosis). Hovering over the table shows what these specific values mean.
+    
+These panels were added using the framework mentioned above, where two additional components were added (\verb|DataTablePanel| and \verb|HistogramChartPanel|). Tooltips for each cell in the table from \verb|DataTablePanel| was added to explain the meaning of the values. For \verb|HistogramChartPanel|, an additional \verb|LogarithmicAxis| class was added to show a logarithmic scale for better viewing.
+
+Overall, these modular components enhanced how the statistics information is shown.
+
+\subsection{Pollution Thresholds}
+Users are able to use a slider that will display areas with a certain pollution percentage and other areas with a gray colour.

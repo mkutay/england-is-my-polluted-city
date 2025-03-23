@@ -1,0 +1,40 @@
+\section{Roles and Responsibilities Breakdown}
+Overall, the codebase was equally worked upon by the entire team. Contributions are demonstrated in the commit history best, but the following outlines the main tasks each member worked on.
+
+Kutay:
+\begin{itemize}
+    \itemsep0em 
+    \item Statistics calculators and UI panels: Created the framework, created and added all of the statistical views. Created the statistics controller to go through the different panels.
+    \item Created pop-up on the map to view detailed information about location.
+    \item Created the API that accesses the Postcode.io end-point to get detailed information about the location, such as region, borough, and constituency.
+    \item Created the singleton class \verb|DataManager| to be the entry point to the pollution data.
+    \item Started the colouring framework for the map pollution values.
+\end{itemize}
+
+Anas:
+\begin{itemize}
+    \itemsep0em 
+    \item Pollution layer - rendering of pollution polygons onto the map, handling scaling, sizing, mapping squares onto spherical world-map and optimisation with LODs (Level Of Details)
+    \item Pollution threshold system
+    \item Improvements and small refactors in colour system and legend 
+    \item Major refactors throughout the integration of UI and backend elements (model-view system)
+\end{itemize}
+
+Matthias:
+\begin{itemize}
+    \itemsep0em 
+    \item Implemented Data Picker to dynamically select a data set according to the Pollutant and Year with the GUI Sidebar and ComboBox selectors
+    \item Implemented Real-Time Air Quality Index API
+    \item Updated Information Pop-Up to display more detailed information at a given data point
+    \item Created About and Welcome Page GUIs 
+\end{itemize}
+
+Chelsea: 
+\begin{itemize}
+    \itemsep0em 
+    \item Collapsible legend pane
+    \item Colourblind colour scheme
+    \item Zoom Control Buttons - Zoom In/Out and Fullscreen
+    \item Cat button to toggle side panel visibility
+    \item Design/layouts of UI components (apart from statistics-related stuff)
+\end{itemize}
