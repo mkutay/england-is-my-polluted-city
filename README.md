@@ -1,5 +1,12 @@
 # WE GET THESE 100S (VOL 2)
 
+This project implements a fully functional JavaFX Application to display historical Air Pollution Data of the
+whole United Kingdom on an interactive map. Users are able to explore the historic pollution levels between
+2018 and 2023 on a colour coded map, as well as view detailed location and pollution data at specific data
+points. There are many quality of life features implemented, such as a robust GUI to filter through differ-
+ent years and pollutants, an extensive statistics framework, as well as a “colourblind mode” to make the
+pollution viewer more accessible.
+
 [Google Docs](https://docs.google.com/document/d/19Ut53-j0HDo7lLMJCrqWUXvecwEDDJxhTycay316bNM/edit?usp=sharing)
 
 ## On commit messages
